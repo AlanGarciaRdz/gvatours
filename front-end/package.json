@@ -1,0 +1,48 @@
+{
+  "name": "front-end",
+  "version": "0.1.0",
+  "homepage": ".",
+  "private": true,
+  "dependencies": {
+    "@date-io/date-fns": "^2.4.0",
+    "@material-ui/core": "^4.9.5",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.45",
+    "@material-ui/pickers": "^3.2.10",
+    "axios": "^0.19.2",
+    "clsx": "^1.1.0",
+    "dotenv": "^8.2.0",
+    "file-saver": "^2.0.2",
+    "material-ui": "^0.20.2",
+    "node-sass": "^4.13.0",
+    "query-string": "^6.12.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
+    "recharts": "^1.8.5"
+  },
+  "scripts": {
+    "start": "ENVIRONMENT=development react-scripts start",
+    "build": "ENVIRONMENT=production react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploys": "ENVIRONMENT=production react-scripts build && cp .htaccess-needed-host ./build/.htaccess && scp  -i \"~/Documents/alan/gvatours/gvatours.pem\" -r ./build/* ec2-user@52.7.16.247:/var/www/html/",
+    "deploy": "ENVIRONMENT=production react-scripts build && cp .htaccess-needed-host ./build/.htaccess && rsync -av --progress -e \"ssh -i \"~/Documents/alan/gvatours/gvatours.pem\"\" -r ./build/* ec2-user@52.7.16.247:/var/www/html/"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
