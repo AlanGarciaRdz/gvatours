@@ -1,0 +1,745 @@
+<!doctype html>
+    <html>
+       <head>
+          <meta charset="utf-8">
+          <title>CUPON SERVICIOS</title>
+          <style>
+
+            body { font-family: 'Roboto', sans-serif; }
+
+            p {
+               margin: 0;
+               padding: 0;
+            }
+
+             .invoice-box {
+             /* max-width: 612px; */
+             margin: auto;
+             padding: 30px;
+             /* border: 1px solid #eee; */
+             /* box-shadow: 0 0 10px rgba(0, 0, 0, .15); */
+             font-size: 16px;
+             line-height: 24px;
+             /* font-family: 'Helvetica Neue', 'Helvetica'; */
+             font-family: 'Roboto', sans-serif;
+             }
+             
+
+             /* .header-invoce {
+               color: #000000;
+               background-image: linear-gradient(to top, #0cbdd4, #0c08fc);
+               height: 8vh;
+               border-bottom-right-radius: 70%;
+               border-bottom-left-radius: 30%;
+               
+             } */
+
+             .margin-top {
+             margin-top: 50px;
+             }
+             .justify-center {
+             text-align: center;
+             }
+             .invoice-box table {
+             width: 100%;
+             line-height: inherit;
+             text-align: left;
+             
+             }
+             .invoice-box table td {
+             padding: 5px;
+             vertical-align: top;
+             }
+             .invoice-box table tr td:nth-child(2) {
+             text-align: right;
+             }
+
+             
+             .invoice-box table tr.top table td {
+             padding-bottom: 20px;
+             }
+             .invoice-box table tr.top table td.title {
+             font-size: 45px;
+             line-height: 45px;
+             color: #333;
+             }
+             .invoice-box table tr.information table td {
+             padding-bottom: 40px;
+             }
+             .invoice-box table tr.heading td {
+             background: #eee;
+             border-bottom: 1px solid #ddd;
+             font-weight: bold;
+             }
+             .invoice-box table tr.details td {
+             padding-bottom: 20px;
+             }
+             .invoice-box table tr.item td {
+             border-bottom: 1px solid #eee;
+             }
+             .invoice-box table tr.item.last td {
+             border-bottom: none;
+             }
+             .invoice-box table tr.total td:nth-child(2) {
+             border-top: 2px solid #eee;
+             font-weight: bold;
+             }
+             @media only screen and (max-width: 600px) {
+             .invoice-box table tr.top table td {
+             width: 100%;
+             display: block;
+             text-align: center;
+             }
+             .invoice-box table tr.information table td {
+             width: 100%;
+             display: block;
+             text-align: center;
+             }
+             }
+
+
+             /* HEADER */
+               table.header {
+                  width: 100%;
+                  font-family: 'Roboto', sans-serif;
+               }
+               table.header td, table.header th {
+
+               }
+                  /* FOLIO HEADER */
+
+               .div_folio {
+                  /* border: 1.5px solid rgb(7, 109, 150); */
+                  border-radius: 3px;
+                  
+               }
+                  table.folio {
+                     
+                     /* border-radius: 3px; */
+                     
+                     /* background-color: rgb(7, 109, 150); */
+                     background-color: rgb(230, 93, 101); /* E65D65 */
+                     width: 100%;
+                     /* height: 97%; */
+                     text-align: center;
+                     border-collapse: collapse;
+                     color: rgb(255, 255, 255);
+                     font-size: 15px;
+
+                     border-top-right-radius: 3px;
+                     border-top-left-radius: 3px;
+                     padding: 3px 2px;
+                  }
+                  table.folio td{
+                     
+                     padding: 3px 2px;
+                  }
+                  table.folio th {
+                     
+                     border-top-right-radius: 15px;
+                     border-top-left-radius: 15px;
+
+                  }
+                  table.folio tr:nth-child(even) {
+                     background: #FFFFFF;
+                     color: rgb(230, 93, 101);;
+                     font-size: 12px;
+                     font-weight: 500;
+                  }
+                  
+             
+
+
+             /* Datos contratante */
+             .titulo {
+               font-size: 15px;
+               font-weight: bold;
+               color: rgb(7, 109, 150);
+               margin-left: 25px;
+               padding-bottom: 5px;
+               padding-top: 5px;
+             }
+
+             #sin_borde_inferior {
+                  border-bottom: none;
+              }
+
+             #nota_importante {
+               font-size: 15px;
+               /* font-weight: bold; */
+               color: rgb(7, 109, 150);
+               margin-left: 25px;
+               padding-bottom: 120px;
+               padding-top: 5px;
+             }
+
+             .datos_contratante_div {
+               border: solid 1px rgb(7, 109, 150);
+                  border-radius: 5px;
+                  width: 95%;
+                  margin: auto;
+                  position: relative;                  
+             }
+
+             table.datos_del_contratante {
+                  /* margin-left: 15px; */
+                  border-radius: 5px;
+                  /* background-color: rgb(7, 109, 150); */
+                  background-color: rgb(230, 248, 255);
+                  
+                  width: 97%;
+                  text-align: left;
+                  border-collapse: collapse;
+               }
+               table.datos_del_contratante td, table.datos_del_contratante th {
+                  padding: 5px 7px;
+                  border-bottom: .5px solid rgb(7, 109, 150);
+                  
+               }
+
+               table.datos_del_contratante tbody td {
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: rgb(37, 37, 37);
+               }
+
+               table.datos_del_contratante tbody tr #etiqueta {
+                  color: rgb(54, 54, 54);
+                  padding-left: 15px;
+               }
+
+               table.datos_del_contratante td:nth-child(even) {
+                  background: rgb(255, 255, 255);
+                  border-bottom: .5px solid rgb(7, 109, 150);
+               }
+              
+               
+               
+              
+
+
+               /* DATOS DE SALIDA */
+               .datos_viaje {
+                  border: solid 1px rgba(32, 94, 209, 0.733);
+                  border-radius: 5px;
+                  width: 95%;
+                  margin: auto;
+               }
+
+               .datos_viaje_pagos {
+                  border: solid 1px rgba(32, 94, 209, 0.733);
+                  border-radius: 5px;
+                  width: 95%;
+                  margin: auto;
+               }
+
+               table.datos_salida {
+                  margin-left: auto;
+	               margin-right: auto;
+                  width: 100%;
+                  text-align: left;
+                  border-collapse: collapse;
+                  border-radius: 5px;
+               }
+
+               table.datos_salida td, table.datos_salida th {
+                  padding: 3px 2px;               
+               }
+               
+               table.datos_salida tbody td {
+               font-size: 13px;
+               margin-left: 25px;
+               }
+
+               table.datos_salida tbody tr #etiqueta_general {
+                  color: rgb(54, 54, 54);
+                  padding-left: 15px;
+               }
+
+
+               table.datos_salida tr {
+                  /* background: rgb(255, 255, 255); */
+                  border-bottom: .5px solid rgb(7, 109, 150);
+               }
+
+              
+              
+
+               /*  UNIDAD CONTRATADA*/
+
+               table.unidad_contratada {
+                  margin-left: auto;
+	              margin-right: auto;
+                  width: 100%;
+                  text-align: left;
+                  border-collapse: collapse;
+               }
+
+               table.unidad_contratada td, table.unidad_contratada th {
+               
+                  padding: 3px 2px;
+               }
+               table.unidad_contratada tbody td {
+                  font-size: 13px;
+               }
+
+               table.unidad_contratada tbody tr #etiqueta_general {
+                  color: rgb(54, 54, 54);
+                  padding-left: 15px;
+               }
+
+
+               table.unidad_contratada tr {
+                  /* background: rgb(255, 255, 255); */
+                  border-bottom: .5px solid rgb(7, 109, 150);
+               }
+
+               table.unidad_contratada tr:nth-child(even) {
+                  /* background: #D0E4F5; */
+               }
+               
+
+
+               /* PAGOS */
+
+               table.informacion {
+                  margin-left: auto;
+	               margin-right: auto;
+                  width: 33%;
+                  text-align: left;
+                  border-collapse: collapse;
+               }
+               table.informacion td, table.informacion th {
+                  padding: 3px 2px;
+               }
+               table.informacion tbody td {
+                  font-size: 13px;
+               }
+               table.informacion tr:nth-child(even) {
+                  /* background: #D0E4F5; */
+               }
+               table.informacion tfoot td {
+                  font-size: 14px;
+               }
+               table.informacion tfoot .links {
+               text-align: right;
+               }
+               table.informacion tfoot .links a{
+               display: inline-block;
+               background: #1C6EA4;
+               color: #FFFFFF;
+               padding: 2px 8px;
+               border-radius: 5px;
+               }
+
+               table.informacion tbody tr #etiqueta_general {
+                  color: rgb(54, 54, 54);
+                  padding-left: 15px;
+               }
+
+
+               table.informacion tr {
+                  /* background: rgb(255, 255, 255); */
+                  border-bottom: .5px solid rgb(7, 109, 150);
+               }
+
+
+
+
+               /* firmas */
+               table.firmas {
+                  margin-left: auto;
+	               margin-right: auto;
+                  width: 100%;
+                  text-align: left;
+                  border-collapse: collapse;
+               }
+               table.firmas td, table.firmas th {
+               /*  */
+               padding: 3px 2px;
+               }
+               table.firmas tbody td {
+               font-size: 13px;
+               }
+               table.firmas tr:nth-child(even) {
+               /* background: #D0E4F5; */
+               }
+
+               table.firmas tbody tr #etiqueta_general {
+                  color: rgb(54, 54, 54);
+                  padding-left: 15px;
+                  padding-right: 15px;
+                  
+               }
+
+               table.firmas tbody tr #etiqueta_general_firma {
+                  color: rgb(54, 54, 54);
+                  padding-left: 15px;
+                  text-align: center;
+               }
+
+
+               table.firmas tr .firma {
+                  /* background: rgb(255, 255, 255); */
+                  border-top: .5px solid rgb(7, 109, 150);
+                  margin-left: 20px;
+                  margin-right: 20px;
+               }
+
+               /* Clausulas */
+
+               .div_clausulas {
+                  border: solid 1px rgba(32, 94, 209, 0.733);
+                  border-radius: 5px;
+                  width: 95%;
+                  margin: auto;
+
+               }
+               table.clausulas {
+               
+               width: 95%;
+               
+               border-collapse: collapse;         
+               }
+
+               #clausula_text {
+                  padding-bottom: 5px;
+               }
+               table.clausulas td, table.clausulas th {
+                /* border: 1px solid #FFFFFF; */
+                padding: 3px 2px;
+                /* width: 50%; */
+                /* text-align: justify; */
+                padding: 1%;
+               }
+               table.clausulas tbody td {
+                font-size: 14px;
+               }
+
+
+               /* reservacion */
+
+               .opcion {
+                    color: rgb(54, 54, 54);
+                  padding-left: 15px;
+               }
+
+               table.reservacion {
+                    width: 95%;
+                    border-collapse: collapse;         
+               }
+
+               table.reservacion td, table.reservacion th {
+                padding: 3px 2px;
+                padding: 1%;
+               }
+
+               table.reservacion tbody td {
+                font-size: 14px;
+               }
+
+
+               /* new */
+
+               a {
+                  text-decoration: none; 
+                  color: black; 
+                  font-family: 'Roboto', sans-serif;
+               }
+               
+
+               table.tabla_encabezado_color {
+                  text-align: center;
+                  border-collapse: collapse;
+                  border-radius: 1em;
+                  table-layout: fixed;
+                  width: 100%;
+                  background: rgb(230, 248, 255);
+               }
+
+               table.tabla_encabezado_color tr.encabezado{
+                  border-radius: 1em;
+                  table-layout: fixed;
+                  background: rgb(230, 93, 101);
+                  color: white;
+                  /* border-bottom: 2px solid blue; */
+               }
+
+               /* ralacion habitaciones */
+               .cupon_relacion_datos {
+                  /* border: solid 1px rgba(32, 94, 209, 0.733); */
+                  border-radius: 4px;
+                  width: 95%;
+                  margin: auto;
+               }
+
+               #table_cupon_relacion_datos {
+                  width: 100%;
+               }
+              
+               #table_cupon_relacion_datos th {
+                  background-color: rgb(230, 93, 101);
+                  color: white;
+                  border-top-right-radius: 4px;
+                  border-top-left-radius: 4px;
+                  /* border: 1px solid black; */
+               }
+
+               #table_cupon_relacion_datos td {
+                  /* border: 1px solid black; */
+               }
+
+               .titulos_cupon {
+                  color: blue; 
+                  font-size: 11px;
+               }
+
+              
+
+               /* table.tabla_encabezado_color tr.encabezado {
+                  background-color: red;
+                  overflow: hidden;
+
+               } */
+
+               /* table.tabla_encabezado_color {
+                  border-radius: 5px;
+                  background-color: rgb(230, 248, 255);
+                  width: 97%;
+                  text-align: left;
+                  border-collapse: collapse;
+               }
+
+               table.tabla_encabezado_color td, table.tabla_encabezado_color th {
+                  padding: 5px 7px;
+                  border-bottom: .5px solid rgb(7, 109, 150);  
+               }
+
+               table.tabla_encabezado_color tbody td {
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: rgb(37, 37, 37);
+               }
+
+               table.tabla_encabezado_color tbody tr #etiqueta {
+                  color: rgb(54, 54, 54);
+                  padding-left: 15px;
+               }
+
+               table.tabla_encabezado_color td:nth-child(even) {
+                  background: rgb(255, 255, 255);
+                  border-bottom: .5px solid rgb(7, 109, 150);
+               } */
+               
+  
+          </style>
+       </head>
+       <body>
+          
+            <table class="header">
+               <tbody>
+               <tr>
+               <td><img  src="https://transportamex-production-bucket-1ll3nrbfgiob8.s3.amazonaws.com/2016/08/GVA-Tours1.jpg"
+                  style="display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                  width: 50%; width:100%; max-width:200px;">
+                  <p style="text-align: center;">CUPON DE SERVICIOS</p>
+               </td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"><a href="http://www.gvatours.com/" target="_blank">www.gvatours.com</a> <br/><a href="mailto:info@gvatours.com">info@gvatours.com</a></td>
+                <td style="text-align: center;">
+                      <a href="https://goo.gl/maps/KgRQhTxJQoMNe8nv9" target="_blank">Av Fidel Velázquez Sánchez 643 <br/>
+                         Santa Elena Alcalde <br/> 
+                         44230 Guadalajara, Jal. 
+                      </a>
+                     <br/> 33 3631 3036 con 10 Lineas
+                     <br/><a href="https://api.whatsapp.com/send?phone=+5213338086093" target="_blank">Whatsaap: 333-808-6093</a>
+                     </td>
+               
+                <td>
+                  <div class="div_folio">
+                        <table class="folio">
+                              <tbody>
+                              <tr>
+                                 <th>Folio</th>
+                              </tr>
+                              <tr>
+                                 <td>&#8470; ${receiptId}</td>
+                              </tr>
+                              </tbody>
+                           </table>
+
+                          
+                  </div>
+               </td>
+               </tr>
+               </tbody>
+               </table>
+         
+               <p class="titulo">&nbsp;</p> 
+               
+            <div class="datos_contratante_div">
+                  <table class="datos_del_contratante">
+                        <tbody>
+                        <tr>
+                           <td id="etiqueta">DESTINO:</td>
+                           <td>${DESTINO} </td>
+                        </tr>
+                        <tr>
+                        <td id="etiqueta">HOTEL:</td>
+                        <td>${HOTEL}</td>
+                        </tr>
+                       
+
+                        <tr>
+                           <td id="etiqueta">DIRECCION:</td>
+                           <td>${DIRECCION_HOTEL} </td>
+                        </tr>
+
+                        <tr>
+                           <td id="etiqueta" style="border-bottom: none;">TELEFONO:</td>
+                           <td style="border-bottom: none;">${TELEFONO_HOTEL} </td>
+                        </tr>
+
+
+                        <!-- style="border-bottom: none;" -->
+                        </tbody>
+                        </table>
+            </div>
+
+            <p class="titulo">&nbsp;</p>
+
+            <div class="datos_contratante_div">
+                  <table class="tabla_encabezado_color">
+                        <tbody>
+                        <tr class="encabezado">
+                           <td style="border-bottom: none;">FECHA ENTRADA</td>
+                           <td style="border-bottom: none;">FECHA SALIDA</td>
+                           <td style="border-bottom: none;">TOTAL NOCHES PAGADAS</td>
+                        </tr>
+                        <tr style="border-bottom: none;">
+                           <td style="border-bottom: none;">${FECHA_ENTRADA}</td>
+                           <td style="border-bottom: none;">${FECHA_SALIDA}</td>
+                           <td style="border-bottom: none;">${TOTAL_NOCHES}</td>
+                        </tr>
+                        
+                        </tbody>
+                     </table>
+               </div>
+
+            <p class="titulo">&nbsp;</p>
+            <div class="datos_contratante_div">
+               <table class="tabla_encabezado_color">
+                     <tbody>
+                     <tr class="encabezado">
+                        <td style="border-bottom: none;">NOMBRE DEL PASAJERO</td>
+                        <td style="border-bottom: none;">TOTAL PAGADO</td>
+                     </tr>
+                     <tr style="border-bottom: none;">
+                        <td style="border-bottom: none;">${NOMBRE_PASAJERO}</td>
+                        <td style="border-bottom: none;">${TOTAL_PAGADO}</td>
+                     </tr>
+                     
+                     </tbody>
+                  </table>
+            </div>
+
+
+            <p class="titulo">&nbsp;</p>
+            <div class="cupon_relacion_datos">
+
+               <table id="table_cupon_relacion_datos">
+                     <tr>
+                           <th width="50%">RELACION DE HABITACIONES</th>
+                           <th width="50%">DATOS DE LA AGENCIA</th>
+                     </tr>
+                     <tr class="titulos_cupon">
+                           <td>No. DE HABITACIONES RESERVADAS:</td>
+                           <td>NOMBRE DE LA AGENCIA:</td>
+                     </tr>
+                     <tr>
+                           <td>${NUM_HABITACIONES}</td>
+                           <td>${NOMBRE_AGENCIA}:</td>
+                     </tr>
+                     <tr class="titulos_cupon">
+                           <td>DESGLOCE OCUPACION:</td>
+                           <td>CIUDAD:</td>
+                     </tr>
+                     <tr>
+                           <td>SGL: ${NUM_SGL} DBL: ${NUM_DBL} TPL: ${NUM_TPL} CPL: ${NUM_CPL} </td>
+                           <td>${CIUDAD_AGENCIA}</td>
+                     </tr>
+                     <tr class="titulos_cupon">
+                           <td>MENORES:</td>
+                           <td>TELEFONO</td>
+                     </tr>
+                     <tr>
+                           <td>C/C: ${MEN_CC} S/C ${MEN_SC} JR ${MEN_JR} </td>
+                           <td>${TELEFONO_AGENCIA}</td>
+                     </tr>
+
+                     <tr class="titulos_cupon">
+                           <td>PLAN CONTRADO</td>
+                           <td>CONTACTO</td>
+                     </tr>
+
+                     <tr>
+                           <td>${PLAN_CONTRATADO}</td>
+                           <td>${CONTACTO_AGENCIA}</td>
+                     </tr>
+
+                     <tr class="titulos_cupon">
+                           <td>CONFIRMADO POR</td>
+                           <td>OBSERVACIONES</td>
+                     </tr>
+
+                     <tr>
+                           <td>${CONFIRMADO_POR}</td>
+                           <td>${OBSERVACIONES}</td>
+                     </tr>
+                     <tr class="titulos_cupon">
+                           <td>CLAVE</td>
+                           <td></td>
+                     </tr>
+                     <tr>
+                           <td>${CLAVE}</td>
+                           <td></td>
+                     </tr>
+
+                     
+               </table>
+
+            </div>
+           
+           <p class="titulo">&nbsp;</p>
+            <div class="datos_viaje">
+
+                  <table class="firmas">
+                        <tbody>
+                        
+                        <tr><td></td></tr>
+                        <tr><td></td></tr>
+                        <tr><td></td></tr>
+                        <tr><td></td></tr>
+                        <tr>
+                           <td>
+                              <p id="etiqueta_general_firma" class="firma"> LUGAR Y FECHA</p>
+                              
+                           </td>
+                           <td>
+                                 <p id="etiqueta_general_firma" class="firma"> RECIBIÓ NOMBRE Y FIRMA  </p>
+                           </td>
+                        </tr>
+                        
+                        </tbody>
+                        </tr>
+                    </table>
+            </div>
+
+            
+
+          
+          
+       </body>
+    </html>

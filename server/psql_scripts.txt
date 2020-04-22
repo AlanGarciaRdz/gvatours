@@ -1,0 +1,20 @@
+SELECT Cu.* , public."Hotels".data as Hotel, cl.data as Cliente, ta.data as TravelAgency
+FROM public."Cupon" as Cu 
+join public."Hotels" on (Cu.data->>'uuid_hotel')::uuid = public."Hotels".uuid_hotel
+join public."Clients" as cl on (Cu.data->>'uuid_cliente')::uuid = cl.uuid_client
+join public."TravelAgencies" as ta on (Cu."data_travelA"->>'uuid_agencia')::uuid = ta."uuid_travelA"
+
+WHERE Cu.uuid_cupon = '0bf0e977-5d39-48ac-8655-a6127479b9ad'
+
+https://stackoverflow.com/questions/53567903/postgres-cast-to-uuid-from-json
+
+INNER JOIN public."Hotels"
+ON (Cu.data->'uuid_hotel')::uuid = public."Hotels".uuid_hotel
+
+
+WHERE Cu.uuid_cupon = '9b505bcd-07f6-4166-b9e0-363ed36e8b42'
+
+SELECT *
+FROM public."Cupon" , public."Hotels"
+where data->'uuid_hotel' = .data->'uuid_hotel'
+JOIN id_cupon ON public."Cupon".data->'uuid_hotel' = public."Hotels".data->'uuid_hotel'
