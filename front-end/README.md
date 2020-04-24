@@ -70,3 +70,14 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 
 git config credential.username '
+
+localStorage.setItem('09b267c0', res.data.role);
+        localStorage.setItem('6443a053', res.data.name);
+        localStorage.setItem('c7383f2e', res.data.email);
+
+        // getter
+localStorage.getItem('09b267c0');
+// remove
+localStorage.removeItem('myData');
+// remove all
+localStorage.clear();

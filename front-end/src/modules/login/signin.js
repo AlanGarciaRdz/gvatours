@@ -60,6 +60,10 @@ class SignIn extends React.Component{
     
   }
 
+  componentDidMount(){
+    localStorage.clear();
+  }
+
   handleChange = ({target: {value,name}}) => this.setState({[name]: value})
 
    Ingresar(){
@@ -67,6 +71,9 @@ class SignIn extends React.Component{
     .then(res => {
       if (res.status === 200) {
         this.setState({ isSignedUp: true }); // after signing up, set the state to true. This will trigger a re-render
+        localStorage.setItem('09b267c0', res.data.role);
+        localStorage.setItem('6443a053', res.data.name);
+        localStorage.setItem('c7383f2e', res.data.email);
       }else{
         //TODO: add ERROR ALERT
       }

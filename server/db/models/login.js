@@ -9,7 +9,6 @@ const findUser = async (userReq) => {
     const {email} = userReq
     var user = await pool.query('SELECT * FROM public."Users" where status = 1 and email = $1',
     [email])
-    
     if(user.rows[0]){
         return user.rows[0]
     }else {
@@ -46,7 +45,10 @@ const signin = (request, response) => {
     const userReq = request.body
     let user
 
-    console.log(userReq)
+
+    // console.log(userReq)
+    console.log(userReq.email)
+    // console.log(userReq.isSignedUp)
     findUser(userReq)
         .then(foundUser => {
         user = foundUser

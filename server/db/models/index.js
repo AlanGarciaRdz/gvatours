@@ -150,8 +150,7 @@ function encryptPassword(plainText){
 }
 
 const checkPassword = (reqPassword, foundUser) => {
-    
-    return new Promise((resolve, reject) =>
+    return new Promise((resolve, reject) => 
       bcrypt.compare(reqPassword, foundUser.password, (err, response) => {
           if (err) {
             reject(err)

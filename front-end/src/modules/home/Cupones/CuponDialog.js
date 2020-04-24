@@ -338,9 +338,6 @@ class CuponDialog extends React.Component{
     `;
         return(
           <div> 
-
-           
- 
           <Dialog fullScreen open={open} onClose={this.handleClose} TransitionComponent={Transition}>
             <AppBar className={classes.appBar}>
               

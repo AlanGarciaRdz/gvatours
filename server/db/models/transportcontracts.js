@@ -5,10 +5,10 @@ const { createDateAsUTC } = require('./index');
 const {pool} = require('../connection')
 
 // GET — /TransportC | getTransportC()
-// GET — /TransportC/:uuid_transportC | getTransportCById()
+// GET — /TransportC/:uuid_contract | getTransportCById()
 // POST — TransportC | createTransportC()
-// PUT — /TransportC/:uuid_transportC | updateTransportC()
-// DELETE — /TransportC/:uuid_transportC | deleteTransportC()
+// PUT — /TransportC/:uuid_contract | updateTransportC()
+// DELETE — /TransportC/:uuid_contract | deleteTransportC()
 const getTransportC = (request, response) => {
     pool.query('SELECT * FROM public."transport_contracts" where status = 1', (error, results) => {
       if (error) {
@@ -20,9 +20,9 @@ const getTransportC = (request, response) => {
   
 
 const getTransportCById = (request, response) => {
-  const uuid_transportC = request.params.uuid_transportC
+  const uuid_contract = request.params.uuid_contract
 
-  pool.query('SELECT * FROM public."transport_contracts" WHERE uuid_transportC = $1', [uuid_transportC], (error, results) => {
+  pool.query('SELECT * FROM public."transport_contracts" WHERE uuid_contract = $1', [uuid_contract], (error, results) => {
     if (error) {
       throw error
     }
@@ -42,7 +42,7 @@ const getTransportCById = (request, response) => {
         }
         response.status(201).send(
             {
-                "uuid_transportC": uuidValue,
+                "uuid_contract": uuidValue,
                 "id_TransportC": 1,
                 data,
                 data_vehicle,
@@ -57,7 +57,7 @@ const getTransportCById = (request, response) => {
   }
   
   const updateTransportC = (request, response) => {
-    const uuid = request.params.uuid_transportC
+    const uuid = request.params.uuid_contract
     if(request.body.hasOwnProperty('data') && request.body.hasOwnProperty('data_vehicle')){
         const { data, data_vehicle } = request.body
 
@@ -87,7 +87,7 @@ const getTransportCById = (request, response) => {
 
   
   const deleteTransportC = (request, response) => {
-    const uuid = request.params.uuid_transportC
+    const uuid = request.params.uuid_contract
     
     const dateValue = createDateAsUTC();
   

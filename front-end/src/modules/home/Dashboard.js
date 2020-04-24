@@ -115,7 +115,10 @@ class Dashboard extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            open: true
+            open: true,
+            role: '',
+            username: '',
+            isLoaded: false,
         }
 
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
@@ -124,7 +127,13 @@ class Dashboard extends React.Component{
     }
 
     componentDidMount(){
+      const role = localStorage.getItem('09b267c0')
+      const username = localStorage.getItem('6443a053');
+      this.setState({ role,username });
+
+      
       this.setState({open: !isMobileDevice()})
+      this.setState({isLoaded: true})
     }
 
     handleDrawerOpen() {
@@ -137,7 +146,7 @@ class Dashboard extends React.Component{
 
   render(){
     const { classes } = this.props;
-    const {open} =  this.state;
+    const {open, role, isLoaded} =  this.state;
     // const [open, setOpen] = React.useState(true);
     // const handleDrawerOpen = () => {
     //     setOpen(true);
@@ -148,6 +157,7 @@ class Dashboard extends React.Component{
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
+      isLoaded ?
         <div className={classes.root}>
           <CssBaseline />
           <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -196,11 +206,14 @@ class Dashboard extends React.Component{
               <Grid container spacing={3}>
                 {/* Chart */}
                 {/* <Grid item xs={12} md={8} lg={9}> */}
+                {role === '1' ?
                 <Grid item xs={12}>
                   <Paper className={fixedHeightPaper}>
                     <Chart />
                   </Paper>
                 </Grid>
+                : 
+                ''}
                 {/* Recent Deposits */}
                 {/* <Grid item xs={12} md={4} lg={3}>
                   <Paper className={fixedHeightPaper}>
@@ -219,9 +232,11 @@ class Dashboard extends React.Component{
               </Box>
             </Container>
           </main>
-        </div>
+        </div> : <div>fas</div>
+      
       );
 
+      
   }
   
 }
