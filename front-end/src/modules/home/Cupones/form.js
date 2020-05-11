@@ -150,8 +150,7 @@ class CuponForm extends React.Component{
 
         createCupon(){
           var {val_uuid_cliente, val_uuid_hotel, val_uuid_agencia } = this.state
-          // console.log(val_uuid_cliente, val_uuid_hotel, val_uuid_agencia)
-
+          
           if(val_uuid_cliente === null || val_uuid_hotel === null || val_uuid_agencia === null){
             console.error("needs client and hotel and agency")
           }else {

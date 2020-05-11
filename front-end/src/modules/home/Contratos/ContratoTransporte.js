@@ -14,7 +14,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import queryString from 'query-string';
 
-import Cupon from './index'
+import Contrato from './index'
 import './ContratoTransporte.css'
 
 
@@ -56,38 +56,38 @@ class ContratoTransporte extends React.Component{
     getContratoData = () =>{
           
       if(queryString.parse(this.props.location.search).id !== undefined){
-        API.get(`/Cupon/${queryString.parse(this.props.location.search).id}`)
+        API.get(`/TransportC/${queryString.parse(this.props.location.search).id}`)
           .then(res => {
             if (res.status === 200) {
                 this.setState({cupon_data: res.data[0]})
                 console.log(this.state.cupon_data)
                 var data = res.data[0]
-                this.setState({receiptId: data ? data.uuid_cupon.split('-')[2]+'-'+data.uuid_cupon.split('-')[3]: ''})
-                this.setState({DESTINO: data.hotel.destino})
-                this.setState({HOTEL: data.hotel.nombre})
-                this.setState({DIRECCION_HOTEL: data.hotel.direccion})
-                this.setState({TELEFONO_HOTEL: data.hotel.telefono})
-                this.setState({FECHA_ENTRADA: data.data.fecha_entrada})
-                this.setState({FECHA_SALIDA: data.data.fecha_salida})
-                this.setState({TOTAL_NOCHES: ''})
-                this.setState({NOMBRE_PASAJERO: data.cliente.nombre})
-                this.setState({TOTAL_PAGADO: data.data.Total_Pagado})
-                this.setState({NUM_HABITACIONES: data.data_rooms.numero_habitaciones})
-                this.setState({NOMBRE_AGENCIA: data.travelagency.nombre})
-                 this.setState({NUM_SGL: data.data_rooms.adultos.SGL})
-                this.setState({NUM_DBL: data.data_rooms.adultos.DBL})
-                this.setState({NUM_TPL: data.data_rooms.adultos.TPL ? data.data_rooms.adultos.TPL : ''})
-                 this.setState({NUM_CPL: data.data_rooms.adultos.DBL})
-                 this.setState({CIUDAD_AGENCIA: data.travelagency.ciudad})
-                this.setState({MEN_CC: data.data_rooms.menores.CC})
-                this.setState({MEN_SC: data.data_rooms.menores.SC})
-                 this.setState({MEN_JR: data.data_rooms.menores.JR})
-                this.setState({TELEFONO_AGENCIA: data.travelagency.telefono })
-                this.setState({PLAN_CONTRATADO: data.data_travelA.plancontratado ? data.data_travelA.plancontratado : ''})
-                this.setState({CONTACTO_AGENCIA: data.travelagency.contacto})
-                 this.setState({CONFIRMADO_POR: data.data_travelA.confirmadopor ? data.data_travelA.confirmadopor : ''})
-                this.setState({OBSERVACIONES: data.data_travelA.observaciones})
-                this.setState({CLAVE: data.uuid_cupon.split('-')[2]+'-'+data.uuid_cupon.split('-')[3]})
+                // this.setState({receiptId: data ? data.uuid_cupon.split('-')[2]+'-'+data.uuid_cupon.split('-')[3]: ''})
+                // this.setState({DESTINO: data.hotel.destino})
+                // this.setState({HOTEL: data.hotel.nombre})
+                // this.setState({DIRECCION_HOTEL: data.hotel.direccion})
+                // this.setState({TELEFONO_HOTEL: data.hotel.telefono})
+                // this.setState({FECHA_ENTRADA: data.data.fecha_entrada})
+                // this.setState({FECHA_SALIDA: data.data.fecha_salida})
+                // this.setState({TOTAL_NOCHES: ''})
+                // this.setState({NOMBRE_PASAJERO: data.cliente.nombre})
+                // this.setState({TOTAL_PAGADO: data.data.Total_Pagado})
+                // this.setState({NUM_HABITACIONES: data.data_rooms.numero_habitaciones})
+                // this.setState({NOMBRE_AGENCIA: data.travelagency.nombre})
+                //  this.setState({NUM_SGL: data.data_rooms.adultos.SGL})
+                // this.setState({NUM_DBL: data.data_rooms.adultos.DBL})
+                // this.setState({NUM_TPL: data.data_rooms.adultos.TPL ? data.data_rooms.adultos.TPL : ''})
+                //  this.setState({NUM_CPL: data.data_rooms.adultos.DBL})
+                //  this.setState({CIUDAD_AGENCIA: data.travelagency.ciudad})
+                // this.setState({MEN_CC: data.data_rooms.menores.CC})
+                // this.setState({MEN_SC: data.data_rooms.menores.SC})
+                //  this.setState({MEN_JR: data.data_rooms.menores.JR})
+                // this.setState({TELEFONO_AGENCIA: data.travelagency.telefono })
+                // this.setState({PLAN_CONTRATADO: data.data_travelA.plancontratado ? data.data_travelA.plancontratado : ''})
+                // this.setState({CONTACTO_AGENCIA: data.travelagency.contacto})
+                //  this.setState({CONFIRMADO_POR: data.data_travelA.confirmadopor ? data.data_travelA.confirmadopor : ''})
+                // this.setState({OBSERVACIONES: data.data_travelA.observaciones})
+                // this.setState({CLAVE: data.uuid_cupon.split('-')[2]+'-'+data.uuid_cupon.split('-')[3]})
             }
           })
       }else{
@@ -106,13 +106,12 @@ class ContratoTransporte extends React.Component{
 
   handleClose = () => {
    this.setState({open: false})
-   this.props.history.push('./Cupon');
+   this.props.history.push('./Contrato');
  }
 
 
 
   componentDidMount(){
-
    this.getContratoData()
   }
 
@@ -122,6 +121,7 @@ class ContratoTransporte extends React.Component{
   
 
     render(){
+      
       const { classes } = this.props;
       var {open, contrato, email} = this.state;
 
@@ -130,9 +130,16 @@ class ContratoTransporte extends React.Component{
       });
 
       if(open){
+        
 
-        //var { email, name, receiptId, cantidad, CANTIDAD_EN_LETRA, DEPOSITO_EN_GARANTIA, GRUPOS, EFECTIVO, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE, DESCRIPCION_DEL_SERVICO } = {email: "agarcia@prueba.com", name: "name", receiptId: "receiptId", cantidad:"cantidad", CANTIDAD_EN_LETRA:"CANTIDAD_EN_LETRA", DEPOSITO_EN_GARANTIA:"DEPOSITO_EN_GARANTIA", GRUPOS:"GRUPOS", EFECTIVO:"EFECTIVO", importe_total:"importe_total", PAGOS_REGISTRADOS:"PAGOS_REGISTRADOS", SALDO_PENDIENTE:"SALDO_PENDIENTE", DESCRIPCION_DEL_SERVICO:"DESCRIPCION_DEL_SERVICO"}
-    var { receiptId, name, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE, DESTINO, HOTEL, DIRECCION_HOTEL, TELEFONO_HOTEL, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES, NOMBRE_PASAJERO, TOTAL_PAGADO, NUM_HABITACIONES, NOMBRE_AGENCIA,  NUM_SGL, NUM_DBL, NUM_TPL,  NUM_CPL,  CIUDAD_AGENCIA, MEN_CC, MEN_SC,  MEN_JR, TELEFONO_AGENCIA, PLAN_CONTRATADO, CONTACTO_AGENCIA,  CONFIRMADO_POR, OBSERVACIONES, CLAVE } = this.state
+        // var { email, name, receiptId, cantidad, CANTIDAD_EN_LETRA, DEPOSITO_EN_GARANTIA, GRUPOS, EFECTIVO, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE, DESCRIPCION_DEL_SERVICO } = {email: "agarcia@prueba.com", name: "name", receiptId: "receiptId", cantidad:"cantidad", CANTIDAD_EN_LETRA:"CANTIDAD_EN_LETRA", DEPOSITO_EN_GARANTIA:"DEPOSITO_EN_GARANTIA", GRUPOS:"GRUPOS", EFECTIVO:"EFECTIVO", importe_total:"importe_total", PAGOS_REGISTRADOS:"PAGOS_REGISTRADOS", SALDO_PENDIENTE:"SALDO_PENDIENTE", DESCRIPCION_DEL_SERVICO:"DESCRIPCION_DEL_SERVICO"}
+
+        var { uuid_contract, fecha_contrato,
+          cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono, 
+          destino, fecha_salida, hora_salida, hora_presentarse, encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, itinerario, fecha_regreso, hora_regreso, movimientos,
+          data_vehicle_tipo_unidad, data_vehicle_capacidad,  data_vehicle_Equipada, 
+          importe_total, anticipo, saldo} = this.state
+
 
     var contrato = `
     <table class="header">
@@ -152,7 +159,7 @@ class ContratoTransporte extends React.Component{
                    <td>Folio</td>
                    </tr>
                    <tr>
-                   <td>&#8470; ${receiptId}</td>
+                   <td>&#8470; ${uuid_contract}</td>
                    </tr>
                    </tbody>
                 </table>
@@ -170,19 +177,19 @@ class ContratoTransporte extends React.Component{
              <tbody>
              <tr>
              <td id="etiqueta">NOMBRE</td>
-             <td>${name}</td>
+             <td>${cliente_nombre}</td>
              </tr>
              <tr>
              <td id="etiqueta">DIRECCIÓN</td>
-             <td>ALAN JOSUE GARCIA RODRIGUEZ RODRIGUEZ RODRIGUEZ RODRIGUEZ RODRIGUEZ </td>
+             <td>${cliente_direccion} </td>
              </tr>
              <tr>
              <td id="etiqueta">CIUDAD</td>
-             <td>${name}</td>
+             <td>${cliente_ciudad}</td>
              </tr>
              <tr id="sin_borde_inferior">
              <td id="etiqueta">TELEFONO</td>
-             <td id="sin_borde_inferior">${name}</td>
+             <td id="sin_borde_inferior">${cliente_telefono}</td>
              </tr>
              </tbody>
              </table>
@@ -196,33 +203,49 @@ class ContratoTransporte extends React.Component{
              <tbody>
              <tr>
              <td id="etiqueta_general">DESTINO</td>
+             <td>${destino}</td>
              <td id="etiqueta_general">FECHA DE SALIDA</td>
+             <td>${fecha_salida}</td>
              </tr>
              <tr>
              <td id="etiqueta_general">HORA DE SALIDA</td>
+             <td>${hora_salida}</td>
              <td id="etiqueta_general">PRESENTARSE</td>
+             <td>${hora_presentarse}</td>
              </tr>
              <tr>
              <td colspan="2" id="etiqueta_general">ENCARGADO DE LA UNIDAD</td>
+             <td>${encargado}</td>
              </tr>
              <tr>
              <td colspan="2" id="etiqueta_general">DIRECCION DE SALIDA</td>
+             <td>${direccion_salida}</td>
              </tr>
              <tr>
              <td colspan="2" id="etiqueta_general">ENTRE LAS CALLES</td>
+             <td>${entre_calles}</td>
              </tr>
              <tr>
              <td colspan="2" id="etiqueta_general">COLONIA Y CIUDAD</td>
+             <td>${colonia_ciudad}</td>
              </tr>
              <tr>
-             <td colspan="2" id="etiqueta_general">PUNTO DE REFERENCIA</td></tr>
+             <td colspan="2" id="etiqueta_general">PUNTO DE REFERENCIA</td>
+              <td>${punto_referencia}</td>
+             </tr>
+             
              <tr>
-             <td colspan="2" id="etiqueta_general">ITINEARIO</td></tr>
+             <td colspan="2" id="etiqueta_general">ITINEARIO</td>
+              <td>${itinerario}</td>
+             </tr>
+
              <tr>
              <td colspan="2" id="etiqueta_general">IMPORTANTE: TRASLADO O PASEO EXTRA NO ESPECIFICADOK TIENE COSTO EXTRA Y TENDRA QUE SER LIQUIDADO AL MOMENTO DE REALIZARLO DIRECRO CON EL OPERADOR</td></tr>
              <tr id="sin_borde_inferior">
              <td id="etiqueta_general">FECHA DE REGRESO</td>
+             <td>${fecha_regreso}</td>
              <td id="etiqueta_general">HORA DE REGRESO</td>
+             <td>${hora_regreso}</td>
              </tr>
              </tbody>
              </table>
@@ -235,8 +258,10 @@ class ContratoTransporte extends React.Component{
        <tbody>
        <tr>
           <td id="etiqueta_general">TIPO DE UNIDAD:</td>
+          <td>${data_vehicle_tipo_unidad}</td>
           <td id="etiqueta_general">CAPACIDAD:</td>
-          <td id="etiqueta_general">FECHA DE CONTRATO:</td>
+          <td>${data_vehicle_capacidad}</td>
+          <td id="etiqueta_general">FECHA DE CONTRATO:</td><td>${fecha_contrato} </td>
        </tr>
        <tr>
        <td colspan="3" id="etiqueta_general">UNIDAD EQUIPADA CON:</td>
@@ -270,11 +295,11 @@ class ContratoTransporte extends React.Component{
        </tr>
        <tr>
        <td id="etiqueta_general">ANTICIPO:</td>
-       <td id="etiqueta_general">${PAGOS_REGISTRADOS}</td>
+       <td id="etiqueta_general">${anticipo}</td>
        </tr>
        <tr id="sin_borde_inferior">
        <td id="etiqueta_general">SALDO:</td>
-       <td id="etiqueta_general">${SALDO_PENDIENTE}</td>
+       <td id="etiqueta_general">${saldo}</td>
        </tr>
        </tbody>
     </table>
@@ -305,18 +330,10 @@ class ContratoTransporte extends React.Component{
              </tbody>
              </tr>
              </table>
-
-    
-    
-    
-    
  </div>
 
  <p id="nota_importante" >NOTA IMPORTANTE: A la firma del contrato debera cubrirse el 30% del importe total, y el saldo una semana antes de la realizacion del viaje. </p>
   
-
-
-
 
 <div class="div_clausulas">
     <table class="clausulas" >
@@ -377,7 +394,7 @@ class ContratoTransporte extends React.Component{
                   <CloseIcon />
                 </IconButton> 
                 <Typography variant="h6" className={classes.title}>
-                  Cupon
+                  Contrato
                 </Typography>
                 <Button autoFocus color="inherit" >
                   Descargar
@@ -385,7 +402,7 @@ class ContratoTransporte extends React.Component{
               </Toolbar>
             </AppBar>
             
-            <div dangerouslySetInnerHTML={{ __html: cupon}} />,
+            <div dangerouslySetInnerHTML={{ __html: contrato}} />,
             
           </Dialog>
         </div>
@@ -393,7 +410,7 @@ class ContratoTransporte extends React.Component{
      }else{
        return(
         <div>
-          <Cupon />
+          <Contrato />
         </div>
        )
        

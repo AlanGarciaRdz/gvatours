@@ -9,7 +9,10 @@ import Home from './modules/home/Dashboard';
 
 import Cupones from './modules/home/Cupones';
 import Cupon from './modules/home/Cupones/CuponDialog';
+
 import Contratos from './modules/home/Contratos';
+import Contrato from './modules/home/Contratos/ContratoTransporte';
+
 import Recibos from './modules/home/Recibos';
 
 
@@ -39,6 +42,10 @@ export const Routes = () => (
             <LayoutRoute exact path={ `/Cupon` } component={ Cupon } />
 
             <LayoutRoute exact path={ `/Contratos` } component={ Contratos } />
+            <LayoutRoute exact path={ `/Contrato` } component={ Contrato } />
+            
+
+
             <LayoutRoute exact path={ `/Recibos` } component={ Recibos } />
 
             <LayoutRoute exact path={ `/Usuarios` } component={ Usuarios } />

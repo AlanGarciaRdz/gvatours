@@ -48,7 +48,7 @@ class ContratosForm extends React.Component{
         constructor(props){
             super(props)
             this.state = {
-                cupones: [],
+                Contratos: [],
                 open: true,
                 Clientes: [
                     { nombre: 'Agregar Cliente', uuid_cliente: '' },
@@ -65,13 +65,12 @@ class ContratosForm extends React.Component{
                 data_hoteles: [],
             }
     
-            this.getCupons = this.getCupons.bind(this);
-            this.getClientes_Agencias_Hoteles = this.getClientes_Agencias_Hoteles.bind(this)
+            this.getContratos = this.getContratos.bind(this);
             this.addTableData = this.addTableData.bind(this);
             this.filterById = this.filterById.bind(this)
             
 
-            this.createCupon = this.createCupon.bind(this);
+            this.createContrato = this.createContrato.bind(this);
 
             this.handleClientChange = this.handleClientChange.bind(this);
             this.handleHotelChange = this.handleHotelChange.bind(this);
@@ -97,33 +96,11 @@ class ContratosForm extends React.Component{
         }
 
 
-        getClientes_Agencias_Hoteles(){
-          
+        
 
-          API.get('/clients')
-              .then(res => {
-                if (res.status === 200) {
-                    this.setState({data_clientes: res.data})
-                    API.get('/Hotels')
-                    .then(res => {
-                      if (res.status === 200) {
-                          this.setState({data_hoteles: res.data})
-                          API.get('/TravelA')
-                          .then(res => {
-                            if (res.status === 200) {
-                                this.setState({data_agencias: res.data})
-                                this.getCupons()
-                            }
-                          })
-                      }
-                    })
-                }
-              })
-        }
-
-        componentDidMount(){
+        componentDidMount(){ 
             
-            this.getClientes_Agencias_Hoteles();
+            this.getContratos();
         }
 
         handleClientChange = (uuid_cliente) => {
@@ -148,46 +125,46 @@ class ContratosForm extends React.Component{
 
    
 
-        createCupon(){
+        createContrato(){
           var {val_uuid_cliente, val_uuid_hotel, val_uuid_agencia } = this.state
           // console.log(val_uuid_cliente, val_uuid_hotel, val_uuid_agencia)
 
           if(val_uuid_cliente === null || val_uuid_hotel === null || val_uuid_agencia === null){
             console.error("needs client and hotel and agency")
           }else {
-            var cupondata = 
+            var contratodata =
             {
               "data": {
-                "uuid_hotel": val_uuid_hotel,
-                "uuid_cliente": val_uuid_cliente,
-                "fecha_entrada": document.getElementById("fecha_entrada").value,
-                "fecha_salida": document.getElementById("fecha_salida").value,
-                "Total_Venta": document.getElementById("total_venta").value
+                "uuid_cliente": "66729699-c796-4cdb-879b-86cc0ad4b61b",
+                "uuid_hotel": "",
+                "destino": "Puerto Vallarta",
+                "fecha_salida": "23-04-2020",
+                "hora_salida": "20:50",
+                "hora_presentarse": "20:45",
+                "direccion_salida": "avenida siempre viva 1390",
+                "entre_calles": "circunvalacion y calle de los fresnos",
+                "colonia_ciudad": "Fresno, Guadalajara",
+                "punto_referencia": "7eleven",
+                "movimientos": true,
+                "itinerario": "Salida 20:50 de avenida siempre viva 1390 con destino a Puerto Vallarta con Movimientos",
+                "fecha_regreso": "28-04-2020",
+                "hora_regreso": "23:00",
+                "importe_total": "$15,000",
+                "anticipo": "$1,000",
+                "saldo": "$14,000",
+                "uuid_receipts": []
               },
-              "data_rooms": {
-                "numero_habitaciones": document.getElementById("numero-habitaciones").value,
-                "adultos": {
-                  "SGL": document.getElementById("sgl-habitaciones").value,
-                  "DBL": document.getElementById("dbl-habitaciones").value,
-                  "CPL": document.getElementById("cpl-habitaciones").value
-                  },
-                "menores": {
-                  "SC": document.getElementById("sc-habitaciones").value,
-                  "CC": document.getElementById("cl-habitaciones").value,
-                  "JR": document.getElementById("jr-habitaciones").value
-                  }
-              },
-              "data_travelA": {
-                "uuid_agencia": val_uuid_agencia,
-                "observaciones": document.getElementById("observaciones").value,
-                "confirmadopor": document.getElementById("Confirmadopor").value,
-                "plancontratado": document.getElementById("Plancontratado").value,
+              "data_vehicle": {
+                "tipo_unidad": "Sprinter",
+                "capacidad": "20",
+                "Equipada": ["AIRE ACONDICIONADO","STEREO", "TV/DVD", "SEGURO VIAJERO"]
               }
+              
             }
 
-            // console.log(cupondata)
+            // console.log(contratodata)
 
-            API.post(`/Cupon/`, cupondata).then(res => {
+            API.post(`/TransportC/`, contratodata).then(res => {
       
               try{
                 
@@ -195,8 +172,8 @@ class ContratosForm extends React.Component{
                 //this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto)
                   
               }catch(error){
-                console.error("400 Cupon")
-                return "400 Cupon"
+                console.error("400 Contrato")
+                return "400 Contrato"
               }
           })
 
@@ -207,33 +184,37 @@ class ContratosForm extends React.Component{
         }
 
 
-        getCupons() {
+        getContratos() {
             
-            API.get('/Cupon')
+            API.get('/TransportC')
               .then(res => {
                 if (res.status === 200) {
-                  // console.log(res.data)
-                  //Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
+                  
                   var  rowsP = []
-                  // console.log(this.state.data_clientes)
-                  console.log(res.data)
-                  rowsP = //Promise.all(
-                    res.data.map(row => ( 
-                    this.addTableData(
-                      row.uuid_cupon,
-                      row.uuid_cupon.split('-')[2]+'-'+row.uuid_cupon.split('-')[3], //FOLIO
-                      row.data.fecha_entrada, //Fecha_entrada
-                      row.data_travelA.uuid_agencia, //Name travel Agency
-                      // this.filterById(data_hoteles, 'uuid_hotel', row.data.uuid_hotel), //HOTEL
-                      row.data.uuid_hotel,
-                      row.data.Total_Pagado, // PAGADO
-                      row.data.Total_Venta //TOTAL
-                    )))
-                    //)
-        
-                    this.setState({cupones: rowsP});
-                    //console.log("cupones")
-                    console.log(this.state.cupones)
+
+                  res.data.map(row => {
+                    console.log(row)
+                  })
+                  
+
+                  //TODO
+                      rowsP = 
+                        res.data.map(row => (                          
+                          this.addTableData(
+                            row.uuid_contract, //UUID
+                            row.uuid_contract.split('-')[2]+'-'+row.uuid_contract.split('-')[3], //FOLIO
+                            row.data.uuid_cliente, //Cliente
+                            row.data.uuid_agencia,
+                            row.data.destino,
+                            row.data.anticipo,
+                            row.data.importe_total,
+                            row.status
+                          )
+                        ))
+            
+                        this.setState({Contratos: rowsP});
+                    
+                    //console.log(this.state.Contratos)
                   
                   
                 }else{
@@ -242,21 +223,15 @@ class ContratosForm extends React.Component{
               })
           }
 
-
-
-        // Generate Order Data
-        addTableData(UUID, Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta) {
-          // console.log(Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta)
-          // Hotel = await this.filterById(data_hoteles, 'uuid_hotel', Hotel)
-          // console.log(Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta)
-          return {UUID, Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta };
+        addTableData(UUID, Folio, uuid_cliente, uuid_agencia, destino, anticipo, importe_total, status) {
+          return {UUID, Folio, uuid_cliente, uuid_agencia, destino, anticipo, importe_total, status};
         }
 
     
 
 render(){
     const { classes } = this.props;
-    const {Clientes, Hoteles , cupones} = this.state;
+    const {Clientes, Hoteles , Contratos} = this.state;
 
     return (
         <React.Fragment>
@@ -427,56 +402,55 @@ render(){
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" color="primary" href="#contained-buttons" onClick={this.createCupon} >
-              Crear Cupon
+            <Button variant="contained" color="primary" href="#contained-buttons" onClick={this.createContrato} >
+              Crear Contrato
             </Button>
           </Grid>
   
-
-
           <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Folio</TableCell>
-            <TableCell align="right">PDF</TableCell>
-            <TableCell align="right">Fecha_Entrada</TableCell>
-            <TableCell align="right">Agencia</TableCell>
-            <TableCell align="right">Hotel</TableCell>
-            <TableCell align="right">Total_Venta</TableCell>
-            <TableCell align="right">Pagado</TableCell>
-            <TableCell align="right">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {cupones.map(row => (
-            <TableRow key={row.UUID}>
-              <TableCell component="th" scope="row">
-                {row.Folio}
-              </TableCell>
+            <Table className={classes.table} size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Contrato</TableCell>
+                  <TableCell align="right">PDF</TableCell>
+                  <TableCell align="right">cliente</TableCell>
+                  <TableCell align="right">Agencia</TableCell>
+                  <TableCell align="right">Destino</TableCell>
+                  <TableCell align="right">anticipo</TableCell>
+                  <TableCell align="right">Importe Total</TableCell>
+                  <TableCell align="right">Estatus</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Contratos.map(row => (
+                  <TableRow key={row.UUID}>
+                    <TableCell component="th" scope="row">
+                      {row.Folio}
+                    </TableCell>
 
-              
-              {/* PDF */}
-              <TableCell align="right">
-              <Link href={`/Cupon?id=${row.UUID}`} color="inherit">
-                <ListItem button>
-                    <Assignment />
-                </ListItem>
-              </Link>
-             </TableCell>
-             {/* PDF */}
-              <TableCell align="right">{row.Fecha_Entrada}</TableCell>
-              <TableCell align="right">{row.Agencia}</TableCell>
-              <TableCell align="right">{row.Hotel}</TableCell>
-              <TableCell align="right">{row.Total_Venta}</TableCell>
-              <TableCell align="right">{row.Pagado}</TableCell>
-              
-              
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                    
+                    {/* PDF */}
+                    <TableCell align="right">
+                    <Link href={`/Contrato?id=${row.UUID}`} color="inherit">
+                      <ListItem button>
+                          <Assignment />
+                      </ListItem>
+                    </Link>
+                  </TableCell>
+                  {/* PDF */}
+                    <TableCell align="right">{row.uuid_cliente}</TableCell>
+                    <TableCell align="right">{row.uuid_agencia}</TableCell>
+                    <TableCell align="right">{row.destino}</TableCell>
+                    <TableCell align="right">{row.anticipo}</TableCell>
+                    <TableCell align="right">{row.importe_total}</TableCell>
+                    <TableCell align="right">{row.status}</TableCell>
+                    
+                    
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </React.Fragment>
       );
     
