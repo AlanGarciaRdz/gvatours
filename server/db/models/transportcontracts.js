@@ -29,6 +29,34 @@ const getTransportCById = (request, response) => {
     response.status(200).json(results.rows)
   })
 }
+
+const getTransportCByIdFE = (request, response) => {
+  const uuid_contract = request.params.uuid_contract
+
+  pool.query(`SELECT to_jsonb(p) as Contrato `
+  +` FROM  ( `
+  +` SELECT TC.*, public."Clients".data as Cliente, c.receipts as data_receipts `
+  +` FROM public.transport_contracts as TC `
+  +` join public."Clients" on (TC.data->>'uuid_cliente')::uuid = public."Clients".uuid_client `
+  +` LEFT   JOIN LATERAL ( `
+  +` 	 SELECT jsonb_agg( `
+  +` 		  CASE WHEN  R.uuid_receipt IS NOT NULL `
+  +` 		  THEN jsonb_build_object('receipt', R) `
+  +` 		  ELSE c.elem END) AS receipts `
+			
+  +` 	 FROM jsonb_array_elements(TC.data->'uuid_receipts') as c(elem) `
+  +` 	 JOIN public."Receipts" R on R.uuid_receipt::uuid = (elem->>'uuid_receipt')::uuid `
+  +` 	 where R.status = 1`
+
+  +` 	)c ON true `
+  +` WHERE TC.uuid_contract = $1 `
+  +` ) p;`, [uuid_contract], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
   
   const createTransportC = (request, response) => {
     if(request.body.hasOwnProperty('data') && request.body.hasOwnProperty('data_vehicle')){
@@ -52,7 +80,7 @@ const getTransportCById = (request, response) => {
             )
       })
     }else{
-      throw "data missing"
+      throw "data missing - data - data_vehicle"
     }
   }
   
@@ -107,6 +135,7 @@ const getTransportCById = (request, response) => {
   module.exports = {
     getTransportC,
     getTransportCById,
+    getTransportCByIdFE,
     createTransportC,
     updateTransportC,
     deleteTransportC,

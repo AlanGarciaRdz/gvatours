@@ -89,13 +89,14 @@ app.delete('/Receipts/:uuid_receipt', receipt_model.deleteReceipt)
 
 //DATABASE Transport
 app.get('/TransportC', transport_model.getTransportC)
-app.get('/TransportC/:uuid_contract', transport_model.getTransportCById)
+app.get('/TransportC/:uuid_contract', transport_model.getTransportCByIdFE)
 app.post('/TransportC', transport_model.createTransportC)
 app.put('/TransportC/:uuid_contract', transport_model.updateTransportC) 
 app.delete('/TransportC/:uuid_contract', transport_model.deleteTransportC)
 
 //RAWS endpoints
 app.get('/raw/Cupon/:uuid_cupon', cupon_model.getCuponById)
+app.get('/raw/TransportC/:uuid_contract', transport_model.getTransportCById)
 
 
 
