@@ -20,6 +20,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from '../listItems';
 
+import ReceiptForm from './form' 
+
 
 import Copyright from '../../core/Copyright'
 
@@ -191,6 +193,7 @@ class Dashboard extends React.Component{
                 <Grid item xs={12}>
                   <Paper className={classes.paper}>
                     {/* <HomeCupons /> */}
+                    <ReceiptForm/>
                   </Paper>
                 </Grid>
               </Grid>

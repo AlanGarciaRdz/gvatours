@@ -275,7 +275,7 @@ render(){
             <TextField
                 required
                 id="fecha_entrada"
-                label="fecha_entrada"
+                //label="fecha_entrada"
                 type="date"
                 defaultValue={getCurrentDate()}
                 fullWidth
@@ -287,7 +287,7 @@ render(){
                     required
                     id="fecha_salida"
                     name="fecha_salida"
-                    label="Fecha Salida"
+                    //label="Fecha Salida"
                     type="date"
                     defaultValue={getCurrentDate()}
                     fullWidth
