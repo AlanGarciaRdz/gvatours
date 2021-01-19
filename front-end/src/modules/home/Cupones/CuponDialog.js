@@ -15,7 +15,13 @@ import Slide from '@material-ui/core/Slide';
 import queryString from 'query-string';
 
 import Cupon from './index'
+import html2canvas from 'html2canvas';
+import { jsPDF } from "jspdf";
 import './CuponDialog.css'
+
+import Logo from '../../../images/logo'
+import CuponPDF from '../../../utils/CuponPDF';
+
 
 
 import API from "../../../utils/API";
@@ -71,7 +77,8 @@ class CuponDialog extends React.Component{
                 this.setState({FECHA_SALIDA: data.data.fecha_salida})
                 this.setState({TOTAL_NOCHES: ''})
                 this.setState({NOMBRE_PASAJERO: data.cliente.nombre})
-                this.setState({TOTAL_PAGADO: data.data.Total_Pagado})
+                //this.setState({TOTAL_PAGADO: data.data.Total_Pagado})
+                this.setState({TOTAL_PAGADO: data.data.Total_Venta})
                 this.setState({NUM_HABITACIONES: data.data_rooms.numero_habitaciones})
                 this.setState({NOMBRE_AGENCIA: data.travelagency.nombre})
                  this.setState({NUM_SGL: data.data_rooms.adultos.SGL})
@@ -96,6 +103,72 @@ class CuponDialog extends React.Component{
       }
       
     }
+
+    getImageFromUrl = function(url, callback) {
+      var img = new Image();
+      img.onError = function() {
+          console.log('Cannot load image: "'+url+'"');
+      };
+      img.onload = function() {
+         
+          callback(img);
+      };
+      console.log(url)
+      img.src = url;
+   }
+
+  
+
+    DownloadImage = () => {
+      
+      
+      html2canvas(document.querySelector('#cupon_pdf')).then(canvas =>  {
+          document.body.appendChild(canvas)
+          const divImage = canvas.toDataURL("image/png");
+          const pdf = new jsPDF('p', 'pt', 'letter');
+          
+          // A Letter size page measures 215.9 × 279.4 millimeters or 8.50 × 11.00 inches. In PostScript, its dimensions are 612 × 792 points.
+
+          ///https://stackoverflow.com/questions/56644474/html2canvas-and-react-to-generate-pdf-doesnt-work
+          const w = window.innerWidth;
+          console.log()
+          
+          pdf.addImage(divImage, 'PNG', 5 , 5, 580, 450 );
+
+          const imgData = Logo;
+          pdf.addImage(imgData, 'PNG', 5, 5);
+
+          pdf.save(`${document.getElementById("receiptId").innerHTML.replace('№ ', '')}.pdf`);
+      })
+    }
+
+    GeneratePDF = () => {
+      var { receiptId, DESTINO, HOTEL, DIRECCION_HOTEL, TELEFONO_HOTEL, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES, NOMBRE_PASAJERO, TOTAL_PAGADO, NUM_HABITACIONES, NOMBRE_AGENCIA,  NUM_SGL, NUM_DBL, NUM_TPL,  NUM_CPL,  CIUDAD_AGENCIA, MEN_CC, MEN_SC,  MEN_JR, TELEFONO_AGENCIA, PLAN_CONTRATADO, CONTACTO_AGENCIA,  CONFIRMADO_POR, OBSERVACIONES, CLAVE } = this.state
+          ///https://artskydj.github.io/jsPDF/docs/jsPDF.html
+          const doc = new jsPDF('p', 'pt', 'letter');
+          
+          CuponPDF.Header(doc, receiptId)
+
+          CuponPDF.Destino(doc, DESTINO, HOTEL, DIRECCION_HOTEL, TELEFONO_HOTEL)
+          
+          CuponPDF.Fecha(doc, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES)
+          
+        
+          CuponPDF.Cliente(doc, NOMBRE_PASAJERO, TOTAL_PAGADO)
+
+          CuponPDF.Cuadros(doc, NUM_HABITACIONES, NOMBRE_AGENCIA,  NUM_SGL, NUM_DBL, NUM_TPL,  NUM_CPL,  CIUDAD_AGENCIA, MEN_CC, MEN_SC,  MEN_JR, TELEFONO_AGENCIA, PLAN_CONTRATADO, CONTACTO_AGENCIA,  CONFIRMADO_POR, OBSERVACIONES, CLAVE);
+
+          doc.save(`${receiptId}.pdf`);
+      
+    }
+
+    CreatePDF = () => {
+      
+        this.GeneratePDF()
+        //this.DownloadImage()
+      
+      
+     }
  
 
   handleClickOpen = () => {
@@ -164,7 +237,7 @@ class CuponDialog extends React.Component{
                           <th>Folio</th>
                       </tr>
                       <tr>
-                          <td>&#8470; ${receiptId}</td>
+                          <td id="receiptId">&#8470; ${receiptId}</td>
                       </tr>
                       </tbody>
                     </table>
@@ -348,13 +421,13 @@ class CuponDialog extends React.Component{
                 <Typography variant="h6" className={classes.title}>
                   Cupon
                 </Typography>
-                <Button autoFocus color="inherit" >
+                <Button autoFocus color="inherit" onClick={this.CreatePDF}>
                   Descargar
                 </Button>
               </Toolbar>
             </AppBar>
             
-            <div dangerouslySetInnerHTML={{ __html: cupon}} />,
+            <div id="cupon_pdf" dangerouslySetInnerHTML={{ __html: cupon}} />,
             
           </Dialog>
         </div>

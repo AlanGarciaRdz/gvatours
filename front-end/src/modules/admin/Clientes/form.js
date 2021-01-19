@@ -5,7 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import ListItem from '@material-ui/core/ListItem';
-import Assignment from '@material-ui/icons/Assignment';
+import Create from '@material-ui/icons/Create';
+import Eye from '@material-ui/icons/RemoveRedEye'
 
 import API from "../../../utils/API";
 
@@ -302,7 +303,7 @@ render(){
             <TableCell>ID</TableCell>
             <TableCell align="right">Nombre</TableCell>
             <TableCell align="right">Contacto</TableCell>
-            <TableCell align="right">Correo</TableCell>
+            
             <TableCell align="right">Ciudad</TableCell>
             <TableCell align="right">Telefono</TableCell>
             <TableCell align="right">Accion</TableCell>
@@ -316,16 +317,23 @@ render(){
               <TableCell component="th" scope="row">
                 {row.HUUID}
               </TableCell>
-              <TableCell align="right">{row.nombre}</TableCell>
+              <TableCell align="right"> 
+                { row.nombre } <br/>{row.correo} 
+              </TableCell>
               <TableCell align="right">{row.contacto}</TableCell>
-              <TableCell align="right">{row.correo}</TableCell>
+              
               <TableCell align="right">{row.ciudad}</TableCell>
               <TableCell align="right">{row.telefono}</TableCell>
               {/* Edit */}
-              <TableCell align="right">
+              <TableCell>
                 <ListItem button onClick={() => this.seleccionarElemento(row)}>
-                    <Assignment />
+                    <Create /> 
+                    
                 </ListItem>
+                <ListItem button onClick={() => this.seleccionarElemento(row)}>
+                    <Eye />
+                </ListItem>
+                
              </TableCell>
              {/* Edit */}            
             </TableRow>

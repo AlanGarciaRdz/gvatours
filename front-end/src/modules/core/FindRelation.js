@@ -11,7 +11,7 @@ import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete
 
 import API from "../../utils/API";
 
-class AutocompleteClient extends React.Component{
+class FindRelation extends React.Component{
 
   constructor(props){
     super(props)
@@ -24,7 +24,7 @@ class AutocompleteClient extends React.Component{
       open: false,
       toggleOpen: false,
       dialogValue: {
-                    nombre_cliente: '',
+                    nombre_cupon: '',
                     correo: ''
                    },
       Clients: [],
@@ -38,7 +38,7 @@ class AutocompleteClient extends React.Component{
     this.handleClose = this.handleClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getClients = this.getClients.bind(this);
-    this.onAddClient = this.onAddClient.bind(this);
+    this.onAddCupons = this.onAddCupons.bind(this);
     this.addClient = this.addClient.bind(this);
     
 }
@@ -48,7 +48,7 @@ class AutocompleteClient extends React.Component{
   
   handleClose = () => {
     this.setState({dialogValue:{
-              nombre_cliente: '',
+              nombre_cupon: '',
               correo: ''
               }
             });
@@ -61,13 +61,13 @@ class AutocompleteClient extends React.Component{
 
     event.preventDefault();
     this.setState({setValue:{
-      nombre_cliente: dialogValue.nombre_cliente,
+      nombre_cupon: dialogValue.nombre_cupon,
       correo: dialogValue.correo,
     }
 
     });
 
-    // console.log(dialogValue.nombre_cliente)
+    // console.log(dialogValue.nombre_cupon)
     
     this.addClient();
     
@@ -76,21 +76,44 @@ class AutocompleteClient extends React.Component{
 
   componentDidUpdate(){
     const open = this.state;
+    // console.log(open)
 
-    if(this.props.value !== this.state.value){
-      this.setState({value: this.props.value});
-      this.props.updateClient(this.props.uuid)
-    }
+    //this.getClients();
   }
 
   componentDidMount(){
-    this.getClients();
+    this.getCupons();
   }
 
-  onAddClient(uuid_client, nombre, correo){
+
+
+getCupons(){
+  let {uuid_client} = this.state
+  uuid_client = 'b508b579-9cef-410b-a6ac-2fec2a6353c6'
+
+  console.log(`Get cupones x cliente ${uuid_client}`)
+
+  API.get(`/ClientCupon/${uuid_client}`).then(res => {
+    
+    try{
+      if(res.data[0].hasOwnProperty('data')){
+        res.data.map(row => ( 
+          this.onAddCupons(row.uuid_cupon, row.data.Total_Venta, row.data_travelA.confirmadopor)
+          
+        ))
+        // console.log(this.state.Cupons)
+      }
+    }catch(error){
+      console.error("400 Cupons")
+      return "400 Cupons"
+    }
+ })
+}
+
+onAddCupons(uuid_cupon, Total_Venta, correo){
     // console.log(uuid_client, nombre, correo)
     this.setState(state => {
-        const list = state.Clients.push({nombre_cliente: nombre,  uuid_client, correo: correo});
+        const list = state.Clients.push({nombre_cupon: uuid_cupon,  Total_Venta, correo: correo});
         return {
           list,
           value: '',
@@ -118,7 +141,7 @@ class AutocompleteClient extends React.Component{
  addClient(){
   const data = {
     "data": {
-      "nombre": `${this.state.dialogValue.nombre_cliente}`,
+      "nombre": `${this.state.dialogValue.nombre_cupon}`,
       "direccion": "",
       "ciudad": "",
       "telefono": "",
@@ -133,7 +156,7 @@ class AutocompleteClient extends React.Component{
       
       console.log(res)
       this.setState({value: res.data.data.nombre});    
-      this.props.updateClient(res.data.uuid_client)
+      this.props.updateCupon(res.data.uuid_client)
       this.onAddClient(res.data.uuid_client, res.data.data.nombre, res.data.data.correo)
 
     }catch(error){
@@ -159,7 +182,7 @@ class AutocompleteClient extends React.Component{
               setTimeout(() => {
                 this.setState({ toggleOpen: true })
                 this.setState({dialogValue: {
-                  nombre_cliente: newValue,
+                  nombre_cupon: newValue,
                   correo: '',
                 }});
               });
@@ -169,7 +192,7 @@ class AutocompleteClient extends React.Component{
             if (newValue && newValue.inputValue) {
               this.setState({ toggleOpen: true })
               this.setState({dialogValue: {
-                nombre_cliente: newValue.inputValue,
+                nombre_cupon: newValue.inputValue,
                 correo: '',
               }});
   
@@ -186,14 +209,14 @@ class AutocompleteClient extends React.Component{
             if (params.inputValue !== '') {
               filtered.push({
                 inputValue: params.inputValue,
-                nombre_cliente: `Agregar "${params.inputValue}"`,
+                nombre_cupon: `Agregar "${params.inputValue}"`,
               });
             }
             return filtered;
           }
          }
 
-          id="Client"
+          id="Cupones"
           options={this.state.Clients}
           getOptionLabel={option => {
             // e.g value selected with enter, right from the input
@@ -205,17 +228,17 @@ class AutocompleteClient extends React.Component{
             }
             
 
-            this.setState({value: option.nombre_cliente});
+            this.setState({value: option.nombre_cupon});
 
-            this.props.updateClient(option.uuid_client)
+            //this.props.updateCupon(option.uuid_cupon)
             
-            return option.nombre_cliente;
+            return option.nombre_cupon;
           }
           }
-          renderOption={option => option.nombre_cliente }
+          renderOption={option => option.nombre_cupon }
           fullWidth
           renderInput={params => (
-            <TextField {...params} label="Cliente" variant="outlined" />
+            <TextField {...params} label="Cupones" variant="outlined" />
           )}
           
         />
@@ -231,8 +254,8 @@ class AutocompleteClient extends React.Component{
                 autoFocus
                 margin="dense"
                 id="name"
-                value={dialogValue.nombre_cliente}
-                onChange={event => this.setState({dialogValue: {...dialogValue, nombre_cliente: event.target.value }})}
+                value={dialogValue.nombre_cupon}
+                onChange={event => this.setState({dialogValue: {...dialogValue, nombre_cupon: event.target.value }})}
                 label="nombre"
                 type="text"
               />
@@ -267,7 +290,20 @@ class AutocompleteClient extends React.Component{
 
   }
 
-  export default AutocompleteClient;
+  export default FindRelation;
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
 

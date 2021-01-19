@@ -16,6 +16,7 @@ import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Assignment from '@material-ui/icons/Assignment';
+import Create from '@material-ui/icons/Create';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import AutocompleteHotel from '../../core/AutocompleteHotel';
@@ -63,6 +64,29 @@ class CuponForm extends React.Component{
                 data_clientes: [],
                 data_agencias: [],
                 data_hoteles: [],
+
+
+              UUID: '',
+              folio_cupon: '',
+              cliente: '',
+              hotel: '',
+              fecha_entrada: '',
+              fecha_salida: '',
+              total_venta: '',
+              numero_habitaciones: '',
+              SGL: '',
+              DBL: '',
+              CPL: '',
+
+              SC: '',
+              CC: '',
+              JR: '',
+
+              agencia: '',
+
+              observaciones: '',
+              confirmadopor: '',
+              plancontratado: '',
             }
     
             this.getCupons = this.getCupons.bind(this);
@@ -76,10 +100,20 @@ class CuponForm extends React.Component{
             this.handleClientChange = this.handleClientChange.bind(this);
             this.handleHotelChange = this.handleHotelChange.bind(this);
             this.handleAgencyChange = this.handleAgencyChange.bind(this);
+            this.seleccionarElemento = this.seleccionarElemento.bind(this);
+            this.handleChange = this.handleChange.bind(this);
 
             
         
         }
+
+        handleChange = (evt) => {
+          const value = evt.target.value;
+          this.setState({
+            ...this.state,
+            [evt.target.name]: value
+          });
+        };
 
         async filterById(jsonObject, column, id) {
           // return new Promise(function(resolve, reject) {
@@ -95,6 +129,9 @@ class CuponForm extends React.Component{
           // })
           })
         }
+
+
+     
 
 
         getClientes_Agencias_Hoteles(){
@@ -119,11 +156,15 @@ class CuponForm extends React.Component{
                     })
                 }
               })
+
+              
         }
 
         componentDidMount(){
             
-            this.getClientes_Agencias_Hoteles();
+            //this.getClientes_Agencias_Hoteles();
+            this.getCupons()
+            
         }
 
         handleClientChange = (uuid_cliente) => {
@@ -137,6 +178,11 @@ class CuponForm extends React.Component{
           this.setState({
             val_uuid_hotel: uuid_hotel}
           )
+        }
+
+        setHotelValue = (uuid_hotel) => {
+          console.log(uuid_hotel)
+          
         }
 
         handleAgencyChange = (uuid_agencia) => {
@@ -157,8 +203,9 @@ class CuponForm extends React.Component{
             var cupondata = 
             {
               "data": {
-                "uuid_hotel": val_uuid_hotel,
-                "uuid_cliente": val_uuid_cliente,
+                "folio": document.getElementById("folio_cupon").value,
+                "uuid_hotel": val_uuid_hotel === undefined ? this.state.hotel_uuid : val_uuid_hotel,
+                "uuid_cliente": val_uuid_cliente === undefined ? this.state.cliente_uuid : val_uuid_cliente,
                 "fecha_entrada": document.getElementById("fecha_entrada").value,
                 "fecha_salida": document.getElementById("fecha_salida").value,
                 "Total_Venta": document.getElementById("total_venta").value
@@ -177,7 +224,7 @@ class CuponForm extends React.Component{
                   }
               },
               "data_travelA": {
-                "uuid_agencia": val_uuid_agencia,
+                "uuid_agencia": val_uuid_agencia === undefined ? this.state.agencia_uuid : val_uuid_agencia,
                 "observaciones": document.getElementById("observaciones").value,
                 "confirmadopor": document.getElementById("Confirmadopor").value,
                 "plancontratado": document.getElementById("Plancontratado").value,
@@ -186,18 +233,43 @@ class CuponForm extends React.Component{
 
             // console.log(cupondata)
 
-            API.post(`/Cupon/`, cupondata).then(res => {
-      
-              try{
-                
-                // console.log(res.data)
-                //this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto)
-                  
-              }catch(error){
-                console.error("400 Cupon")
-                return "400 Cupon"
-              }
-          })
+            if(this.state.UUID === ''){
+              console.log("cupon")
+              API.post(`/Cupon/`, cupondata).then(res => {
+                try{
+                 console.log(res.data)
+                  //UUID, Folio, FolioGVA, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
+                  this.addTableData(res.data.uuid_cupon, 
+                                    res.data.uuid_cupon.split('-')[2]+'-'+res.data.uuid_cupon.split('-')[3],
+                                    res.data.data.folio,
+                                    res.data.data.fecha_entrada,
+                                    res.data.data.fecha_entrada, //Agencia
+                                    res.data.data.fecha_entrada, //Hotel
+                                    "0",
+                                    res.data.data.Total_Venta
+                                    )
+                    
+                }catch(error){
+                  console.error(error)
+                  return "400 Cupon"
+                }
+              })
+
+            }else{
+              console.log(cupondata)
+              API.put(`/Cupon/${this.state.UUID}`, cupondata).then(res => {
+                try{
+                  console.log(res.data)
+                    //this.limpiarSTATE()
+                }catch(error){
+                  console.log(error)
+                  console.error("400 NO SE PUDO EDITAR cupon")
+                  return "400 NO SE PUDO EDITAR cupon"
+                }
+              })
+            }
+
+            
 
           }
           
@@ -221,10 +293,10 @@ class CuponForm extends React.Component{
                     this.addTableData(
                       row.uuid_cupon,
                       row.uuid_cupon.split('-')[2]+'-'+row.uuid_cupon.split('-')[3], //FOLIO
+                      row.data.folio,
                       row.data.fecha_entrada, //Fecha_entrada
-                      row.data_travelA.uuid_agencia, //Name travel Agency
-                      // this.filterById(data_hoteles, 'uuid_hotel', row.data.uuid_hotel), //HOTEL
-                      row.data.uuid_hotel,
+                      row.travelagency.nombre,//row.data_travelA.uuid_agencia, //Name travel Agency
+                      row.hotel.nombre,//row.data.uuid_hotel,
                       row.data.Total_Pagado, // PAGADO
                       row.data.Total_Venta //TOTAL
                     )))
@@ -244,18 +316,73 @@ class CuponForm extends React.Component{
 
 
         // Generate Order Data
-        addTableData(UUID, Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta) {
+        addTableData(UUID, Folio, FolioGVA, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta) {
           // console.log(Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta)
           // Hotel = await this.filterById(data_hoteles, 'uuid_hotel', Hotel)
           // console.log(Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta)
-          return {UUID, Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta };
+          return {UUID, Folio, FolioGVA, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta };
         }
 
+     
+
+
+        seleccionarElemento(row){
+
+          API.get(`/Cupon/${row.UUID}`)
+              .then(res => {
+                if (res.status === 200) {
+                  res = res.data[0]
+                  console.log(row)
+                  this.setState({UUID: row.UUID});
+                  this.setState({folio_cupon: res.FolioGVA});
+                  this.setState({cliente: res.cliente.nombre});
+                  this.setState({cliente_uuid: res.data.uuid_cliente});
+
+                  this.setState({hotel: res.hotel.nombre});
+                  this.setState({hotel_uuid: res.data.uuid_hotel});
+
+
+                  this.setState({fecha_entrada: res.data.fecha_entrada});
+                  this.setState({fecha_salida: res.data.fecha_salida});
+                  this.setState({total_venta: res.data.Total_Venta});
+                  this.setState({numero_habitaciones: res.data_rooms.numero_habitaciones});
+                  this.setState({SGL: res.data_rooms.adultos.SGL});
+                  this.setState({DBL: res.data_rooms.adultos.DBL});
+                  this.setState({CPL: res.data_rooms.adultos.CPL});
+
+                  this.setState({SC: res.data_rooms.menores.SC});
+                  this.setState({CC: res.data_rooms.menores.CC});
+                  this.setState({JR: res.data_rooms.menores.JR});
+
+                  this.setState({agencia: res.travelagency.nombre});
+                  this.setState({agencia_uuid: res.data_travelA.uuid_agencia});
+
+                  this.setState({observaciones: res.data_travelA.observaciones});
+                  this.setState({confirmadopor: res.data_travelA.confirmadopor});
+                  this.setState({plancontratado: res.data_travelA.plancontratado});
+
+                }
+
+              })
+
+        }
+
+
+        
+
+        limpiarSTATE(){
+          this.setState({UUID: ''})
+          this.setState({nombre: ''})
+          this.setState({telefono: ''})
+          this.setState({correo: ''})
+          this.setState({ciudad: ''})
+          this.setState({direccion: ''})
+        }
     
 
 render(){
     const { classes } = this.props;
-    const {Clientes, Hoteles , cupones} = this.state;
+    const { folio_cupon ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_entrada ,fecha_salida ,total_venta ,numero_habitaciones ,SGL ,DBL ,CPL , SC ,CC ,JR , agencia , agencia_uuid,observaciones ,confirmadopor ,plancontratado , cupones} = this.state;
 
     return (
         <React.Fragment>
@@ -263,20 +390,43 @@ render(){
           <Typography variant="h6" gutterBottom>
             Informacion General
           </Typography>
+
+          <Grid container spacing={5}>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                    required
+                    id="folio_cupon"
+                    label="folio_cupon"
+                    type="text"
+                    name="folio_cupon"
+                    value={folio_cupon}
+                    onChange={this.handleChange}
+                    //defaultValue={getCurrentDate()}
+                    fullWidth
+                    autoComplete="fname"
+                />
+            </Grid>
+          </Grid>
+
+          
+
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-                <AutoCompleteClient updateClient={this.handleClientChange}/>
+                <AutoCompleteClient value={cliente} uuid={cliente_uuid} updateClient={this.handleClientChange}/>
             </Grid>
             <Grid item xs={12} sm={6}>
-                <AutocompleteHotel updateHotel={this.handleHotelChange}/>
-            </Grid>
+                <AutocompleteHotel value={hotel} uuid={hotel_uuid} updateHotel={this.handleHotelChange}/>
+            </Grid> 
             
             <Grid item xs={12} sm={6}>
             <TextField
                 required
                 id="fecha_entrada"
-                //label="fecha_entrada"
+                value={fecha_entrada}
+                name="fecha_entrada"
                 type="date"
+                onChange={this.handleChange}
                 defaultValue={getCurrentDate()}
                 fullWidth
                 autoComplete="fname"
@@ -287,9 +437,10 @@ render(){
                     required
                     id="fecha_salida"
                     name="fecha_salida"
-                    //label="Fecha Salida"
                     type="date"
-                    defaultValue={getCurrentDate()}
+                    value={fecha_salida}
+                    onChange={this.handleChange}
+                    //defaultValue={getCurrentDate()}
                     fullWidth
                     autoComplete="fname"
                 />
@@ -302,6 +453,9 @@ render(){
             <TextField
                 label="TOTAL VENTA"
                 id="total_venta"
+                onChange={this.handleChange}
+                value={total_venta}
+                name="total_venta"
                 className={clsx(classes.margin, classes.textField)}
                 type="number"
               />
@@ -315,6 +469,9 @@ render(){
             <TextField
                 label="Numero de habitaciones"
                 id="numero-habitaciones"
+                onChange={this.handleChange}
+                value={numero_habitaciones}
+                name="numero_habitaciones"
                 className={clsx(classes.margin, classes.textField)}
                 // InputProps={{
                 //   startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
@@ -329,6 +486,9 @@ render(){
               <TextField
                   // label="Numero de habitaciones"
                   id="sgl-habitaciones"
+                  value={SGL}
+                  name="SGL"
+                  onChange={this.handleChange}
                   className={clsx(classes.margin, classes.textField)}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">SGL</InputAdornment>,
@@ -339,6 +499,9 @@ render(){
                 <TextField
                   // label="Numero de habitaciones"
                   id="dbl-habitaciones"
+                  value={DBL}
+                  name="DBL"
+                  onChange={this.handleChange}
                   className={clsx(classes.margin, classes.textField)}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">DBL</InputAdornment>,
@@ -349,6 +512,9 @@ render(){
                 <TextField
                   // label="Numero de habitaciones"
                   id="cpl-habitaciones"
+                  value={CPL}
+                  name="CPL"
+                  onChange={this.handleChange}
                   className={clsx(classes.margin, classes.textField)}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">CPL</InputAdornment>,
@@ -364,6 +530,9 @@ render(){
               <TextField
                   // label="Numero de habitaciones"
                   id="sc-habitaciones"
+                  value={SC}
+                  name="SC"
+                  onChange={this.handleChange}
                   className={clsx(classes.margin, classes.textField)}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">SC</InputAdornment>,
@@ -374,6 +543,9 @@ render(){
                 <TextField
                   // label="Numero de habitaciones"
                   id="cl-habitaciones"
+                  value={CC}
+                  name="CC"
+                  onChange={this.handleChange}
                   className={clsx(classes.margin, classes.textField)}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">CL</InputAdornment>,
@@ -384,6 +556,9 @@ render(){
                 <TextField
                   // label="Numero de habitaciones"
                   id="jr-habitaciones"
+                  value={JR}
+                  name="JR"
+                  onChange={this.handleChange}
                   className={clsx(classes.margin, classes.textField)}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">JR</InputAdornment>,
@@ -393,10 +568,15 @@ render(){
             </Grid>
 
             <Grid item xs={12} sm={6}>
-                <AutocompleteAgency updateAgencia={this.handleAgencyChange}/>
+                <AutocompleteAgency value={agencia} 
+                name="agencia}"
+                uuid={agencia_uuid} updateAgencia={this.handleAgencyChange}/>
                 <TextField
                 autoFocus
+                onChange={this.handleChange}
                 margin="dense"
+                value={observaciones}
+                name="observaciones"
                 id="observaciones"
                 label="Observaciones"
                 type="text"
@@ -404,14 +584,20 @@ render(){
               />
               <TextField
                 autoFocus
+                onChange={this.handleChange}
                 margin="dense"
+                value={confirmadopor}
+                name="confirmadopor"
                 id="Confirmadopor"
                 label="Confirmado por"
                 type="text"
                 fullWidth
               />
                 <TextField
+                value={plancontratado}
+                name="plancontratado"
                 autoFocus
+                onChange={this.handleChange}
                 margin="dense"
                 id="Plancontratado"
                 label="Plan Contratado"
@@ -427,7 +613,7 @@ render(){
 
           <Grid item xs={12} sm={6}>
             <Button variant="contained" color="primary" href="#contained-buttons" onClick={this.createCupon} >
-              Crear Cupon
+              Crear/Edit Cupon
             </Button>
           </Grid>
   
@@ -437,7 +623,8 @@ render(){
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Folio</TableCell>
+            <TableCell>FolioSistema</TableCell>
+            <TableCell>Folio GVA</TableCell>
             <TableCell align="right">PDF</TableCell>
             <TableCell align="right">Fecha_Entrada</TableCell>
             <TableCell align="right">Agencia</TableCell>
@@ -452,6 +639,9 @@ render(){
             <TableRow key={row.UUID}>
               <TableCell component="th" scope="row">
                 {row.Folio}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {row.FolioGVA}
               </TableCell>
 
               
@@ -469,6 +659,13 @@ render(){
               <TableCell align="right">{row.Hotel}</TableCell>
               <TableCell align="right">{row.Total_Venta}</TableCell>
               <TableCell align="right">{row.Pagado}</TableCell>
+              {/* Edit */}
+              <TableCell align="right">
+                <ListItem button onClick={() => this.seleccionarElemento(row)}>
+                    <Create />
+                </ListItem>
+             </TableCell>
+             {/* Edit */} 
               
               
             </TableRow>

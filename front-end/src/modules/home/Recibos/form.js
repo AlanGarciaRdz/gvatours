@@ -4,26 +4,19 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 import {getCurrentDate} from '../../../utils/helpers';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/Icon';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 
 import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Assignment from '@material-ui/icons/Assignment';
-import ListItemText from '@material-ui/core/ListItemText';
 
-import AutocompleteHotel from '../../core/AutocompleteHotel';
-import AutocompleteAgency from '../../core/AutocompleteAgency';
-import AutoCompleteClient from '../../core/AutoCompleteClient';
+import Assignment from '@material-ui/icons/Assignment';
+import FindRelation from '../../core/FindRelation';
+import AutoCompleteClient from '../../core/AutoCompleteClient'
 
 import API from "../../../utils/API";
 
@@ -51,7 +44,7 @@ class ReceiptForm extends React.Component{
         constructor(props){
             super(props)
             this.state = {
-                Receiptes: [],
+                Receipts: [],
                 open: true,
                 Clientes: [
                     { nombre: 'Agregar Cliente', uuid_cliente: '' },
@@ -72,7 +65,9 @@ class ReceiptForm extends React.Component{
 
             this.createReceipt = this.createReceipt.bind(this);
 
+            this.handleRelationChange = this.handleRelationChange.bind(this);
             this.handleClientChange = this.handleClientChange.bind(this);
+            
         
         }
 
@@ -96,8 +91,16 @@ class ReceiptForm extends React.Component{
             
         }
 
+        handleRelationChange = (uuid_relation) => {
+          // console.log("uuid Relation",uuid_relation)
+          // this.setState(
+          //   {val_uuid_relation: uuid_relation}
+          //   )
+        }
+
+        
         handleClientChange = (uuid_cliente) => {
-          // console.log("uuid Client",uuid_cliente)
+          console.log("uuid Client",uuid_cliente)
           this.setState(
             {val_uuid_cliente: uuid_cliente}
             )
@@ -109,33 +112,21 @@ class ReceiptForm extends React.Component{
         createReceipt(){
           var {val_uuid_cliente, val_uuid_relation } = this.state
           
-          if(val_uuid_cliente === null || val_uuid_relation === null){
-            console.error("needs client and relation")
+          if(val_uuid_cliente === null){
+            console.error("needs client")
           }else {
             var Receiptdata = 
             {
               "data": {
-                  "uuid_cliente": val_uuid_cliente,
-                  "fecha_entrada": 1,
-                  "fecha_salida": 1,
-                  "Total_Venta": 1,
-                  "data": {
-                      "correo": "agarcia@test.com",
-                      "nombre": "alan",
-                      "telefono": "3316954455",
-                      "direccion": "dato salida"
-                  },
-                  "relation": {
-                      "data": [
-                          {
-                              "uuid": "123213123123123131",
-                              "relation": "cupon"
-                          }
-                      ]
-                  },
-                  "created_at": "2020-03-12T06:00:00.000Z",
-                  "updated_at": "2020-03-12T06:00:00.000Z",
-                  "status": "1"
+                "uuid_cliente": "b508b579-9cef-410b-a6ac-2fec2a6353c6",
+                "concepto": "Abono cupon 1234",
+                "cantidad": 1000,
+                "forma_pago": "Efectivo",
+                "liquidado": false
+              },
+                "relation": {
+                  "uuid": "123213123123123131",
+                  "type": "cupon"
               }
             }
               
@@ -186,9 +177,9 @@ class ReceiptForm extends React.Component{
                     )))
                     //)
         
-                    this.setState({Receiptes: rowsP});
-                    //console.log("Receiptes")
-                    console.log(this.state.Receiptes)
+                    this.setState({Receipts: rowsP});
+                    //console.log("Receipts")
+                    console.log(this.state.Receipts)
                   
                   
                 }else{
@@ -211,7 +202,7 @@ class ReceiptForm extends React.Component{
 
 render(){
     const { classes } = this.props;
-    const {Clientes, Hoteles , Receiptes} = this.state;
+    const { Receipts} = this.state;
 
     return (
         <React.Fragment>
@@ -248,6 +239,19 @@ render(){
             <Grid item xs={12}>
               <AutoCompleteClient updateClient={this.handleClientChange}/>
             </Grid>
+
+            <Grid item xs={12}>
+              {/* <FindRelation updateCupon={this.handleRelationChange} ClientID={this.state.val_uuid_cliente} /> */}
+              <FindRelation updateCupon={this.handleRelationChange}/>
+            </Grid>
+
+              {/* <TextField
+                  label="CUPON-CONTRATO"
+                  id="Reservacion"
+                  className={clsx(classes.margin, classes.textField)}
+                  type="text"
+                /> */}
+            
             
 
             <Grid item xs={12}>
@@ -271,12 +275,7 @@ render(){
 
               <Grid item xs={12}>
 
-              <TextField
-                  label="CUPON-CONTRATO"
-                  id="Reservacion"
-                  className={clsx(classes.margin, classes.textField)}
-                  type="text"
-                />
+             
 
               </Grid>
 
@@ -288,10 +287,10 @@ render(){
                       className={clsx(classes.margin, classes.textField)}
                       // onChange={handleChange}
                     >
-                      <MenuItem value={1}>&nbsp;</MenuItem>
-                      <MenuItem value={2}>Efectivo</MenuItem>
-                      <MenuItem value={3}>Tarjeta Debito</MenuItem>
-                      <MenuItem value={4}>Transferencia</MenuItem>
+                      <MenuItem value={""}>&nbsp;</MenuItem>
+                      <MenuItem value={"Efectivo"}>Efectivo</MenuItem>
+                      <MenuItem value={"Tarjeta Debito"}>Tarjeta Debito</MenuItem>
+                      <MenuItem value={"Transferencia"}>Transferencia</MenuItem>
                     </Select>
               </Grid>
 
@@ -324,7 +323,7 @@ render(){
           </TableRow>
         </TableHead>
         <TableBody>
-          {Receiptes.map(row => (
+          {Receipts.map(row => (
             <TableRow key={row.UUID}>
               <TableCell component="th" scope="row">
                 {row.Folio}

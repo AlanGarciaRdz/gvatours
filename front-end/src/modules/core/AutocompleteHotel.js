@@ -15,6 +15,9 @@ class AutocompleteHotel extends React.Component{
 
   constructor(props){
     super(props)
+
+    
+  
     this.state = {
       value: null,
       setValue: null,
@@ -69,13 +72,16 @@ class AutocompleteHotel extends React.Component{
 
   componentDidUpdate(){
     const open = this.state;
-    // console.log(open)
-
-    // this.getHotels();
+    
+    if(this.props.value !== this.state.value){
+      this.setState({value: this.props.value});
+      this.props.updateHotel(this.props.uuid)
+    }
   }
 
   componentDidMount(){
     this.getHotels();
+    console.log(this.props)
   }
 
   onAddHOTEL(uuid_hotel, nombre, destino){

@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import ListItem from '@material-ui/core/ListItem';
-import Assignment from '@material-ui/icons/Assignment';
+import Create from '@material-ui/icons/Create';
 
 import API from "../../../utils/API";
 
@@ -319,7 +319,7 @@ render(){
               {/* Edit */}
               <TableCell align="right">
                 <ListItem button onClick={() => this.seleccionarElemento(row)}>
-                    <Assignment />
+                    <Create />
                 </ListItem>
              </TableCell>
              {/* Edit */}            
