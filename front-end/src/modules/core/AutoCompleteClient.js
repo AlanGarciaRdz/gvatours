@@ -22,6 +22,7 @@ class AutocompleteClient extends React.Component{
       value: null,
       setValue: null,
       open: false,
+      edit: false,
       toggleOpen: false,
       dialogValue: {
                     nombre_cliente: '',
@@ -75,13 +76,18 @@ class AutocompleteClient extends React.Component{
   };
 
   componentDidUpdate(){
-    const open = this.state;
-
-    if(this.props.value !== this.state.value){
-      this.setState({value: this.props.value});
-      this.props.updateClient(this.props.uuid)
+    
+    
+    if(this.props.value !== ""){
+      if(this.props.value !== this.state.value){
+        this.setState({value: this.props.value});
+        this.props.updateClient(this.props.uuid)  
+      }
     }
+    
   }
+
+  
 
   componentDidMount(){
     this.getClients();
@@ -225,7 +231,7 @@ class AutocompleteClient extends React.Component{
             <DialogTitle id="form-dialog-title">Agregar Cliente</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                No encontraste un Cliente? Por favor, agregala!
+                No encontraste un Cliente? Por favor, agregalo!
               </DialogContentText>
               <TextField
                 autoFocus

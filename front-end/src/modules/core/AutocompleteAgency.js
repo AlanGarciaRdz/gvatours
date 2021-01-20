@@ -70,10 +70,12 @@ class AutocompleteAgency extends React.Component{
   componentDidUpdate(){
     const open = this.state;
 
+    if(this.props.value !== ""){
     if(this.props.value !== this.state.value){
       this.setState({value: this.props.value});
       this.props.updateAgencia(this.props.uuid)
     }
+  }
   }
 
   componentDidMount(){

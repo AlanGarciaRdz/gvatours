@@ -241,6 +241,7 @@ render(){
             </Grid>
 
             <Grid item xs={12}>
+              
               {/* <FindRelation updateCupon={this.handleRelationChange} ClientID={this.state.val_uuid_cliente} /> */}
               <FindRelation updateCupon={this.handleRelationChange}/>
             </Grid>

@@ -160,6 +160,8 @@ class CuponForm extends React.Component{
               
         }
 
+       
+
         componentDidMount(){
             
             //this.getClientes_Agencias_Hoteles();
@@ -168,9 +170,11 @@ class CuponForm extends React.Component{
         }
 
         handleClientChange = (uuid_cliente) => {
-          // console.log("uuid Client",uuid_cliente)
-          this.setState({
-            val_uuid_cliente: uuid_cliente})
+          console.log("uuid Client",uuid_cliente)
+          
+            this.setState({
+              val_uuid_cliente: uuid_cliente})
+              
         }
 
         handleHotelChange = (uuid_hotel) => {
@@ -197,6 +201,7 @@ class CuponForm extends React.Component{
         createCupon(){
           var {val_uuid_cliente, val_uuid_hotel, val_uuid_agencia } = this.state
           
+          console.log(val_uuid_cliente)
           if(val_uuid_cliente === null || val_uuid_hotel === null || val_uuid_agencia === null){
             console.error("needs client and hotel and agency")
           }else {
@@ -238,6 +243,7 @@ class CuponForm extends React.Component{
               API.post(`/Cupon/`, cupondata).then(res => {
                 try{
                  console.log(res.data)
+                 window.location.href =  `/Cupon?id=${res.data.uuid_cupon}`; 
                   //UUID, Folio, FolioGVA, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
                   this.addTableData(res.data.uuid_cupon, 
                                     res.data.uuid_cupon.split('-')[2]+'-'+res.data.uuid_cupon.split('-')[3],
@@ -327,21 +333,24 @@ class CuponForm extends React.Component{
 
 
         seleccionarElemento(row){
+          
 
           API.get(`/Cupon/${row.UUID}`)
               .then(res => {
                 if (res.status === 200) {
+                  
                   res = res.data[0]
                   console.log(row)
                   this.setState({UUID: row.UUID});
                   this.setState({folio_cupon: res.FolioGVA});
+                  
                   this.setState({cliente: res.cliente.nombre});
                   this.setState({cliente_uuid: res.data.uuid_cliente});
-
+                  
                   this.setState({hotel: res.hotel.nombre});
                   this.setState({hotel_uuid: res.data.uuid_hotel});
 
-
+                  
                   this.setState({fecha_entrada: res.data.fecha_entrada});
                   this.setState({fecha_salida: res.data.fecha_salida});
                   this.setState({total_venta: res.data.Total_Venta});
@@ -413,7 +422,7 @@ render(){
 
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-                <AutoCompleteClient value={cliente} uuid={cliente_uuid} updateClient={this.handleClientChange}/>
+                <AutoCompleteClient id="clientAuto" value={cliente} uuid={cliente_uuid} edit={true} updateClient={this.handleClientChange}/>
             </Grid>
             <Grid item xs={12} sm={6}>
                 <AutocompleteHotel value={hotel} uuid={hotel_uuid} updateHotel={this.handleHotelChange}/>

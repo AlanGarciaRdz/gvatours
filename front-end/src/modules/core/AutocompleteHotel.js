@@ -73,10 +73,13 @@ class AutocompleteHotel extends React.Component{
   componentDidUpdate(){
     const open = this.state;
     
-    if(this.props.value !== this.state.value){
-      this.setState({value: this.props.value});
-      this.props.updateHotel(this.props.uuid)
+    if(this.props.value !== ""){
+      if(this.props.value !== this.state.value){
+        this.setState({value: this.props.value});
+        this.props.updateHotel(this.props.uuid)
+      }
     }
+    
   }
 
   componentDidMount(){
