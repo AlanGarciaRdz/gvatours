@@ -56,6 +56,10 @@ class ReceiptForm extends React.Component{
                 data_clientes: [],
                 data_agencias: [],
                 data_hoteles: [],
+
+
+                cliente: '',
+                uuid_cliente: ''
             }
     
             this.getReceipts = this.getReceipts.bind(this);
@@ -93,9 +97,9 @@ class ReceiptForm extends React.Component{
 
         handleRelationChange = (uuid_relation) => {
           // console.log("uuid Relation",uuid_relation)
-          // this.setState(
-          //   {val_uuid_relation: uuid_relation}
-          //   )
+          this.setState(
+            {val_uuid_relation: uuid_relation}
+            )
         }
 
         
@@ -104,6 +108,21 @@ class ReceiptForm extends React.Component{
           this.setState(
             {val_uuid_cliente: uuid_cliente}
             )
+
+            this.getReceipts(uuid_cliente)
+
+
+            API.get(`/ClientCupon/${uuid_cliente}`)
+            .then(res => {
+              if (res.status === 200) {
+                console.log(res.data)
+                
+
+                
+
+              }
+            })
+              
         }
 
       
@@ -118,14 +137,14 @@ class ReceiptForm extends React.Component{
             var Receiptdata = 
             {
               "data": {
-                "uuid_cliente": "b508b579-9cef-410b-a6ac-2fec2a6353c6",
-                "concepto": "Abono cupon 1234",
-                "cantidad": 1000,
-                "forma_pago": "Efectivo",
+                "uuid_cliente": `${val_uuid_cliente}`,
+                "concepto": document.getElementById("Concepto").value,
+                "cantidad": document.getElementById("cantidad").value,
+                "forma_pago": document.getElementById("Forma_pago").innerHTML,
                 "liquidado": false
               },
                 "relation": {
-                  "uuid": "123213123123123131",
+                  "uuid": `${val_uuid_relation}`,
                   "type": "cupon"
               }
             }
@@ -133,11 +152,11 @@ class ReceiptForm extends React.Component{
 
             // console.log(Receiptdata)
 
-            API.post(`/Receipt/`, Receiptdata).then(res => {
+            API.post(`/Receipts/`, Receiptdata).then(res => {
       
               try{
                 
-                // console.log(res.data)
+                console.log(res.data)
                 //this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto)
                   
               }catch(error){
@@ -153,15 +172,16 @@ class ReceiptForm extends React.Component{
         }
 
 
-        getReceipts() {
+        getReceipts(client) {
             
-            API.get('/Receipt')
+            API.get(`/receipts/${client}`)
               .then(res => {
                 if (res.status === 200) {
                   // console.log(res.data)
                   //Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
                   var  rowsP = []
                   // console.log(this.state.data_clientes)
+                  console.log('receipts')
                   console.log(res.data)
                   rowsP = //Promise.all(
                     res.data.map(row => ( 
@@ -202,7 +222,8 @@ class ReceiptForm extends React.Component{
 
 render(){
     const { classes } = this.props;
-    const { Receipts} = this.state;
+    const { Receipts, cliente , cliente_uuid} = this.state;
+    
 
     return (
         <React.Fragment>
@@ -237,13 +258,13 @@ render(){
           
             
             <Grid item xs={12}>
-              <AutoCompleteClient updateClient={this.handleClientChange}/>
+              <AutoCompleteClient value={cliente} uuid={cliente_uuid} updateClient={this.handleClientChange}/>
             </Grid>
 
             <Grid item xs={12}>
               
-              {/* <FindRelation updateCupon={this.handleRelationChange} ClientID={this.state.val_uuid_cliente} /> */}
-              <FindRelation updateCupon={this.handleRelationChange}/>
+              <FindRelation updateCupon={this.handleRelationChange} ClientID={this.state.val_uuid_cliente} />
+              {/* <FindRelation updateCupon={this.handleRelationChange}/> */}
             </Grid>
 
               {/* <TextField
