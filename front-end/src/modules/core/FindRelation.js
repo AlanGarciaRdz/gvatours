@@ -23,6 +23,7 @@ class FindRelation extends React.Component{
       setValue: null,
       open: false,
       toggleOpen: false,
+      uuid_client: '',
       dialogValue: {
                     nombre_cupon: '',
                     correo: ''
@@ -79,21 +80,35 @@ class FindRelation extends React.Component{
     // console.log(open)
 
     //this.getClients();
+    // console.log(this.props.uuid)
+    let {uuid_client} = this.state
+    console.log(this.props.uuid)
+    
+    if(this.props.uuid !== ""){
+      if(this.props.uuid !== uuid_client){
+        this.setState({uuid_client: this.props.uuid});
+        this.getCupons()
+      }
+    }
   }
 
   componentDidMount(){
     this.getCupons();
+    let {uuid_client} = this.state
+    console.log(uuid_client)
   }
 
 
 
 getCupons(){
+  
   let {uuid_client} = this.state
-  uuid_client = 'b508b579-9cef-410b-a6ac-2fec2a6353c6'
+  uuid_client = uuid_client === "" ? this.props.uuid : ''
 
-  console.log(`Get cupones x cliente ${uuid_client}`)
+  console.log(`Get cupones x cliente ${uuid_client}`);
 
   API.get(`/ClientCupon/${uuid_client}`).then(res => {
+    console.log(res)
     
     try{
       if(res.data[0].hasOwnProperty('data')){

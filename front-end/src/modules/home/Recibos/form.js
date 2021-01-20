@@ -91,7 +91,7 @@ class ReceiptForm extends React.Component{
         }
 
         componentDidMount(){
-            
+          this.getReceipts()
             
         }
 
@@ -115,10 +115,9 @@ class ReceiptForm extends React.Component{
             API.get(`/ClientCupon/${uuid_cliente}`)
             .then(res => {
               if (res.status === 200) {
+                console.log("---")
                 console.log(res.data)
-                
-
-                
+                console.log("---")
 
               }
             })
@@ -147,8 +146,7 @@ class ReceiptForm extends React.Component{
                   "uuid": `${val_uuid_relation}`,
                   "type": "cupon"
               }
-            }
-              
+            }  
 
             // console.log(Receiptdata)
 
@@ -174,31 +172,35 @@ class ReceiptForm extends React.Component{
 
         getReceipts(client) {
             
-            API.get(`/receipts/${client}`)
+            let url;
+            if(client){
+              url = `/ClientReceipt/${client}`
+            }else{
+              url = `/Receipts`
+            }
+
+            
+            API.get(url)
               .then(res => {
                 if (res.status === 200) {
                   // console.log(res.data)
-                  //Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
                   var  rowsP = []
                   // console.log(this.state.data_clientes)
-                  console.log('receipts')
-                  console.log(res.data)
-                  rowsP = //Promise.all(
+                  
+                  rowsP = 
                     res.data.map(row => ( 
                     this.addTableData(
-                      row.uuid_Receipt,
-                      row.uuid_Receipt.split('-')[2]+'-'+row.uuid_Receipt.split('-')[3], //FOLIO
-                      row.data.fecha_entrada, //Fecha_entrada
-                      row.data_travelA.uuid_agencia, //Name travel Agency
-                      // this.filterById(data_hoteles, 'uuid_hotel', row.data.uuid_hotel), //HOTEL
-                      row.data.uuid_hotel,
-                      row.data.Total_Pagado, // PAGADO
-                      row.data.Total_Venta //TOTAL
-                    )))
-                    //)
+                      row.uuid_receipt, //UUID receipt
+                      row.uuid_receipt.split('-')[2]+'-'+row.uuid_receipt.split('-')[3], //UUID receipt
+                      row.data.cantidad, //cantidad
+                      row.relation.type,  //cupon - contrato
+                      row.relation.uuid ? row.relation.uuid.split('-')[2]+'-'+row.relation.uuid.split('-')[3] : ''   //UUID relacion
+                    )
+                    ))
+                    
         
                     this.setState({Receipts: rowsP});
-                    //console.log("Receipts")
+                    console.log("Receipts")
                     console.log(this.state.Receipts)
                   
                   
@@ -211,11 +213,9 @@ class ReceiptForm extends React.Component{
 
 
         // Generate Order Data
-        addTableData(UUID, Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta) {
-          // console.log(Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta)
-          // Hotel = await this.filterById(data_hoteles, 'uuid_hotel', Hotel)
-          // console.log(Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta)
-          return {UUID, Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta };
+        addTableData(UUID, Folio, Cantidad, Tipo, FolioCupon) {
+          
+          return {UUID, Folio, Cantidad, Tipo, FolioCupon};
         }
 
     
@@ -263,7 +263,7 @@ render(){
 
             <Grid item xs={12}>
               
-              <FindRelation updateCupon={this.handleRelationChange} ClientID={this.state.val_uuid_cliente} />
+              <FindRelation updateCupon={this.handleRelationChange} uuid={this.state.val_uuid_cliente} />
               {/* <FindRelation updateCupon={this.handleRelationChange}/> */}
             </Grid>
 
@@ -334,26 +334,29 @@ render(){
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Folio</TableCell>
-            <TableCell align="right">PDF</TableCell>
-            <TableCell align="right">Fecha_Entrada</TableCell>
-            <TableCell align="right">Agencia</TableCell>
-            <TableCell align="right">Hotel</TableCell>
-            <TableCell align="right">Total_Venta</TableCell>
-            <TableCell align="right">Pagado</TableCell>
-            <TableCell align="right">Status</TableCell>
+
+            <TableCell>Folio Recibo</TableCell>
+            <TableCell align="right">Cantidad</TableCell>
+            <TableCell align="right">Folio Cupon/Contrato <br/>Tipo</TableCell>
+            
+            
           </TableRow>
         </TableHead>
         <TableBody>
           {Receipts.map(row => (
-            <TableRow key={row.UUID}>
+            <TableRow key={row.uuid_Receipt}>
               <TableCell component="th" scope="row">
                 {row.Folio}
               </TableCell>
 
               
-              {/* PDF */}
-              <TableCell align="right">
+             
+
+             
+              <TableCell align="right">{row.Cantidad}</TableCell>
+              <TableCell align="right">{row.FolioCupon} <br/>{row.Tipo}    </TableCell>
+               {/* PDF */}
+               <TableCell align="right">
               <Link href={`/Receipt?id=${row.UUID}`} color="inherit">
                 <ListItem button>
                     <Assignment />
@@ -361,11 +364,7 @@ render(){
               </Link>
              </TableCell>
              {/* PDF */}
-              <TableCell align="right">{row.Fecha_Entrada}</TableCell>
-              <TableCell align="right">{row.Agencia}</TableCell>
-              <TableCell align="right">{row.Hotel}</TableCell>
-              <TableCell align="right">{row.Total_Venta}</TableCell>
-              <TableCell align="right">{row.Pagado}</TableCell>
+              
               
               
             </TableRow>
