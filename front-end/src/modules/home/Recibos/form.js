@@ -59,7 +59,9 @@ class ReceiptForm extends React.Component{
 
 
                 cliente: '',
-                uuid_cliente: ''
+                uuid_cliente: '',
+                ClientCuponArray: [],
+                totalCupon: 0
             }
     
             this.getReceipts = this.getReceipts.bind(this);
@@ -96,10 +98,13 @@ class ReceiptForm extends React.Component{
         }
 
         handleRelationChange = (uuid_relation) => {
-          // console.log("uuid Relation",uuid_relation)
+          //console.log("uuid Relation",uuid_relation)
           this.setState(
             {val_uuid_relation: uuid_relation}
             )
+          this.setState({totalCupon: 10000})
+            
+          
         }
 
         
@@ -116,7 +121,9 @@ class ReceiptForm extends React.Component{
             .then(res => {
               if (res.status === 200) {
                 console.log("---")
-                console.log(res.data)
+                //console.log(res.data)
+                this.setState({ClientCuponArray: res.data})
+                console.log(this.state.ClientCuponArray)
                 console.log("---")
 
               }
@@ -263,7 +270,7 @@ render(){
 
             <Grid item xs={12}>
               
-              <FindRelation updateCupon={this.handleRelationChange} uuid={this.state.val_uuid_cliente} />
+              <FindRelation updateCupon={this.handleRelationChange} uuid={this.state.val_uuid_cliente} total={this.state.totalCupon} />
               {/* <FindRelation updateCupon={this.handleRelationChange}/> */}
             </Grid>
 
@@ -348,16 +355,12 @@ render(){
               <TableCell component="th" scope="row">
                 {row.Folio}
               </TableCell>
-
-              
-             
-
              
               <TableCell align="right">{row.Cantidad}</TableCell>
               <TableCell align="right">{row.FolioCupon} <br/>{row.Tipo}    </TableCell>
                {/* PDF */}
                <TableCell align="right">
-              <Link href={`/Receipt?id=${row.UUID}`} color="inherit">
+              <Link href={`/Recibo?id=${row.UUID}`} color="inherit">
                 <ListItem button>
                     <Assignment />
                 </ListItem>

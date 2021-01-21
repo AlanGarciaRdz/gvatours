@@ -14,6 +14,7 @@ import Contratos from './modules/home/Contratos';
 import Contrato from './modules/home/Contratos/ContratoTransporte';
 
 import Recibos from './modules/home/Recibos';
+import Recibo from './modules/home/Recibos/RecibosDialog';
 
 
 //Admnistracion
@@ -47,6 +48,7 @@ export const Routes = () => (
 
 
             <LayoutRoute exact path={ `/Recibos` } component={ Recibos } />
+            <LayoutRoute exact path={ `/Recibo`} component={ Recibo } />
 
             <LayoutRoute exact path={ `/Usuarios` } component={ Usuarios } />
             <LayoutRoute exact path={ `/Clientes` } component={ Clientes } />

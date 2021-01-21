@@ -17,9 +17,10 @@ import queryString from 'query-string';
 import Cupon from './index'
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
+import Logo from '../../../images/logo'
 import './CuponDialog.css'
 
-import Logo from '../../../images/logo'
+
 import CuponPDF from '../../../utils/CuponPDF';
 
 

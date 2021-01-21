@@ -83,6 +83,7 @@ class FindRelation extends React.Component{
     // console.log(this.props.uuid)
     let {uuid_client} = this.state
     console.log(this.props.uuid)
+    console.log(this.props.total)
     
     if(this.props.uuid !== ""){
       if(this.props.uuid !== uuid_client){
@@ -95,6 +96,7 @@ class FindRelation extends React.Component{
   componentDidMount(){
     this.getCupons();
     let {uuid_client} = this.state
+    console.log("-u-")
     console.log(uuid_client)
   }
 
@@ -103,7 +105,8 @@ class FindRelation extends React.Component{
 getCupons(){
   
   let {uuid_client} = this.state
-  uuid_client = uuid_client === "" ? this.props.uuid : ''
+  
+  uuid_client = uuid_client === null ? this.props.uuid : ''
 
   console.log(`Get cupones x cliente ${uuid_client}`);
 
@@ -192,6 +195,7 @@ onAddCupons(uuid_cupon, Total_Venta, correo){
           fullWidth
           autoComplete="fname"
           onChange={(event, newValue) => {
+            
             if (typeof newValue === 'string') {
               // timeout to avoid instant validation of the dialog's form.
               setTimeout(() => {
