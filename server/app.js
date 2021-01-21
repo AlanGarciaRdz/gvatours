@@ -48,6 +48,18 @@ app.post('/clients', client_model.createClient)
 app.put('/clients/:uuid_client', client_model.updateClient) 
 app.delete('/clients/:uuid_client', client_model.deleteClient)
 
+//DATABASE Cupon+ClientID
+app.get('/ClientCupon/:uuid_client', cupon_model.getCuponByClientId)
+
+//DATABASE Cupon
+app.get('/Cupon', cupon_model.getCupon)
+app.get('/Cupon/:uuid_cupon', cupon_model.getCuponByIdFE)
+app.post('/Cupon', cupon_model.createCupon)
+app.put('/Cupon/:uuid_cupon', cupon_model.updateCupon) 
+app.delete('/Cupon/:uuid_cupon', cupon_model.deleteCupon)
+
+
+
 //DATABASE Login
 app.post('/Login', login_model.signin)
 
@@ -73,19 +85,20 @@ app.post('/Hotels', hotel_model.createHotel)
 app.put('/Hotels/:uuid_hotel', hotel_model.updateHotel) 
 app.delete('/Hotels/:uuid_hotel', hotel_model.deleteHotel)
 
-//DATABASE Cupon
-app.get('/Cupon', cupon_model.getCupon)
-app.get('/Cupon/:uuid_cupon', cupon_model.getCuponByIdFE)
-app.post('/Cupon', cupon_model.createCupon)
-app.put('/Cupon/:uuid_cupon', cupon_model.updateCupon) 
-app.delete('/Cupon/:uuid_cupon', cupon_model.deleteCupon)
+
 
 //DATABASE Receipts
 app.get('/Receipts', receipt_model.getReceipts)
-app.get('/Receipts/:uuid_receipt', receipt_model.getReceiptById)
+app.get('/Receipts/:uuid_receipt', receipt_model.getReceiptByIdFE)
 app.post('/Receipts', receipt_model.createReceipt)
 app.put('/Receipts/:uuid_receipt', receipt_model.updateReceipt) 
 app.delete('/Receipts/:uuid_receipt', receipt_model.deleteReceipt)
+
+//DATABASE Client+Receipts
+app.get('/ClientReceipt/:uuid_client', receipt_model.getClientReceipts)
+
+
+
 
 //DATABASE Transport
 app.get('/TransportC', transport_model.getTransportC)
@@ -97,6 +110,7 @@ app.delete('/TransportC/:uuid_contract', transport_model.deleteTransportC)
 //RAWS endpoints
 app.get('/raw/Cupon/:uuid_cupon', cupon_model.getCuponById)
 app.get('/raw/TransportC/:uuid_contract', transport_model.getTransportCById)
+app.get('/raw/Recepits:/uuid_recepit', receipt_model.getReceiptById)
 
 
 

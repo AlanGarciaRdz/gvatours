@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "development"){
 if (process.env.NODE_ENV === "production"){ 
     pool = new Pool({
         user: 'postgres',
-        host: 'database-gva.ctdlpwrrgw3t.us-east-2.rds.amazonaws.com',
+        host: 'database-gva.ctdlpwrrgw3t.us-east-2.rds.amazonaws.com', //ohio
         database: 'postgres',
         password: 'abcd1234!',
         port: 5432,

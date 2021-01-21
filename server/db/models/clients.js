@@ -39,15 +39,16 @@ const getClientById = (request, response) => {
       const { data } = request.body
       const uuidValue = uuid.v4()
       const dateValue = createDateAsUTC();
+      const id = new Date().getTime()%10000000
       
-      pool.query('INSERT INTO public."Clients" (uuid_client, id_client, data, status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6)', [uuidValue, new Date().getTime()%10000000, data, 1, dateValue, dateValue], (error, results) => {
+      pool.query('INSERT INTO public."Clients" (uuid_client, id_client, data, status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6)', [uuidValue, id, data, 1, dateValue, dateValue], (error, results) => {
         if (error) {
           throw error
         }
         response.status(201).send(
             {
                 "uuid_client": uuidValue,
-                "id_client": 1,
+                "id_client": id,
                 data,
                 "created_at": dateValue,
                 "updated_at": dateValue

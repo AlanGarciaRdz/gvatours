@@ -35,15 +35,16 @@ const getHotelById = (request, response) => {
       const { data } = request.body
       const uuidValue = uuid.v4()
       const dateValue = createDateAsUTC();
+      const id = new Date().getTime()%10000000;
       pool.query('INSERT INTO public."Hotels" ("uuid_hotel", "id_hotel", data, status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6)', 
-      [uuidValue, new Date().getTime()%10000000, data, 1, dateValue, dateValue], (error, results) => {
+      [uuidValue, id, data, 1, dateValue, dateValue], (error, results) => {
         if (error) {
           throw error
         }
         response.status(201).send(
             {
                 "uuid_hotel": uuidValue,
-                "id_hotel": 1,
+                "id_hotel": id,
                 data,
                 "created_at": dateValue,
                 "updated_at": dateValue

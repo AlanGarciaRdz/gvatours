@@ -16,7 +16,7 @@ const getCupon = (request, response) => {
     +` join public."Hotels" on (Cu.data->>'uuid_hotel')::uuid = public."Hotels".uuid_hotel`
     +` join public."Clients" on (Cu.data->>'uuid_cliente')::uuid = public."Clients".uuid_client`
     +` join public."TravelAgencies" as ta on (Cu."data_travelA"->>'uuid_agencia')::uuid = ta."uuid_travelA"`
-    +` ORDER BY id_cupon ASC`, (error, results) => {
+    +` ORDER BY updated_at DESC`, (error, results) => {
       if (error) {
         throw error
       }
@@ -51,21 +51,40 @@ const getCuponByIdFE = (request, response) => {
     response.status(200).json(results.rows)
   })
 }
+
+const getCuponByClientId = (request, response) => {
+  const uuid_client = request.params.uuid_client
+
+
+  pool.query(`SELECT Cu.* `
+            +` FROM public."Cupon" as Cu `
+            +` WHERE Cu.data->>'uuid_cliente' = $1`, [uuid_client], (error, results) => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+
+    
+    response.status(200).json(results.rows)
+  })
+}
   
   const createCupon = (request, response) => {
     if(request.body.hasOwnProperty('data') && request.body.hasOwnProperty('data_rooms') && request.body.hasOwnProperty('data_travelA')){
       const { data, data_rooms, data_travelA } = request.body
       const uuidValue = uuid.v4()
       const dateValue = createDateAsUTC();
+      const id = new Date().getTime()%10000000;
+
       pool.query('INSERT INTO public."Cupon" (uuid_cupon, id_cupon, data, data_rooms, "data_travelA", created_at, updated_at, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', 
-      [uuidValue, new Date().getTime()%10000000, data, data_rooms, data_travelA, dateValue, dateValue, 1], (error, results) => {
+      [uuidValue, id, data, data_rooms, data_travelA, dateValue, dateValue, 1], (error, results) => {
         if (error) {
           throw error
         }
         response.status(201).send(
             {
                 "uuid_cupon": uuidValue,
-                "id_Cupon": 1,
+                "id_Cupon": id,
                 data,
                 data_rooms,
                 data_travelA,
@@ -135,5 +154,6 @@ const getCuponByIdFE = (request, response) => {
     createCupon,
     updateCupon,
     deleteCupon,
-    getCuponByIdFE
+    getCuponByIdFE,
+    getCuponByClientId
   }

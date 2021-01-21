@@ -35,9 +35,10 @@ const getUserById = (request, response) => {
       const uuidValue = uuid.v4()
       const pass = encryptPassword(password);
       const dateValue = createDateAsUTC();
+      const id = new Date().getTime()%10000000;
 
       pool.query('INSERT INTO public."Users" (uuid_user, password, name, id_user, email, role, status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', 
-        [uuidValue,  pass, name, 1, email, role, 1, dateValue, dateValue], (error, results) => {
+        [uuidValue,  pass, name, id, email, role, 1, dateValue, dateValue], (error, results) => {
         if (error) {
           throw error
         }
@@ -46,6 +47,7 @@ const getUserById = (request, response) => {
             {
                 "status": 201,
                 "uuid_User": uuidValue,
+                "id_user": id,
                 name, email, role, pass,
                 "created_at": dateValue,
                 "updated_at": dateValue

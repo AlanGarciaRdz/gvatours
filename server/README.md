@@ -42,3 +42,6 @@ ALTER ROLE postgres CREATEDB;
 psql -d postgres -U postgres
 CREATE DATABASE postgres;
 \c postgres
+
+
+brew services restart postgresql

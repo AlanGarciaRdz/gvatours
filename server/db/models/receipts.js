@@ -18,6 +18,29 @@ const getReceipts = (request, response) => {
       response.status(200).json(results.rows)
     })
   }
+ 
+  const getClientReceipts = (request, response) => {
+    const uuid_client = request.params.uuid_client
+    
+    pool.query(`SELECT Re.* `
+            +` FROM public."Receipts" as Re `
+            +` WHERE Re.data->>'uuid_cliente' = $1`, [uuid_client], (error, results) => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(200).json(results.rows)
+    })
+  }
+
+  const getClientReceiptsANDCupon = (request, response) => {
+    pool.query('SELECT * FROM public."Receipts" where status = 1 ORDER BY id_receipt ASC', (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
   
 
 const getReceiptById = (request, response) => {
@@ -30,21 +53,37 @@ const getReceiptById = (request, response) => {
     response.status(200).json(results.rows)
   })
 }
+
+const getReceiptByIdFE = (request, response) => {
+  const uuid_receipt = request.params.uuid_receipt
+
+  pool.query(`SELECT Re.*, public."Clients".data as Cliente`
+            +` FROM public."Receipts" as Re `
+            +` join public."Clients" on (Re.data->>'uuid_cliente')::uuid = public."Clients".uuid_client`
+            +` WHERE Re.uuid_receipt = $1`, [uuid_receipt], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
   
   const createReceipt = (request, response) => {
     if(request.body.hasOwnProperty('data') && request.body.hasOwnProperty('relation')){
       const { data, relation } = request.body
       const uuidValue = uuid.v4()
       const dateValue = createDateAsUTC();
+      const id = new Date().getTime()%10000000;
+      
       pool.query('INSERT INTO public."Receipts" (uuid_receipt, id_receipt, data, relation, created_at, updated_at, status) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
-      [uuidValue, new Date().getTime()%10000000, data, relation, dateValue, dateValue, 1], (error, results) => {
+      [uuidValue, id, data, relation, dateValue, dateValue, 1], (error, results) => {
         if (error) {
           throw error
-        }
+        } 
         response.status(201).send(
             {
                 "uuid_receipt": uuidValue,
-                "id_Receipt": 1,
+                "id_Receipt": id,
                 data, 
                 relation,
                 "created_at": dateValue,
@@ -53,7 +92,7 @@ const getReceiptById = (request, response) => {
             )
       })
     }else{
-      throw "data missing"
+      throw "data or relation is missing"
     }
   }
   
@@ -112,4 +151,6 @@ const getReceiptById = (request, response) => {
     createReceipt,
     updateReceipt,
     deleteReceipt,
+    getClientReceipts,
+    getReceiptByIdFE
   }
