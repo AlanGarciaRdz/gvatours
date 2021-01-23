@@ -44,57 +44,81 @@ function Header(doc, receiptId, cantidad) {
 function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horario, 
     total_adultos_junior, menores_cargo, menores_sincargo, 
     agencia, ciudad, telefono, clave_reservacion, contacto, 
-    observaciones, detalles, ) {
+    observaciones, detalles ) {
 
-        doc.setFillColor(230, 248, 255);
-        doc.roundedRect(15, 100, 185, 22, 3, 3, 'F');
+        let starty = 120;
+        let increment = 30;
 
-        var splitTitle = doc.splitTextToSize(detalles, 180);
-        doc.text(15, 20, splitTitle);
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+        doc.setTextColor(255,255,255)
+        doc.text(30, starty, 'NOMBRE DEL PASAJERO');
+        doc.text(200, starty, "nombre");
 
+        starty += increment; 
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
 
-        //label destino
-        doc.text(30, 115, 'RECIBIMOS DE:');
-        doc.text(200, 115, nombre);
-            // x -- y length - y   
+        starty += increment; 
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+        doc.setTextColor(255,255,255)
+        doc.text(30, starty, 'HOTEL / DESTINO');
+        doc.text(200, starty, "ROYAL DECAMERON");
+        starty += increment; 
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
         
-        doc.line(15, 121, 200, 121);
-        // doc.setLineDash([1, 1], 0);
-        // doc.line(215, 121, 414, 121);
-        // doc.setLineDash(0);
+        //FECHA
+        starty += increment; 
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'F');
+        doc.setTextColor(255,255,255)
+        doc.text(30, starty, 'FECHA DE SALIDA');
+        doc.text(200, starty, "ROYAL DECAMERON");
+        starty += increment; 
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
 
+        starty += increment; 
+        
 
-        //label hotel
-        doc.setFillColor(230, 248, 255);
-        doc.roundedRect(15, 122, 185, 22, 3, 3, 'F');
+        //Nombre agencia
+        starty += increment; 
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+        doc.setTextColor(255,255,255)
+        doc.text(30, starty, 'FNOMBRE DE AGENCIA');
+        doc.text(200, starty, "ROYAL DECAMERON");
+        starty += increment; 
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
 
-        doc.text(30, 136, 'LA CANTIDAD DE:');
-        doc.text(200, 136, "cantidad");
-        // x -- y length - y   
-        doc.line(15, 143, 200, 143);
+        //CIUDAD
+        starty += increment; 
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+        doc.setTextColor(255,255,255)
+        doc.text(30, starty, 'CIUDAD');
+        doc.text(200, starty, "ROYAL DECAMERON");
+        starty += increment; 
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
 
+         //CLAVE RESERVACION
+         starty += increment; 
+         doc.setFillColor(232,68, 86) //red
+         doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+         doc.setTextColor(255,255,255)
+         doc.text(30, starty, 'CIUDAD');
+         doc.text(200, starty, "ROYAL DECAMERON");
+         starty += increment; 
+         doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
 
-        //label direccion
-        doc.setFillColor(230, 248, 255);
-        doc.roundedRect(15, 144, 185, 22, 3, 3, 'F');
-
-        doc.text(30, 160, 'POR CONCEPTO DE:');
-        doc.text(200, 160, "concepto");
-        // x -- y length - y   
-        doc.line(15, 165, 200, 165);
-
-
-
-        //label telefono
-        doc.setDrawColor(0);
-        doc.setFillColor(230, 248, 255);
-        doc.roundedRect(15, 166, 185, 22, 3, 3, 'F');
-
-        //doc.rect(15, 166, 582, 22);
-        doc.text(30, 184, 'PARA LA RESERVACION DE:');
-        doc.text(200, 184, "reservacion");
-
-        doc.roundedRect(15, 100, 582, 88, 3, 3);
+          //OBSERVACIONES
+        starty += increment; 
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+        doc.setTextColor(255,255,255)
+        doc.text(30, starty, 'CIUDAD');
+        doc.text(200, starty, "ROYAL DECAMERON");
+        starty += increment; 
+        doc.roundedRect(15, starty, 550, 120, 3, 3, 'FD');
 
 
 }

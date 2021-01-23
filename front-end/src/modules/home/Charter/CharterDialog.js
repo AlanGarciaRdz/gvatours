@@ -117,14 +117,22 @@ class CharterDialog extends React.Component{
 
   GeneratePDF = () => {
     var {  nombre, receiptId, cantidad, concepto, CANTIDAD_EN_LETRA, DEPOSITO_EN_GARANTIA, reservacion, forma_pago, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE, DESCRIPCION_DEL_SERVICO } = this.state
+
+    var { hotel, fecha_salida, fecha_regreso, aborda_horario, 
+      total_adultos_junior, menores_cargo, menores_sincargo, 
+      agencia, ciudad, telefono, clave_reservacion, contacto, 
+      observaciones, detalles}  = this.state
     //var { receiptId, DESTINO, HOTEL, DIRECCION_HOTEL, TELEFONO_HOTEL, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES, NOMBRE_PASAJERO, TOTAL_PAGADO, NUM_HABITACIONES, NOMBRE_AGENCIA,  NUM_SGL, NUM_DBL, NUM_TPL,  NUM_CPL,  CIUDAD_AGENCIA, MEN_CC, MEN_SC,  MEN_JR, TELEFONO_AGENCIA, PLAN_CONTRATADO, CONTACTO_AGENCIA,  CONFIRMADO_POR, OBSERVACIONES, CLAVE } = this.state
         ///https://artskydj.github.io/jsPDF/docs/jsPDF.html
         const doc = new jsPDF('p', 'pt', 'letter');
         
         CharterPDF.Header(doc, receiptId, cantidad)
 
-        // CharterPDF.Detalles(doc, nombre, cantidad, concepto, reservacion)
-        
+        CharterPDF.Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horario, 
+          total_adultos_junior, menores_cargo, menores_sincargo, 
+          agencia, ciudad, telefono, clave_reservacion, contacto, 
+          observaciones, detalles)
+
         CharterPDF.pieCharter(doc)
 
         
