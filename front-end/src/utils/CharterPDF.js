@@ -1,0 +1,375 @@
+import charter from '../images/charter'
+import { MoneyFormatter } from '../utils/helpers';
+
+function Header(doc, receiptId, cantidad) {
+          const imgData = charter
+          doc.addImage(imgData, 'PNG', 30, 30, 200, 80, 'FAST');
+
+        //   doc.setFontSize(12);
+        //   doc.text(200, 35, 'CUPON DE');
+        //   doc.text(200, 55, 'CHARTER');
+        //   doc.textWithLink('TURISTICO', 200, 70, { url: 'info@gvatours.com' });
+
+        doc.setFontSize(20);
+        
+          doc.textWithLink( 'CUPON DE',280, 46,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
+          doc.text(280, 64, 'CHARTER');
+          doc.text(280, 84, 'TURISTICO');
+
+          doc.setFontSize(11);
+          doc.setDrawColor(0);
+          //   doc.setFillColor(7, 109, 150); //blue
+          doc.setFillColor(232,68, 86) //red
+          doc.roundedRect(470, 30, 100, 44, 3, 3, 'FD'); //Fill D/border
+          
+          doc.setTextColor(255,255,255);
+          doc.text(500, 43, 'FOLIO');
+          doc.setTextColor(0,0,0);
+
+          doc.setDrawColor(0);
+          doc.setFillColor(255, 255, 255);
+          doc.rect(470, 52, 100, 25,'F'); 
+          
+          doc.setTextColor(220, 43, 27);
+          doc.text(490, 64, "GJ");
+          doc.text(510, 64, "18191");
+
+          doc.setDrawColor(0);
+          doc.setFillColor(255, 255, 255);
+          doc.roundedRect(470, 30, 100, 44, 3, 3); //  Black square with rounded corners
+           ///       x    y  ancho altura 
+}
+
+
+function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horario, 
+    total_adultos_junior, menores_cargo, menores_sincargo, 
+    agencia, ciudad, telefono, clave_reservacion, contacto, 
+    observaciones, detalles, ) {
+
+        doc.setFillColor(230, 248, 255);
+        doc.roundedRect(15, 100, 185, 22, 3, 3, 'F');
+
+        var splitTitle = doc.splitTextToSize(detalles, 180);
+        doc.text(15, 20, splitTitle);
+
+
+        //label destino
+        doc.text(30, 115, 'RECIBIMOS DE:');
+        doc.text(200, 115, nombre);
+            // x -- y length - y   
+        
+        doc.line(15, 121, 200, 121);
+        // doc.setLineDash([1, 1], 0);
+        // doc.line(215, 121, 414, 121);
+        // doc.setLineDash(0);
+
+
+        //label hotel
+        doc.setFillColor(230, 248, 255);
+        doc.roundedRect(15, 122, 185, 22, 3, 3, 'F');
+
+        doc.text(30, 136, 'LA CANTIDAD DE:');
+        doc.text(200, 136, "cantidad");
+        // x -- y length - y   
+        doc.line(15, 143, 200, 143);
+
+
+        //label direccion
+        doc.setFillColor(230, 248, 255);
+        doc.roundedRect(15, 144, 185, 22, 3, 3, 'F');
+
+        doc.text(30, 160, 'POR CONCEPTO DE:');
+        doc.text(200, 160, "concepto");
+        // x -- y length - y   
+        doc.line(15, 165, 200, 165);
+
+
+
+        //label telefono
+        doc.setDrawColor(0);
+        doc.setFillColor(230, 248, 255);
+        doc.roundedRect(15, 166, 185, 22, 3, 3, 'F');
+
+        //doc.rect(15, 166, 582, 22);
+        doc.text(30, 184, 'PARA LA RESERVACION DE:');
+        doc.text(200, 184, "reservacion");
+
+        doc.roundedRect(15, 100, 582, 88, 3, 3);
+
+
+}
+
+function xcenter(doc, phrase){
+    return (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(phrase) * doc.internal.getFontSize() / 2);
+    
+}
+
+function pieCharter(doc){
+    let starty = 600;
+    let incremento = 17;
+
+    doc.setLineDash([1, 1], 0);
+    doc.line(15, starty-incremento, 600, starty-incremento);
+    
+    doc.setTextColor(7, 109, 150) // azul blue
+    doc.setFontSize(11);
+    const salidas1 = "Los puntos de Salida son:";
+    doc.text(30, starty, salidas1);
+    const salidas2 = "5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)";
+    starty += incremento; 
+    doc.text(30, starty, salidas2);
+    const salidas3 = "6 am Plaza Forum sobre Blvd Tlaquepaque";
+    starty += incremento; 
+    doc.text(30, starty, salidas3);
+    const salidas4 = "7 am Minerva Frente al Hotel Fiesta Americana Minerva";
+    starty += incremento; 
+    doc.text(30, starty, salidas4);
+    const salidas5 = "7:15 Central Zapopan en Oxxo y Pollo Pepe";
+    starty += incremento; 
+    doc.text(30, starty, salidas5);
+    const salidas6 = "Se les pide estar 30 min antes para su registro";
+    starty += incremento; 
+    doc.text(30, starty, salidas6);
+
+    doc.setFontSize(12)
+    doc.setTextColor(7, 109, 150) // azul blue
+    const leyenda1  = "TELEFONO DE EMERGENCIA EN LA SALIDA 333-808-6093 CON GUSTAVO JAUREGUI";
+    starty += incremento; 
+    
+    doc.text(leyenda1, xcenter(doc,leyenda1), starty );
+    // doc.text(30, starty, leyenda1);
+    const leyenda2  = "FAVOR DE PRESENTARSE 30 MINUTOS ANTE DE SU SALIDA";
+    starty += incremento; 
+    doc.text(leyenda2, xcenter(doc,leyenda2), starty );
+
+    doc.setFontSize(8)
+    doc.setTextColor(72,59, 130)
+    const leyenda3  = "Av. Fidel Velazquez #643-A, Col. Santa Elena Alcande., Cp.P. 44230, Guadalajara, Jal. "
+    starty += incremento; 
+    doc.text(leyenda3, xcenter(doc,leyenda3), starty );
+    const leyenda4  = "Tel. (33) 3631 3036 con 10 líneas";
+    starty += incremento; 
+    doc.text(leyenda4, xcenter(doc,leyenda4), starty );
+
+
+
+
+
+
+    
+}
+
+function FormaPago(doc, forma_pago){
+
+    doc.setFillColor(230, 248, 255);
+    doc.roundedRect(15, 205, 185, 22, 3, 3, 'F');
+
+    doc.text(30, 220, 'FORMA DE PAGO');
+    doc.text(200, 220, forma_pago);
+
+
+    doc.roundedRect(15, 205, 582, 22, 3, 3);
+
+}
+
+function PagosRegistrados(doc, total, registrados, pendiente){
+
+    doc.setFillColor(230, 248, 255);
+    doc.roundedRect(15, 255, 180, 22, 3, 3, 'F');
+
+    doc.text(30, 250, 'IMPORTE TOTAL');
+    doc.text(200, 250, total);
+
+    // doc.setFillColor(230, 248, 255);
+    // doc.roundedRect(15, 205, 255, 22, 3, 3, 'F');
+    doc.text(30, 275, 'PAGOS REGISTRADOS');
+    doc.text(200, 275, registrados);
+
+    // doc.setFillColor(230, 248, 255);
+    // doc.roundedRect(15, 205, 285, 22, 3, 3, 'F');
+    doc.text(30, 300, 'SALDO PENDIENTE');
+    doc.text(200, 300, pendiente);
+
+
+    doc.roundedRect(15, 235, 582, 66, 3, 3);
+
+}
+
+function Fecha(doc, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES) {
+    
+
+    doc.setDrawColor(0);
+    doc.setFillColor(230, 93, 101);
+    doc.roundedRect(15, 210, 582, 50, 3, 3, 'FD'); //  Black square with rounded corners
+    
+    
+    doc.setDrawColor(0);
+    doc.setFillColor(255, 255, 255);
+    doc.rect(15, 235, 582, 25,'F');
+
+
+    doc.setTextColor(255,255,255);
+    doc.text(60, 225, 'FECHA ENTRADA');
+    doc.setTextColor(0,0,0);
+    doc.text(70, 253, FECHA_ENTRADA);
+
+
+    doc.setTextColor(255,255,255);
+    doc.text(240, 225, 'FECHA SALIDA');
+    doc.setTextColor(0,0,0);
+    doc.text(250, 253, FECHA_SALIDA);
+
+
+    doc.setTextColor(255,255,255);
+    doc.text(420, 225, 'TOTAL NOCHES');
+    doc.setTextColor(0,0,0);
+    doc.text(430, 253, TOTAL_NOCHES);
+
+    //doc.setDrawColor(0);
+    
+    doc.roundedRect(15, 210, 582, 50, 3, 3);
+
+   
+}
+
+function Cliente (doc,  NOMBRE_PASAJERO, TOTAL_PAGADO) {
+
+    doc.setDrawColor(0);
+    doc.setFillColor(230, 93, 101);
+    doc.roundedRect(15, 310, 582, 50, 3, 3, 'FD'); //  Black square with rounded corners
+    
+    
+    doc.setDrawColor(0);
+    doc.setFillColor(255, 255, 255);
+    doc.rect(15, 335, 582, 25,'F');
+
+
+    doc.setTextColor(255,255,255);
+    doc.text(60, 325, 'NOMBRE PASAJERO');
+    doc.setTextColor(0,0,0);
+    doc.text(70, 353, NOMBRE_PASAJERO);
+
+
+    doc.setTextColor(255,255,255);
+    doc.text(440, 325, 'TOTAL PAGADO');
+    doc.setTextColor(0,0,0);
+    console.log(TOTAL_PAGADO)
+    doc.text(460, 353, MoneyFormatter(TOTAL_PAGADO) );
+
+}
+
+function Cuadros (doc, NUM_HABITACIONES, NOMBRE_AGENCIA,  NUM_SGL, NUM_DBL, NUM_TPL,  NUM_CPL,  CIUDAD_AGENCIA, MEN_CC, MEN_SC,  MEN_JR, TELEFONO_AGENCIA, PLAN_CONTRATADO, CONTACTO_AGENCIA,  CONFIRMADO_POR, OBSERVACIONES, CLAVE) {
+
+    doc.setDrawColor(0);
+    doc.setFillColor(230, 93, 101);
+    doc.roundedRect(15, 410, 582, 25, 3, 3, 'FD'); //  Black square with rounded corners
+    
+    
+    doc.setDrawColor(0);
+    doc.setFillColor(255, 255, 255);
+    doc.rect(5, 435, 582, 25,'F');
+
+
+    doc.setTextColor(255,255,255);
+    doc.text(60, 425, 'RELACION DE HABITACIONES');
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(30, 448, 'No. DE HABITACIONES RESERVADAS:');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(30, 458, NUM_HABITACIONES);
+    //
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(30, 472, 'DESGLOCE OCUPACION:');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(30, 485, `SGL: ${NUM_SGL} DBL: ${NUM_DBL} TPL: ${NUM_TPL} CPL: ${NUM_CPL}`);
+    //
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(30, 499, 'MENORES:');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(30, 510, `C/C: ${MEN_CC} S/C ${MEN_SC} JR ${MEN_JR} `);
+    //
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(30, 520, 'PLAN CONTRADO');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(30, 530, PLAN_CONTRATADO);
+    //
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(30, 550, 'CONFIRMADO POR');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(30, 560, CONFIRMADO_POR);
+    //
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(30, 574, 'CLAVE');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(30, 584, CLAVE);
+    
+    //DATOS AGENCIA
+    doc.setTextColor(255,255,255);
+    doc.text(390, 425, 'DATOS DE LA AGENCIA');
+    doc.setTextColor(0,0,0);
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(390, 448, 'NOMBRE DE LA AGENCIA');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(390, 458, NOMBRE_AGENCIA);
+    //
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(390, 472, 'CIUDAD');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(390, 485, CIUDAD_AGENCIA);
+    //
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(390, 499, 'TELEFONO');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(390, 510, TELEFONO_AGENCIA);
+    //
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(390, 520, 'CONTACTO');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(390, 5410, CONTACTO_AGENCIA);
+    //
+    doc.setTextColor(0,0,255);
+    doc.setFontSize(11);
+    doc.text(390, 550, 'OBSERVACIONES');
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.text(390, 560, OBSERVACIONES);
+    
+
+}
+
+
+
+
+export default {
+    Header,
+    Detalles,
+    pieCharter,
+
+
+
+    
+    Cliente,
+    Cuadros,
+    Fecha,
+    FormaPago,
+    PagosRegistrados
+}

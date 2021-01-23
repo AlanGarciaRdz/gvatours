@@ -7,6 +7,10 @@ import Signin from './modules/login/signin';
 import Signup from './modules/login/signup';
 import Home from './modules/home/Dashboard';
 
+
+import  Charters  from './modules/home/Charter';
+import  Charter  from './modules/home/Charter/CharterDialog';
+
 import Cupones from './modules/home/Cupones';
 import Cupon from './modules/home/Cupones/CuponDialog';
 
@@ -38,6 +42,10 @@ export const Routes = () => (
             <LayoutRoute exact path={ `/Login` } component={ Signin } />
             <LayoutRoute exact path={ `/Registro` } component={ Signup } />
             <LayoutRoute exact path={ `/Home` } component={ Home } />
+
+            <LayoutRoute exact path={ `/Charters` } component={ Charters } />
+            <LayoutRoute exact path={ `/Charter` } component={ Charter } />
+
 
             <LayoutRoute exact path={ `/Cupones` } component={ Cupones } />
             <LayoutRoute exact path={ `/Cupon` } component={ Cupon } />

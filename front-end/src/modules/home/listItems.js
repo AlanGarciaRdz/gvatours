@@ -15,6 +15,7 @@ import People from '@material-ui/icons/People';
 import Face from '@material-ui/icons/Face';
 import Explore from '@material-ui/icons/Explore';
 import Hotel from '@material-ui/icons/Hotel';
+import DriveEtaIcon from '@material-ui/icons/DriveEta';
 
 
 
@@ -31,6 +32,16 @@ export const mainListItems = (
         <ListItemText primary="Inicio" />
         </ListItem>
     </Link>
+
+    <Link href="/Charters" color="inherit">
+    <ListItem button>
+      <ListItemIcon>
+        <DriveEtaIcon />
+      </ListItemIcon>
+      <ListItemText primary="Charter" />
+    </ListItem>
+    </Link>
+    
 
     <Link href="/Cupones" color="inherit">
     <ListItem button>

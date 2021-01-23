@@ -11,12 +11,12 @@ import Slide from '@material-ui/core/Slide';
 import queryString from 'query-string';
 
 import Cupon from './index'
-import './RecibosDialog.css'
+import './CharterDialog.css'
 
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
-import Logo from '../../../images/logo'
-import ReciboPDF from '../../../utils/ReciboPDF';
+import charter from '../../../images/charter'
+import CharterPDF from '../../../utils/CharterPDF';
 
 
 import API from "../../../utils/API";
@@ -37,7 +37,7 @@ function preventDefault(event) {
     },
  }));
 
-class CuponDialog extends React.Component{
+class CharterDialog extends React.Component{
 
    constructor(props){
       super(props)
@@ -109,7 +109,7 @@ class CuponDialog extends React.Component{
 
   componentDidMount(){
 
-   this.getReceiptData()
+  //  this.getReceiptData()
 
   }
 
@@ -121,17 +121,21 @@ class CuponDialog extends React.Component{
         ///https://artskydj.github.io/jsPDF/docs/jsPDF.html
         const doc = new jsPDF('p', 'pt', 'letter');
         
-        ReciboPDF.Header(doc, receiptId, cantidad)
+        CharterPDF.Header(doc, receiptId, cantidad)
 
-        ReciboPDF.Detalles(doc, nombre, cantidad, concepto, reservacion)
+        // CharterPDF.Detalles(doc, nombre, cantidad, concepto, reservacion)
+        
+        CharterPDF.pieCharter(doc)
 
-        ReciboPDF.FormaPago(doc, forma_pago)
+        
 
-        ReciboPDF.PagosRegistrados(doc, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE)
+        // CharterPDF.FormaPago(doc, forma_pago)
 
-        // ReciboPDF.Fecha(doc, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES)
-        // ReciboPDF.Cliente(doc, NOMBRE_PASAJERO, TOTAL_PAGADO)
-        // ReciboPDF.Cuadros(doc, NUM_HABITACIONES, NOMBRE_AGENCIA,  NUM_SGL, NUM_DBL, NUM_TPL,  NUM_CPL,  CIUDAD_AGENCIA, MEN_CC, MEN_SC,  MEN_JR, TELEFONO_AGENCIA, PLAN_CONTRATADO, CONTACTO_AGENCIA,  CONFIRMADO_POR, OBSERVACIONES, CLAVE);
+        // CharterPDF.PagosRegistrados(doc, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE)
+
+        // CharterPDF.Fecha(doc, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES)
+        // CharterPDF.Cliente(doc, NOMBRE_PASAJERO, TOTAL_PAGADO)
+        // CharterPDF.Cuadros(doc, NUM_HABITACIONES, NOMBRE_AGENCIA,  NUM_SGL, NUM_DBL, NUM_TPL,  NUM_CPL,  CIUDAD_AGENCIA, MEN_CC, MEN_SC,  MEN_JR, TELEFONO_AGENCIA, PLAN_CONTRATADO, CONTACTO_AGENCIA,  CONFIRMADO_POR, OBSERVACIONES, CLAVE);
 
         doc.save(`${receiptId}.pdf`);
     
@@ -160,7 +164,7 @@ class CuponDialog extends React.Component{
         
         pdf.addImage(divImage, 'PNG', 5 , 5, 300, 250 );
 
-        const imgData = Logo;
+        const imgData = charter;
         pdf.addImage(imgData, 'PNG', 5, 5);
 
         pdf.save(`Recibo.pdf`);
@@ -358,4 +362,4 @@ class CuponDialog extends React.Component{
 
 }
 
-export default withStyles(styles)(CuponDialog);
+export default withStyles(styles)(CharterDialog);
