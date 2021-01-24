@@ -202,20 +202,25 @@ function pieCharter(doc){
     const salidas2 = "5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)";
     starty += incremento; 
     doc.text(30, starty, salidas2);
-    const salidas3 = "6 am Plaza Forum sobre Blvd Tlaquepaque";
+    const salidas3 = "6:00 am Plaza Forum sobre Blvd Tlaquepaque";
     starty += incremento; 
     doc.text(30, starty, salidas3);
-    const salidas4 = "7 am Minerva Frente al Hotel Fiesta Americana Minerva";
+    const salidas4 = "7:00 am Minerva Frente al Hotel Fiesta Americana Minerva";
     starty += incremento; 
     doc.text(30, starty, salidas4);
-    const salidas5 = "7:15 Central Zapopan en Oxxo y Pollo Pepe";
+    const salidas5 = "7:15 am Central Zapopan en Oxxo y Pollo Pepe";
     starty += incremento; 
     doc.text(30, starty, salidas5);
     const salidas6 = "Se les pide estar 30 min antes para su registro";
     starty += incremento; 
     doc.text(30, starty, salidas6);
 
+    doc.setLineDash([1, 1], 0);
+    doc.line(15, starty+5, 600, starty+5);
+
     doc.setFontSize(12)
+    doc.setFont("normal" ,"bold");
+    
     doc.setTextColor(7, 109, 150) // azul blue
     const leyenda1  = "TELEFONO DE EMERGENCIA EN LA SALIDA 333-808-6093 CON GUSTAVO JAUREGUI";
     starty += incremento; 
