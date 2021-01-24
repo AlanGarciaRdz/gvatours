@@ -1,4 +1,6 @@
 import charter from '../images/charter'
+import footer from '../images/footer';
+import footer2 from '../images/footer2';
 import { MoneyFormatter } from '../utils/helpers';
 
 function Header(doc, receiptId, cantidad) {
@@ -47,78 +49,134 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
     observaciones, detalles ) {
 
         let starty = 120;
-        let increment = 30;
+        let increment = 24;
+        let color_labels = (255,255,255);//(255,255,255);
+        let color_valores = (0,0,0);//(255,255,255);
 
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
-        doc.setTextColor(255,255,255)
-        doc.text(30, starty, 'NOMBRE DEL PASAJERO');
-        doc.text(200, starty, "nombre");
+        doc.setTextColor(color_labels) 
+        doc.text(30, starty+13, 'NOMBRE DEL PASAJERO');
+        
 
-        starty += increment; 
-        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
+        starty += increment;
+        doc.setTextColor(color_valores) 
+        doc.text(40, starty+13, "VALOR NOMBRE DEL PASAJERO");
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
+        
 
         starty += increment; 
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
-        doc.setTextColor(255,255,255)
-        doc.text(30, starty, 'HOTEL / DESTINO');
-        doc.text(200, starty, "ROYAL DECAMERON");
+        doc.setTextColor(color_labels)
+        doc.text(30, starty+13, 'HOTEL / DESTINO');
+        
         starty += increment; 
-        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
+        doc.setTextColor(color_valores) 
+        doc.text(40, starty+13, "VALOR HOTEL / DESTINO");
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
         
         //FECHA
         starty += increment; 
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'F');
-        doc.setTextColor(255,255,255)
-        doc.text(30, starty, 'FECHA DE SALIDA');
-        doc.text(200, starty, "ROYAL DECAMERON");
+        doc.setTextColor(color_labels)
+        doc.text(30, starty+13, 'FECHA DE SALIDA');
+        doc.text(150, starty+13, 'FECHA DE REGRESO');
+        doc.text(300, starty+13, 'ABORDA EN Y HORARIO');
+        
         starty += increment; 
-        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
+        doc.setTextColor(color_valores) 
+        doc.text(40, starty+13, "09 OCT 2021");
+        doc.text(150, starty+13, "09 OCT 2021");
+        doc.text(300, starty+13, "MINERVA A LAS 07:00HRS");
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
+        //adultos y juniors
         starty += increment; 
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(15, starty, 95, 33, 3, 3, 'F');
+        doc.setTextColor(color_labels)
+        doc.text(30, starty+13, 'No. ADULTOS ');
+        doc.text(30, starty+28, 'Y JUNIORS ');
+        
+        doc.setTextColor(color_valores) 
+        doc.roundedRect(120, starty, 40, 33, 3, 3, 'D');
+        doc.text(130, starty+20, "01");
+
+
+        //menores cargo
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(190, starty, 95, 33, 3, 3, 'F');
+        doc.setTextColor(color_labels)
+        doc.text(200, starty+13, 'No. MENORES ');
+        doc.text(200, starty+28, 'CON CARGO ');
+        
+        doc.setTextColor(color_valores) 
+        doc.roundedRect(300, starty, 40, 33, 3, 3, 'D');
+        doc.text(310, starty+20, "01");
+        
+        //menores sin cargo
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(355, starty, 95, 33, 3, 3, 'F');
+        doc.setTextColor(color_labels)
+        doc.text(365, starty+13, 'No. MENORES ');
+        doc.text(365, starty+28, 'SIN CARGO ');
+        
+        doc.setTextColor(color_valores) 
+        doc.roundedRect(465, starty, 40, 33, 3, 3, 'D');
+        doc.text(475, starty+20, "01");
         
 
         //Nombre agencia
-        starty += increment; 
+        starty += increment+13; 
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
-        doc.setTextColor(255,255,255)
-        doc.text(30, starty, 'FNOMBRE DE AGENCIA');
-        doc.text(200, starty, "ROYAL DECAMERON");
+        doc.setTextColor(color_labels)
+        doc.text(30, starty+13, 'NOMBRE DE AGENCIA');
+        
         starty += increment; 
-        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
+        doc.setTextColor(color_valores) 
+        doc.text(40, starty+13, "VALOR NOMBRE DE AGENCIA");
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
         //CIUDAD
         starty += increment; 
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
-        doc.setTextColor(255,255,255)
-        doc.text(30, starty, 'CIUDAD');
-        doc.text(200, starty, "ROYAL DECAMERON");
+        doc.setTextColor(color_labels)
+        doc.text(30, starty+13, 'CIUDAD');
+        
         starty += increment; 
-        doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
+        doc.setTextColor(color_valores) 
+        doc.text(40, starty+13, "VALOR CIUDAD");
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
          //CLAVE RESERVACION
          starty += increment; 
          doc.setFillColor(232,68, 86) //red
          doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
-         doc.setTextColor(255,255,255)
-         doc.text(30, starty, 'CIUDAD');
-         doc.text(200, starty, "ROYAL DECAMERON");
+         doc.setTextColor(color_labels)
+         doc.text(30, starty+13, 'CLAVE DE RESERVACION');
+         
          starty += increment; 
-         doc.roundedRect(15, starty, 550, 17, 3, 3, 'FD');
+         doc.setTextColor(color_valores) 
+         doc.text(40, starty+13, "VALOR CLAVE DE RESERVACION");
+         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
           //OBSERVACIONES
         starty += increment; 
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
-        doc.setTextColor(255,255,255)
-        doc.text(30, starty, 'CIUDAD');
-        doc.text(200, starty, "ROYAL DECAMERON");
+        doc.setTextColor(color_labels)
+        doc.text(30, starty+13, 'OBSERVACIONES');
+        
         starty += increment; 
-        doc.roundedRect(15, starty, 550, 120, 3, 3, 'FD');
+        doc.setTextColor(color_valores) 
+        var splitObservacion = doc.splitTextToSize("TRANSPORTACIÓN TURÍSTICA PARA 01 PAX GDL -BUCERÍAS - GDL  SALIDA EL 09 OCT A LAS 07:00 HRS DE MINERVA (junto al Hotel Fiesta Americana Minerva)", 400);
+        doc.text(40, starty+13, splitObservacion);
+
+        doc.roundedRect(15, starty, 550, 100, 3, 3, 'D');
 
 
 }
@@ -132,6 +190,8 @@ function pieCharter(doc){
     let starty = 600;
     let incremento = 17;
 
+    doc.addImage(footer, 'PNG', 0, starty, doc.internal.pageSize.width, 305);
+    
     doc.setLineDash([1, 1], 0);
     doc.line(15, starty-incremento, 600, starty-incremento);
     
@@ -174,6 +234,12 @@ function pieCharter(doc){
     const leyenda4  = "Tel. (33) 3631 3036 con 10 líneas";
     starty += incremento; 
     doc.text(leyenda4, xcenter(doc,leyenda4), starty );
+
+
+    
+   
+
+   
 
 
 

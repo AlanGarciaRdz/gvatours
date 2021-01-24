@@ -16,6 +16,7 @@ import './CharterDialog.css'
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
 import charter from '../../../images/charter'
+
 import CharterPDF from '../../../utils/CharterPDF';
 
 
