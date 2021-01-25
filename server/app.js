@@ -26,6 +26,8 @@ const hotel_model = require('./db/models/hotels')
 const cupon_model = require('./db/models/cupon')
 const receipt_model = require('./db/models/receipts')
 const transport_model = require('./db/models/transportcontracts')
+const charter_model = require('./db/models/charters')
+
 
 
 const port = process.env.PORT || 5000;
@@ -97,15 +99,23 @@ app.delete('/Receipts/:uuid_receipt', receipt_model.deleteReceipt)
 //DATABASE Client+Receipts
 app.get('/ClientReceipt/:uuid_client', receipt_model.getClientReceipts)
 
+//DATABASE Charter
+app.get('/Charters', charter_model.getCharters)
+app.get('/Charters/:uuid_charter', charter_model.getCharterByIdFE)
+app.post('/Charters', charter_model.createCharter)
+app.put('/Charters/:uuid_charter', charter_model.updateCharter) 
+app.delete('/Charters/:uuid_charter', charter_model.deleteCharter)
 
 
-
-//DATABASE Transport
+//DATABASE Transport 
 app.get('/TransportC', transport_model.getTransportC)
 app.get('/TransportC/:uuid_contract', transport_model.getTransportCByIdFE)
 app.post('/TransportC', transport_model.createTransportC)
 app.put('/TransportC/:uuid_contract', transport_model.updateTransportC) 
 app.delete('/TransportC/:uuid_contract', transport_model.deleteTransportC)
+
+
+
 
 //RAWS endpoints
 app.get('/raw/Cupon/:uuid_cupon', cupon_model.getCuponById)
