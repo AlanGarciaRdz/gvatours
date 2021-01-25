@@ -35,14 +35,13 @@ const getCharterByIdFE = (request, response) => {
   const uuid_charter = request.params.uuid_charter
   
 
-  pool.query(`SELECT Ch.*, public."Clients".data as Cliente`
+  pool.query(`SELECT Ch.*, public."Hotels".data as Hotel, public."Clients".data as Cliente, ta.data as TravelAgency`
             +` FROM public."Charters" as Ch `
             +` join public."Clients" on (Ch.data->>'uuid_cliente')::uuid = public."Clients".uuid_client`
+            +` join public."Hotels" on (Ch.data->>'uuid_hotel')::uuid = public."Hotels".uuid_hotel`
+            +` join public."TravelAgencies" as ta on (Ch.data->>'uuid_agencia')::uuid = ta."uuid_travelA"`
             +` Where Ch.uuid_charter = $1`, [uuid_charter], (error, results) => {
-              console.log(`SELECT Ch.*, public."Clients".data as Cliente`
-              +` FROM public."Charters" as Ch `
-              +` join public."Clients" on (Ch.data->>'uuid_cliente')::uuid = public."Clients".uuid_client`
-              +` Where Ch.uuid_charter = $1`, [uuid_charter])
+              
     if (error) {
       throw error
     }
