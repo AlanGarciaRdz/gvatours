@@ -11,6 +11,20 @@ import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
 import Assignment from '@material-ui/icons/Assignment';
 import Create from '@material-ui/icons/Create';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+
+// https://material-ui.com/components/text-fields/
+// search google maps
 
 import AutocompleteHotel from '../../core/AutocompleteHotel';
 import AutocompleteAgency from '../../core/AutocompleteAgency';
@@ -32,6 +46,29 @@ const styles = (theme => ({
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
       width: 200,
+    },
+    root: {
+      padding: '2px 4px',
+      display: 'flex',
+      alignItems: 'center',
+      width: 400,
+    },
+    input: {
+      marginLeft: theme.spacing(1),
+      flex: 1,
+    },
+    iconButton: {
+      padding: 10,
+    },
+    datepadding: {
+      padding: 10,
+    },
+    redondo: {
+      display: 'none'
+    },
+    divider: {
+      height: 28,
+      margin: 4,
     },
   }));
 
@@ -59,16 +96,18 @@ class CharterFrom extends React.Component{
 
 
               UUID: '',
-              folio_cupon: '',
+              folio_papeleta: '',
               cliente: '',
               hotel: '',
-              fecha_entrada: '',
               fecha_salida: '',
+              fecha_regreso: '',
               total_venta: '',
               numero_habitaciones: '',
               SGL: '',
               DBL: '',
               CPL: '',
+              redondo: false,
+              styleredondo: 'display:block',
 
               SC: '',
               CC: '',
@@ -94,6 +133,7 @@ class CharterFrom extends React.Component{
             this.handleAgencyChange = this.handleAgencyChange.bind(this);
             this.seleccionarElemento = this.seleccionarElemento.bind(this);
             this.handleChange = this.handleChange.bind(this);
+            this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
 
             
         
@@ -106,6 +146,24 @@ class CharterFrom extends React.Component{
             [evt.target.name]: value
           });
         };
+
+        handleChangeCheckbox = (evt) => {
+          console.log(evt.target.name)
+          const value = evt.target.checked;
+          let newstatus = value ? 'display:block' : 'display:none';
+          this.setState({
+            ...this.state,
+            [evt.target.name]: value,
+            styleredondo: newstatus
+          });
+          console.log(newstatus)
+          // let newstatus = value ? 'display:block' : 'display:none';
+          // console.log(value)
+          // this.setState({
+          //   ...this.state,
+          //   styleredondo: newstatus
+          // });
+        }
 
         async filterById(jsonObject, column, id) {
             jsonObject.filter(function(element){
@@ -185,53 +243,41 @@ class CharterFrom extends React.Component{
           }else {
             var cupondata = 
             {
-              "data": {
-                "folio": document.getElementById("folio_cupon").value,
-                "uuid_hotel": val_uuid_hotel === undefined ? this.state.hotel_uuid : val_uuid_hotel,
-                "uuid_cliente": val_uuid_cliente === undefined ? this.state.cliente_uuid : val_uuid_cliente,
-                "fecha_entrada": document.getElementById("fecha_entrada").value,
-                "fecha_salida": document.getElementById("fecha_salida").value,
-                "Total_Venta": document.getElementById("total_venta").value
-              },
-              "data_rooms": {
-                "numero_habitaciones": document.getElementById("numero-habitaciones").value,
-                "adultos": {
-                  "SGL": document.getElementById("sgl-habitaciones").value,
-                  "DBL": document.getElementById("dbl-habitaciones").value,
-                  "CPL": document.getElementById("cpl-habitaciones").value
-                  },
-                "menores": {
-                  "SC": document.getElementById("sc-habitaciones").value,
-                  "CC": document.getElementById("cl-habitaciones").value,
-                  "JR": document.getElementById("jr-habitaciones").value
-                  }
-              },
-              "data_travelA": {
-                "uuid_agencia": val_uuid_agencia === undefined ? this.state.agencia_uuid : val_uuid_agencia,
-                "observaciones": document.getElementById("observaciones").value,
-                "confirmadopor": document.getElementById("Confirmadopor").value,
-                "plancontratado": document.getElementById("Plancontratado").value,
-              }
+                "data": {
+                  "uuid_cliente": val_uuid_cliente === undefined ? this.state.cliente_uuid : val_uuid_cliente,
+                      "uuid_hotel": val_uuid_hotel === undefined ? this.state.hotel_uuid : val_uuid_hotel,
+                      "uuid_agencia": val_uuid_agencia === undefined ? this.state.agencia_uuid : val_uuid_agencia,
+                      "folio_papeleta": document.getElementById("folio_papeleta").value,
+                  "fecha_salida": document.getElementById("fecha_salida").value,
+                  "fecha_regreso": document.getElementById("fecha_regreso").value,
+                      "aborda": document.getElementById("aborda").value,
+                      "adultos_junios": document.getElementById("sgl-habitaciones").value,
+                      "menores_cargo": document.getElementById("dbl-habitaciones").value,
+                      "menosres_sincargo": document.getElementById("cpl-habitaciones").value,
+                      "ciudad": document.getElementById("ciudad").value,
+                      "clave": document.getElementById("clave").value,
+                      "OBSERVACIONES": document.getElementById("observaciones").value,
+                }
             }
 
             // console.log(cupondata)
 
             if(this.state.UUID === ''){
               console.log("cupon")
-              API.post(`/Cupon/`, cupondata).then(res => {
+              API.post(`/Charters/`, cupondata).then(res => {
                 try{
                  console.log(res.data)
-                 window.location.href =  `/Cupon?id=${res.data.uuid_charter}`; 
-                  //UUID, Folio, FolioGVA, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
-                  this.addTableData(res.data.uuid_charter, 
-                                    res.data.uuid_charter.split('-')[2]+'-'+res.data.uuid_charter.split('-')[3],
-                                    res.data.data.folio,
-                                    res.data.data.fecha_entrada,
-                                    res.data.data.fecha_entrada, //Agencia
-                                    res.data.data.fecha_entrada, //Hotel
-                                    "0",
-                                    res.data.data.Total_Venta
-                                    )
+                 window.location.href =  `/Charter?id=${res.data.uuid_charter}`; 
+                  //UUID, Folio, FolioPapeleta, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
+                  // this.addTableData(res.data.uuid_charter, 
+                  //                   res.data.uuid_charter.split('-')[2]+'-'+res.data.uuid_charter.split('-')[3],
+                  //                   res.data.data.folio,
+                  //                   res.data.data.fecha_entrada,
+                  //                   res.data.data.fecha_entrada, //Agencia
+                  //                   res.data.data.fecha_entrada, //Hotel
+                  //                   "0",
+                  //                   res.data.data.Total_Venta
+                  //                   )
                     
                 }catch(error){
                   console.error(error)
@@ -273,16 +319,13 @@ class CharterFrom extends React.Component{
                     res.data.map(row => ( 
                     this.addTableData(
                       row.uuid_charter,
-                      row.uuid_charter.split('-')[2]+'-'+row.uuid_charter.split('-')[3], //FOLIO
-                      row.data.folio,
-                      row.data.fecha_entrada, //Fecha_entrada
-                      row.travelagency.nombre,//row.data_travelA.uuid_agencia, //Name travel Agency
-                      row.hotel.nombre,//row.data.uuid_hotel,
-                      row.data.Total_Pagado, // PAGADO
-                      row.data.Total_Venta //TOTAL
+                      row.data.folio_papeleta,
+                      row.cliente.nombre,
+                      row.data.fecha_salida, 
+                      row.travelagency.nombre, 
+                      row.hotel.nombre
                     )))
-                    //)
-        
+                    
                     this.setState({cupones: rowsP});
                     //console.log("cupones")
                     console.log(this.state.cupones)
@@ -297,11 +340,9 @@ class CharterFrom extends React.Component{
 
 
         // Generate Order Data
-        addTableData(UUID, Folio, FolioGVA, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta) {
-          // console.log(Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta)
-          // Hotel = await this.filterById(data_hoteles, 'uuid_hotel', Hotel)
-          // console.log(Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta)
-          return {UUID, Folio, FolioGVA, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta };
+        addTableData(UUID, FolioPapeleta, NombreCliente, Fecha_Salida, Agencia, Hotel) {
+          
+          return {UUID, FolioPapeleta, NombreCliente, Fecha_Salida, Agencia, Hotel };
         }
 
      
@@ -317,7 +358,7 @@ class CharterFrom extends React.Component{
                   res = res.data[0]
                   console.log(row)
                   this.setState({UUID: row.UUID});
-                  this.setState({folio_cupon: res.FolioGVA});
+                  this.setState({folio_papeleta: res.FolioPapeleta});
                   
                   this.setState({cliente: res.cliente.nombre});
                   this.setState({cliente_uuid: res.data.uuid_cliente});
@@ -366,196 +407,202 @@ class CharterFrom extends React.Component{
 
 render(){
     const { classes } = this.props;
-    const { folio_cupon ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_entrada ,fecha_salida ,total_venta ,numero_habitaciones ,SGL ,DBL ,CPL , SC ,CC ,JR , agencia , agencia_uuid,observaciones ,confirmadopor ,plancontratado , cupones} = this.state;
+    const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , redondo, aborda, agencia , ciudad, clave, agencia_uuid,observaciones , cupones} = this.state;
 
     return (
         <React.Fragment>
 
           <Typography variant="h6" gutterBottom>
-            Informacion General
+            CUPON DE CHARTER TURISTICO
           </Typography>
 
-          <Grid container spacing={5}>
-
+          
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField
                     required
-                    id="folio_cupon"
-                    label="folio_cupon"
+                    id="folio_papeleta"
+                    label="folio_papeleta"
                     type="text"
-                    name="folio_cupon"
-                    value={folio_cupon}
+                    name="folio_papeleta"
+                    value={folio_papeleta}
                     onChange={this.handleChange}
                     //defaultValue={getCurrentDate()}
                     fullWidth
                     autoComplete="fname"
                 />
             </Grid>
-          </Grid>
 
           
 
-          <Grid container spacing={3}>
+          
             <Grid item xs={12} sm={6}>
                 <AutoCompleteClient id="clientAuto" value={cliente} uuid={cliente_uuid} edit={true} updateClient={this.handleClientChange}/>
             </Grid>
             <Grid item xs={12} sm={6}>
                 <AutocompleteHotel value={hotel} uuid={hotel_uuid} updateHotel={this.handleHotelChange}/>
             </Grid> 
+
+            <Grid item xs={12} sm={6}>
+            <AutocompleteAgency value={agencia} name="agencia" uuid={agencia_uuid} updateAgencia={this.handleAgencyChange}/>
+              </Grid>
             
             <Grid item xs={12} sm={6}>
+            <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={redondo}
+                    onChange={this.handleChangeCheckbox}
+                    name="redondo"
+                    color="primary"
+                  />
+                }
+                label="Redondo"
+             />
+
+
+            <InputLabel className={classes.datepadding}  id="aborda">FECHA DE SALIDA</InputLabel>
             <TextField
                 required
-                id="fecha_entrada"
-                value={fecha_entrada}
-                name="fecha_entrada"
+                id="fecha_salida"
+                value={fecha_salida}
+                name="fecha_salida"
                 type="date"
+                
                 onChange={this.handleChange}
                 defaultValue={getCurrentDate()}
                 fullWidth
                 autoComplete="fname"
             />
+           
+           <div className={this.state.styleredondo}>
+            <InputLabel className={classes.datepadding} id="demo-simple-select-label">FECHA DE REGRESO</InputLabel>
+              <TextField
+                      required
+                      
+                      id="fecha_regreso"
+                      name="fecha_regreso"
+                      type="date"
+                      value={fecha_regreso}
+                      onChange={this.handleChange}
+                      //defaultValue={getCurrentDate()}
+                      fullWidth
+                      autoComplete="fname"
+                />
+
+           </div>
+          
             </Grid>
             <Grid item xs={12} sm={6}>
-                <TextField
-                    required
-                    id="fecha_salida"
-                    name="fecha_salida"
-                    type="date"
-                    value={fecha_salida}
-                    onChange={this.handleChange}
-                    //defaultValue={getCurrentDate()}
-                    fullWidth
-                    autoComplete="fname"
-                />
-            </Grid>
-
-            <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-                TOTAL VENTA
-            </Typography>
             <TextField
-                label="TOTAL VENTA"
-                id="total_venta"
+               
+                autoFocus
                 onChange={this.handleChange}
-                value={total_venta}
-                name="total_venta"
-                className={clsx(classes.margin, classes.textField)}
-                type="number"
+                margin="dense"
+                value={ciudad}
+                name="ciudad"
+                id="ciudad"
+                label="CIUDAD"
+                type="text"
+                fullWidth
               />
+
+            
+            {/* <TextField
+                autoFocus
+                onChange={this.handleChange}
+                margin="dense"
+                value={aborda}
+                name="aborda"
+                id="aborda"
+                label="ABORDA Y  HORA"
+                type="text"
+                fullWidth
+              /> */}
+             <InputLabel id="demo-simple-select-helper-label" className={classes.iconButton}>ABORDA Y HORA</InputLabel>
+             
+              <Select
+              autoFocus
+                labelId="demo-simple-select-helper-label"
+                id="aborda"
+                value={aborda}
+                onChange={this.handleChange}
+                label="ABORDA Y  HORA"
+                fullWidth
+                >
+                <MenuItem value={10}>5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)</MenuItem>
+                <MenuItem value={20}>6:00 am Plaza Forum sobre Blvd Tlaquepaque</MenuItem>
+                <MenuItem value={30}>7:00 am Minerva Frente al Hotel Fiesta Americana Minerva</MenuItem>
+                <MenuItem value={30}>7:15 am Central Zapopan en Oxxo y Pollo Pepe</MenuItem>
+                
+              </Select>
+
             </Grid>
 
             
-            <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-                Habitaciones
-            </Typography>
-            <TextField
-                label="Numero de habitaciones"
-                id="numero-habitaciones"
+
+    {/* <Paper component="form" className={classes.root}> */}
+    <Grid item xs={13} sm={4}>
+      <IconButton className={classes.iconButton} aria-label="menu">
+          <RemoveIcon />
+        </IconButton>
+        <InputBase
+          className={classes.input}
+          placeholder="No. ADULTOS Y JUNIORS"
+          inputProps={{ 'aria-label': 'search google maps' }}
+        />
+        <IconButton type="submit" className={classes.iconButton} aria-label="search">
+          <AddIcon />
+        </IconButton>
+        {/* fdsafasdfsa */}
+        </Grid>
+        <Grid item xs={13} sm={4}>
+        <IconButton className={classes.iconButton} aria-label="menu">
+          <RemoveIcon />
+        </IconButton>
+        <InputBase
+          className={classes.input}
+          placeholder="No. ADULTOS Y JUNIORS"
+          inputProps={{ 'aria-label': 'search google maps' }}
+        />
+        <IconButton type="submit" className={classes.iconButton} aria-label="search">
+          <AddIcon />
+        </IconButton>
+        </Grid>
+        <Grid item xs={13} sm={4}>
+        <IconButton className={classes.iconButton} aria-label="menu">
+          <RemoveIcon />
+        </IconButton>
+        <InputBase
+          className={classes.input}
+          placeholder="No. ADULTOS Y JUNIORS"
+          inputProps={{ 'aria-label': 'search google maps' }}
+        />
+        <IconButton type="submit" className={classes.iconButton} aria-label="search">
+          <AddIcon />
+        </IconButton>
+        </Grid>
+   
+    {/* </Paper> */}
+
+            <InputLabel id="demo-simple-select-helper-label" className={classes.iconButton}>INCLUYE</InputLabel>
+             
+              <Select
+              autoFocus
+                labelId="demo-simple-select-helper-label"
+                id="aborda"
+                value={aborda}
                 onChange={this.handleChange}
-                value={numero_habitaciones}
-                name="numero_habitaciones"
-                className={clsx(classes.margin, classes.textField)}
-                // InputProps={{
-                //   startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
-                // }}
-                type="number"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h7" gutterBottom>
-                  Ocupacion
-              </Typography>
+                label="ABORDA Y  HORA"
+                fullWidth
+                >
+                <MenuItem value={10}>INCLUYE DESAYUNO EN RESTAURANT ROSITA EN NVR.</MenuItem>
+                <MenuItem value={20}>INCLUYE DESAYUNO EN COCINA PERA EN GDL</MenuItem>
+                
+              </Select>
+
+
               <TextField
-                  // label="Numero de habitaciones"
-                  id="sgl-habitaciones"
-                  value={SGL}
-                  name="SGL"
-                  onChange={this.handleChange}
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">SGL</InputAdornment>,
-                  }}
-                  type="number"
-                />
-
-                <TextField
-                  // label="Numero de habitaciones"
-                  id="dbl-habitaciones"
-                  value={DBL}
-                  name="DBL"
-                  onChange={this.handleChange}
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">DBL</InputAdornment>,
-                  }}
-                  type="number"
-                />
-
-                <TextField
-                  // label="Numero de habitaciones"
-                  id="cpl-habitaciones"
-                  value={CPL}
-                  name="CPL"
-                  onChange={this.handleChange}
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">CPL</InputAdornment>,
-                  }}
-                  type="number"
-                />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography variant="h7" gutterBottom>
-                  Menores
-              </Typography>
-              <TextField
-                  // label="Numero de habitaciones"
-                  id="sc-habitaciones"
-                  value={SC}
-                  name="SC"
-                  onChange={this.handleChange}
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">SC</InputAdornment>,
-                  }}
-                  type="number"
-                />
-
-                <TextField
-                  // label="Numero de habitaciones"
-                  id="cl-habitaciones"
-                  value={CC}
-                  name="CC"
-                  onChange={this.handleChange}
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">CL</InputAdornment>,
-                  }}
-                  type="number"
-                />
-
-                <TextField
-                  // label="Numero de habitaciones"
-                  id="jr-habitaciones"
-                  value={JR}
-                  name="JR"
-                  onChange={this.handleChange}
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">JR</InputAdornment>,
-                  }}
-                  type="number"
-                />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-                <AutocompleteAgency value={agencia} 
-                name="agencia}"
-                uuid={agencia_uuid} updateAgencia={this.handleAgencyChange}/>
-                <TextField
                 autoFocus
                 onChange={this.handleChange}
                 margin="dense"
@@ -566,28 +613,76 @@ render(){
                 type="text"
                 fullWidth
               />
+    
+
+       
+              
+              
+            
+              
+{/* 
+            
+            <Grid item xs={12}>
               <TextField
-                autoFocus
-                onChange={this.handleChange}
-                margin="dense"
-                value={confirmadopor}
-                name="confirmadopor"
-                id="Confirmadopor"
-                label="Confirmado por"
-                type="text"
-                fullWidth
-              />
+                  // label="Numero de habitaciones"
+                  id="sgl-habitaciones"
+                  value={SGL}
+                  name="No. ADULTOS Y JUNIORS"
+                  onChange={this.handleChange}
+                  className={clsx(classes.margin, classes.textField)}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">No. ADULTOS Y JUNIORS</InputAdornment>,
+                  }}
+                  type="number"
+                />
+
                 <TextField
-                value={plancontratado}
-                name="plancontratado"
+                  // label="Numero de habitaciones"
+                  id="dbl-habitaciones"
+                  value={DBL}
+                  name="No. MENORES CON CARGO"
+                  onChange={this.handleChange}
+                  className={clsx(classes.margin, classes.textField)}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">No. MENORES CON CARGO</InputAdornment>,
+                  }}
+                  type="number"
+                />
+
+                <TextField
+                  // label="Numero de habitaciones"
+                  id="cpl-habitaciones"
+                  value={CPL}
+                  name="No. MENORES SIN CARGO"
+                  onChange={this.handleChange}
+                  className={clsx(classes.margin, classes.textField)}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">No. MENORES SIN CARGO</InputAdornment>,
+                  }}
+                  type="number"
+                />
+            </Grid> */}
+
+            
+
+            <Grid item xs={12} sm={6}>
+                
+
+            
+
+               {/* <TextField
                 autoFocus
                 onChange={this.handleChange}
                 margin="dense"
-                id="Plancontratado"
-                label="Plan Contratado"
+                value={clave}
+                name="clave"
+                id="clave"
+                label="clave"
                 type="text"
                 fullWidth
-              />
+              /> */}
+              
+        
 
 
 
@@ -607,44 +702,37 @@ render(){
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>FolioSistema</TableCell>
-            <TableCell>Folio GVA</TableCell>
-            <TableCell align="right">PDF</TableCell>
-            <TableCell align="right">Fecha_Entrada</TableCell>
-            <TableCell align="right">Agencia</TableCell>
-            <TableCell align="right">Hotel</TableCell>
-            <TableCell align="right">Total_Venta</TableCell>
-            <TableCell align="right">Pagado</TableCell>
-            <TableCell align="right">Status</TableCell>
+            <TableCell>Folio Papeleta</TableCell>
+            <TableCell>Datos Cliente</TableCell>
+            <TableCell>Fecha Salida</TableCell>
+            <TableCell>Agencia</TableCell>
+            <TableCell>Hotel</TableCell>
+            <TableCell>PDF</TableCell>
+            <TableCell>Accion</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {cupones.map(row => (
             <TableRow key={row.UUID}>
               <TableCell component="th" scope="row">
-                {row.Folio}
+                {row.FolioPapeleta}
               </TableCell>
-              <TableCell component="th" scope="row">
-                {row.FolioGVA}
-              </TableCell>
-
+              <TableCell>{row.NombreCliente}</TableCell>
+              <TableCell>{row.Fecha_Salida}</TableCell>
+              <TableCell>{row.Agencia}</TableCell>
+              <TableCell>{row.Hotel}</TableCell>
               
               {/* PDF */}
-              <TableCell align="right">
-              <Link href={`/Cupon?id=${row.UUID}`} color="inherit">
+              <TableCell>
+              <Link href={`/Charter?id=${row.UUID}`} color="inherit">
                 <ListItem button>
                     <Assignment />
                 </ListItem>
               </Link>
              </TableCell>
              {/* PDF */}
-              <TableCell align="right">{row.Fecha_Entrada}</TableCell>
-              <TableCell align="right">{row.Agencia}</TableCell>
-              <TableCell align="right">{row.Hotel}</TableCell>
-              <TableCell align="right">{row.Total_Venta}</TableCell>
-              <TableCell align="right">{row.Pagado}</TableCell>
               {/* Edit */}
-              <TableCell align="right">
+              <TableCell>
                 <ListItem button onClick={() => this.seleccionarElemento(row)}>
                     <Create />
                 </ListItem>

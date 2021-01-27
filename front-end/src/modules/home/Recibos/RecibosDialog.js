@@ -102,7 +102,7 @@ class CuponDialog extends React.Component{
 
   handleClose = () => {
    this.setState({open: false})
-   this.props.history.push('./Cupon');
+   this.props.history.push('./Recibos');
  }
 
 

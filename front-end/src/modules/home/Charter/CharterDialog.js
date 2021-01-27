@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import queryString from 'query-string';
 
-import Cupon from './index'
+import Charter from './index'
 import './CharterDialog.css'
 
 import html2canvas from 'html2canvas';
@@ -18,6 +18,7 @@ import { jsPDF } from "jspdf";
 import charter from '../../../images/charter'
 
 import CharterPDF from '../../../utils/CharterPDF';
+import charterHTML from './pdf_html'
 
 
 import API from "../../../utils/API";
@@ -103,7 +104,7 @@ class CharterDialog extends React.Component{
 
   handleClose = () => {
    this.setState({open: false})
-   this.props.history.push('./Cupon');
+   this.props.history.push('./Charters');
  }
 
 
@@ -198,139 +199,7 @@ class CharterDialog extends React.Component{
 
     
   
-    var receipt = `
-        <table class="header" id="recibo_pdf">
-           <tbody>
-           <tr>
-           <td><img  src="https://transportamex-production-bucket-1ll3nrbfgiob8.s3.amazonaws.com/2016/08/GVA-Tours1.jpg"
-              style="display: block;
-              margin-left: auto;
-              margin-right: auto;
-              width: 50%; width:100%; max-width:200px;"></td>
-              <td style="text-align: center;">RECIBO DE DINERO</td>
-           <td>
-              <div class="div_folio">
-                    <table class="folio">
-                          <tbody>
-                          <tr>
-                          <td>Folio</td>
-                          </tr>
-                          <tr>
-                          <td>&#8470; ${receiptId}</td>
-                          </tr>
-
-                          <tr>
-                                <td>BUENO POR</td>
-                                </tr>
-                                <tr>
-                                <td>$ ${cantidad}</td>
-                                </tr>
-                          </tbody>
-                       </table>
-
-                      
-              </div>
-           </td>
-           </tr>
-           </tbody>
-           </table>
-     
-           <p class="titulo">&nbsp;</p> 
-           
-        <div class="datos_contratante_div">
-              <table class="datos_del_contratante">
-                    <tbody>
-                    <tr>
-                    <td id="etiqueta">RECIBIMOS DE:</td>
-                    <td>${nombre}</td>
-                    </tr>
-                    <tr>
-                    <td id="etiqueta">LA CANTIDAD DE:</td>
-                    <td>${cantidad} </td>
-                    </tr>
-
-                    <tr>
-                       <td id="etiqueta">POR CONCEPTO DE:</td>
-                       <td>${concepto} </td>
-                    </tr>
-
-                    <tr>
-                       <td id="etiqueta" style="border-bottom: none;">PARA LA RESERVACION DE:</td>
-                       <td style="border-bottom: none;">${reservacion} </td>
-                    </tr>
-
-
-                    <!-- style="border-bottom: none;" -->
-                    </tbody>
-                    </table>
-        </div>
-
-        <p class="titulo">&nbsp;</p>
-        <div class="datos_contratante_div">
-              <table class="datos_del_contratante">
-                    <tbody>
-                    <tr style="border-bottom: none;">
-                    <td style="border-bottom: none;">FORMA DE PAGO:</td>
-                    <td style="border-bottom: none;">${forma_pago}</td>
-                    </tr>
-                    
-                    </tbody>
-                    </table>
-        </div>
-
-
-        <p class="titulo">&nbsp;</p>
-        <div class="datos_viaje_pagos">
-              
-           <table class="pagos">
-              <tbody>
-            <!-- <td colspan="2" style="text-align: center; padding-top: 10px;"><p class="titulo">PAGOS</p></td> -->
-              <tr>
-              <td id="etiqueta_general">IMPORTE TOTAL:</td>
-              <td id="etiqueta_general">${importe_total}</td>
-              </tr>
-              <tr>
-              <td id="etiqueta_general">PAGOS REGISTRADOS:</td>
-              <td id="etiqueta_general">${PAGOS_REGISTRADOS}</td>
-              </tr>
-              <tr id="sin_borde_inferior">
-              <td id="etiqueta_general">SALDO PENDIENTE:</td>
-              <td id="etiqueta_general">${SALDO_PENDIENTE}</td>
-              </tr>
-              </tbody>
-           </table>
-
-        </div>
-       
-       <p class="titulo">&nbsp;</p>
-        <div class="datos_viaje">
-
-              <table class="firmas">
-                    <tbody>
-                    <td colspan="2" style="text-align: center; padding-top: 10px;"><p class="titulo">DESCRIPCION DEL SERVICIO:</p></td>
-                    
-                    <tr><td></td></tr>
-                    
-                    <tr><td colspan="2" id="etiqueta_general">${DESCRIPCION_DEL_SERVICO}</td></tr>
-                    <!-- <tr><td colspan="2" id="etiqueta_general">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</td></tr> -->
-                    <tr><td></td></tr>
-                    <tr><td></td></tr>
-                    <tr><td></td></tr>
-                    <tr><td></td></tr>
-                    <tr>
-                       <td>
-                          <p id="etiqueta_general_firma" class="firma"> LUGAR Y FECHA</p>
-                       </td>
-                       <td>
-                             <p id="etiqueta_general_firma" class="firma"> RECIBIÓ NOMBRE Y FIRMA  </p>
-                       </td>
-                    </tr>
-                    
-                    </tbody>
-                    </tr>
-                </table>
-        </div>
-        `;
+    var receipt = charterHTML;
         return(
           <div> 
 
@@ -344,7 +213,7 @@ class CharterDialog extends React.Component{
                   <CloseIcon />
                 </IconButton> 
                 <Typography variant="h6" className={classes.title}>
-                  Cupon
+                  Charter
                 </Typography>
                 <Button autoFocus color="inherit" onClick={this.CreatePDF} >
                   Descargar
@@ -360,7 +229,7 @@ class CharterDialog extends React.Component{
      }else{
        return(
         <div>
-          <Cupon />
+          <Charter />
         </div>
        )
        

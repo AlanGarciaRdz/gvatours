@@ -89,7 +89,8 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         doc.setTextColor(color_valores) 
         doc.text(40, starty+13, "09 OCT 2021");
         doc.text(150, starty+13, "09 OCT 2021");
-        doc.text(300, starty+13, "MINERVA A LAS 07:00HRS");
+        //doc.text(300, starty+13, "MINERVA A LAS 07:00HRS");
+        doc.textWithLink( 'MINERVA A LAS 07:00HRS',300, starty+13,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
         //adultos y juniors
@@ -164,6 +165,19 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
          doc.text(40, starty+13, "VALOR CLAVE DE RESERVACION");
          doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
+        //INCLUYE
+        starty += increment; 
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+        doc.setTextColor(color_labels)
+        doc.text(30, starty+13, 'INCLUYE');
+        
+        starty += increment; 
+        doc.setTextColor(color_valores) 
+        var splitObservacion = doc.splitTextToSize("Incluye Desayuno en COCINA PERA en gdl", 400);
+        doc.text(40, starty+13, splitObservacion);
+        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
+
           //OBSERVACIONES
         starty += increment; 
         doc.setFillColor(232,68, 86) //red
@@ -173,10 +187,10 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         starty += increment; 
         doc.setTextColor(color_valores) 
-        var splitObservacion = doc.splitTextToSize("TRANSPORTACIÓN TURÍSTICA PARA 01 PAX GDL -BUCERÍAS - GDL  SALIDA EL 09 OCT A LAS 07:00 HRS DE MINERVA (junto al Hotel Fiesta Americana Minerva)", 400);
+        var splitObservacion = doc.splitTextToSize("TRANSPORTACIÓN TURÍSTICA SENCILLA PARA 01 PAX GDL -BUCERÍAS - GDL  SALIDA EL 09 OCT A LAS 07:00 HRS DE MINERVA (junto al Hotel Fiesta Americana Minerva)", 400);
         doc.text(40, starty+13, splitObservacion);
 
-        doc.roundedRect(15, starty, 550, 100, 3, 3, 'D');
+        doc.roundedRect(15, starty, 550, 95, 3, 3, 'D');
 
 
 }
@@ -187,13 +201,13 @@ function xcenter(doc, phrase){
 }
 
 function pieCharter(doc){
-    let starty = 600;
+    let starty = 630;
     let incremento = 17;
 
     doc.addImage(footer, 'PNG', 0, starty, doc.internal.pageSize.width, 305);
     
     doc.setLineDash([1, 1], 0);
-    doc.line(15, starty-incremento, 600, starty-incremento);
+    doc.line(15, starty-incremento, 560, starty-incremento);
     
     doc.setTextColor(7, 109, 150) // azul blue
     doc.setFontSize(11);
@@ -216,7 +230,7 @@ function pieCharter(doc){
     doc.text(30, starty, salidas6);
 
     doc.setLineDash([1, 1], 0);
-    doc.line(15, starty+5, 600, starty+5);
+    doc.line(15, starty+5, 560, starty+5);
 
     doc.setFontSize(12)
     doc.setFont("normal" ,"bold");
