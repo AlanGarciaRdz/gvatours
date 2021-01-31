@@ -114,6 +114,7 @@ class CharterFrom extends React.Component{
               JR: '',
 
               agencia: '',
+              ciudad: '',
 
               observaciones: '',
               confirmadopor: '',
@@ -121,7 +122,7 @@ class CharterFrom extends React.Component{
             }
     
             this.getCharters = this.getCharters.bind(this);
-            this.getClientes_Agencias_Hoteles = this.getClientes_Agencias_Hoteles.bind(this)
+            
             this.addTableData = this.addTableData.bind(this);
             this.filterById = this.filterById.bind(this)
             
@@ -173,35 +174,8 @@ class CharterFrom extends React.Component{
           })
         }
 
-
-        getClientes_Agencias_Hoteles(){
-          API.get('/clients')
-              .then(res => {
-                if (res.status === 200) {
-                    this.setState({data_clientes: res.data})
-                    API.get('/Hotels')
-                    .then(res => {
-                      if (res.status === 200) {
-                          this.setState({data_hoteles: res.data})
-                          API.get('/TravelA')
-                          .then(res => {
-                            if (res.status === 200) {
-                                this.setState({data_agencias: res.data})
-                                this.getCharters()
-                            }
-                          })
-                      }
-                    })
-                }
-              })
-
-              
-        }
-
-       
-
         componentDidMount(){
-            //this.getClientes_Agencias_Hoteles();
+            
             this.getCharters()
         }
 
@@ -225,10 +199,11 @@ class CharterFrom extends React.Component{
           
         }
 
-        handleAgencyChange = (uuid_agencia) => {
-          // console.log("uuid Agencia",uuid_agencia)
+        handleAgencyChange = (uuid_agencia, ciudad) => {
+           console.log(`uuid Agencia ${uuid_agencia} , ${ciudad}` )
           this.setState({
-            val_uuid_agencia: uuid_agencia}
+            val_uuid_agencia: uuid_agencia,
+            ciudad: ciudad }
           )
         }
 
@@ -444,7 +419,7 @@ render(){
             </Grid> 
 
             <Grid item xs={12} sm={6}>
-            <AutocompleteAgency value={agencia} name="agencia" uuid={agencia_uuid} updateAgencia={this.handleAgencyChange}/>
+            <AutocompleteAgency value={agencia}  name="agencia" uuid={agencia_uuid} updateAgencia={this.handleAgencyChange}/>
               </Grid>
             
             <Grid item xs={12} sm={6}>
@@ -484,6 +459,7 @@ render(){
                       name="fecha_regreso"
                       type="date"
                       value={fecha_regreso}
+                      disabled={!redondo}
                       onChange={this.handleChange}
                       //defaultValue={getCurrentDate()}
                       fullWidth

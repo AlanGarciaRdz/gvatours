@@ -17,6 +17,7 @@ class AutocompleteAgency extends React.Component{
     super(props)
     this.state = {
       value: null,
+      ciudad: null,
       setValue: null,
       open: false,
       toggleOpen: false,
@@ -24,7 +25,7 @@ class AutocompleteAgency extends React.Component{
                     nombre_agencia: '',
                     contacto: ''
                    },
-      Agencyes: [],
+      Agencies: [],
     }
 
 
@@ -73,6 +74,8 @@ class AutocompleteAgency extends React.Component{
     if(this.props.value !== ""){
     if(this.props.value !== this.state.value){
       this.setState({value: this.props.value});
+      this.setState({ciudad: this.props})
+      console.log(this.props.ciudad)
       this.props.updateAgencia(this.props.uuid)
     }
   }
@@ -82,10 +85,10 @@ class AutocompleteAgency extends React.Component{
     this.getAgencies();
   }
 
-  onAddAgency(uuid_travelA, nombre, contacto){
+  onAddAgency(uuid_travelA, nombre, contacto, ciudad){
     // console.log(uuid_travelA, nombre, contacto)
     this.setState(state => {
-        const list = state.Agencyes.push({nombre_agencia: nombre,  uuid_travelA, contacto: contacto});
+        const list = state.Agencies.push({nombre_agencia: nombre,  uuid_travelA, contacto: contacto, ciudad: ciudad});
         return {
           list,
           value: '',
@@ -97,11 +100,13 @@ class AutocompleteAgency extends React.Component{
     API.get(`/TravelA/`).then(res => {
       try{
         if(res.data[0].hasOwnProperty('data')){
+          console.log("------")
+          console.log(res.data[0])
           res.data.map(row => ( 
-            this.onAddAgency(row.uuid_travelA, row.data.nombre, row.data.contacto)
+            this.onAddAgency(row.uuid_travelA, row.data.nombre, row.data.contacto, row.data.ciudad)
             
           ))
-          // console.log(this.state.Agencyes)
+          // console.log(this.state.Agencies)
         }
       }catch(error){
         console.error("400 Agency")
@@ -131,7 +136,7 @@ class AutocompleteAgency extends React.Component{
 
       this.props.updateAgencia(res.data.uuid_travelA)
 
-      this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto)
+      this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto, res.data.ciudad)
         
     }catch(error){
       console.error("400 Agency")
@@ -141,12 +146,13 @@ class AutocompleteAgency extends React.Component{
 }
 
   render(){
-    const {value, dialogValue, toggleOpen  } = this.state;
+    const {value, dialogValue, toggleOpen, ciudad  } = this.state;
     return (
       <div>
 
         <Autocomplete
           value={value}
+          ciudad={ciudad}
           fullWidth
           autoComplete="fname"
           onChange={(event, newValue) => {
@@ -190,7 +196,7 @@ class AutocompleteAgency extends React.Component{
          }
 
           id="Agency"
-          options={this.state.Agencyes}
+          options={this.state.Agencies}
           getOptionLabel={option => {
             // e.g value selected with enter, right from the input
             if (typeof option === 'string') {
@@ -204,8 +210,10 @@ class AutocompleteAgency extends React.Component{
             // console.log(option)
         
             this.setState({value: option.nombre_agencia});
+            this.setState({ciudad: option.ciudad});
 
-            this.props.updateAgencia(option.uuid_travelA)
+            this.props.updateAgencia(option.uuid_travelA, option.ciudad)
+            
 
             return option.nombre_agencia;
           }
