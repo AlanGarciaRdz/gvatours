@@ -119,6 +119,10 @@ class CharterFrom extends React.Component{
               observaciones: '',
               confirmadopor: '',
               plancontratado: '',
+
+              adultos: 0,
+              sin_cargo: 0,
+              con_cargo: 0
             }
     
             this.getCharters = this.getCharters.bind(this);
@@ -135,10 +139,47 @@ class CharterFrom extends React.Component{
             this.seleccionarElemento = this.seleccionarElemento.bind(this);
             this.handleChange = this.handleChange.bind(this);
             this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
+            this.adultos_juniors_minus = this.adultos_juniors_minus.bind(this)
+            this.adultos_juniors_plus = this.adultos_juniors_plus.bind(this)
+            this.menores_cargo_minus  = this.menores_cargo_minus.bind(this)
+            this.menores_cargo_plus = this.menores_cargo_plus.bind(this)
+            this.menores_sin_cargo_minus = this.menores_sin_cargo_minus.bind(this)
+            this.menores_sin_cargo_plus = this.menores_sin_cargo_plus.bind(this)
 
             
         
         }
+
+        adultos_juniors_plus() {
+          this.setState({ adultos: this.state.adultos + 1 })
+        }
+
+        adultos_juniors_minus() {
+          if(this.state.adultos > 0){
+            this.setState({ adultos: this.state.adultos - 1 })
+          }
+          
+        }
+
+        menores_cargo_minus(){
+          if(this.state.con_cargo > 0){
+            this.setState({ con_cargo: this.state.con_cargo - 1 })
+          }
+        }
+        menores_cargo_plus(){
+          this.setState({ con_cargo: this.state.con_cargo + 1 })
+        }
+
+        menores_sin_cargo_minus(){
+          if(this.state.sin_cargo > 0){
+            this.setState({ sin_cargo: this.state.sin_cargo - 1 })
+          }
+        }
+        menores_sin_cargo_plus(){
+          this.setState({ sin_cargo: this.state.sin_cargo + 1 })
+        }
+
+        
 
         handleChange = (evt) => {
           const value = evt.target.value;
@@ -284,6 +325,7 @@ class CharterFrom extends React.Component{
 
 
         getCharters() {
+          console.log("fdas")
             
             API.get('/Charters')
               .then(res => {
@@ -382,7 +424,7 @@ class CharterFrom extends React.Component{
 
 render(){
     const { classes } = this.props;
-    const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , redondo, aborda, agencia , ciudad, clave, agencia_uuid,observaciones , cupones} = this.state;
+    const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , redondo, aborda, agencia , ciudad, clave, agencia_uuid,observaciones , cupones, adultos, con_cargo, sin_cargo} = this.state;
 
     return (
         <React.Fragment>
@@ -519,43 +561,46 @@ render(){
 
     {/* <Paper component="form" className={classes.root}> */}
     <Grid item xs={13} sm={4}>
-      <IconButton className={classes.iconButton} aria-label="menu">
-          <RemoveIcon />
+      <IconButton className={classes.iconButton}  aria-label="menu">
+          <RemoveIcon onClick={this.adultos_juniors_minus}/>
         </IconButton>
         <InputBase
           className={classes.input}
-          placeholder="No. ADULTOS Y JUNIORS"
+          placeholder="No. adultos y juniors"
+          value={adultos}
+          inputProps={{ 'aria-label': 'search google maps' }}
+        />
+        <IconButton type="submit" className={classes.iconButton}   aria-label="search">
+          <AddIcon onClick={this.adultos_juniors_plus }/>
+        </IconButton>
+        
+        </Grid>
+        <Grid item xs={13} sm={4}>
+        <IconButton className={classes.iconButton}  aria-label="menu">
+        <RemoveIcon onClick={this.menores_cargo_minus}/>
+        </IconButton>
+        <InputBase
+          className={classes.input}
+          placeholder="No. Menores con cargo"
+          value={con_cargo}
           inputProps={{ 'aria-label': 'search google maps' }}
         />
         <IconButton type="submit" className={classes.iconButton} aria-label="search">
-          <AddIcon />
+          <AddIcon onClick={this.menores_cargo_plus}/>
         </IconButton>
-        {/* fdsafasdfsa */}
         </Grid>
         <Grid item xs={13} sm={4}>
         <IconButton className={classes.iconButton} aria-label="menu">
-          <RemoveIcon />
+          <RemoveIcon onClick={this.menores_sin_cargo_minus}/>
         </IconButton>
         <InputBase
           className={classes.input}
-          placeholder="No. ADULTOS Y JUNIORS"
+          placeholder="No. Menores sin cargo"
+          value={sin_cargo}
           inputProps={{ 'aria-label': 'search google maps' }}
         />
         <IconButton type="submit" className={classes.iconButton} aria-label="search">
-          <AddIcon />
-        </IconButton>
-        </Grid>
-        <Grid item xs={13} sm={4}>
-        <IconButton className={classes.iconButton} aria-label="menu">
-          <RemoveIcon />
-        </IconButton>
-        <InputBase
-          className={classes.input}
-          placeholder="No. ADULTOS Y JUNIORS"
-          inputProps={{ 'aria-label': 'search google maps' }}
-        />
-        <IconButton type="submit" className={classes.iconButton} aria-label="search">
-          <AddIcon />
+          <AddIcon onClick={this.menores_sin_cargo_plus}/>
         </IconButton>
         </Grid>
    

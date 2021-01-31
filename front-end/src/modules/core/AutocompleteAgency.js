@@ -47,7 +47,8 @@ class AutocompleteAgency extends React.Component{
   handleClose = () => {
     this.setState({dialogValue:{
               nombre_agencia: '',
-              contacto: ''
+              contacto: '',
+              ciudad: ''
               }
             });
     this.setState({toggleOpen: false});
@@ -75,8 +76,8 @@ class AutocompleteAgency extends React.Component{
     if(this.props.value !== this.state.value){
       this.setState({value: this.props.value});
       this.setState({ciudad: this.props})
-      console.log(this.props.ciudad)
-      this.props.updateAgencia(this.props.uuid)
+      
+      this.props.updateAgencia(this.props.uuid, this.props.ciudad)
     }
   }
   }
