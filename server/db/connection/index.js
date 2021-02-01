@@ -21,5 +21,6 @@ if (process.env.NODE_ENV === "production"){
         port: 5432,
     })
 }
+//psql -U postgres -h database-gva.ctdlpwrrgw3t.us-east-2.rds.amazonaws.com -p 5432 postgres
 
 exports.pool =  pool;

@@ -74,6 +74,7 @@ class SignIn extends React.Component{
         localStorage.setItem('09b267c0', res.data.role);
         localStorage.setItem('6443a053', res.data.name);
         localStorage.setItem('c7383f2e', res.data.email);
+        localStorage.setItem('63dd46ba', res.data.iniciales);
       }else{
         //TODO: add ERROR ALERT
       }
@@ -92,7 +93,7 @@ class SignIn extends React.Component{
     const { classes } = this.props;
     if (this.state.isSignedUp) {
       // redirect to home if signed up
-      return <Redirect to = {{ pathname: "/home" }} />;
+      return <Redirect to = {{ pathname: "/Charters" }} />;
     }else{
       return (
         <Container component="main" maxWidth="xs">

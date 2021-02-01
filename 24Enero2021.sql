@@ -243,9 +243,15 @@ CREATE TABLE public."Users" (
     id_user integer NOT NULL,
     email text NOT NULL,
     role bigint NOT NULL,
+    iniciales text NOT NULL,
+    data jsonb NOT NULL,
     created_at date NOT NULL,
     updated_at date NOT NULL
 );
+
+delete from public."Users";
+ALTER TABLE public."Users" ADD COLUMN iniciales text NOT NULL;
+ALTER TABLE public."Users" ADD COLUMN data jsonb NOT NULL;
 
 
 ALTER TABLE public."Users" OWNER TO postgres;

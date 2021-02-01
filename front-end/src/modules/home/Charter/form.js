@@ -109,9 +109,7 @@ class CharterFrom extends React.Component{
               redondo: false,
               styleredondo: 'display:block',
 
-              SC: '',
-              CC: '',
-              JR: '',
+              folio_papeleta: localStorage.getItem("63dd46ba") + ' ',
 
               agencia: '',
               ciudad: '',

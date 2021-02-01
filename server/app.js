@@ -71,6 +71,8 @@ app.get('/Users/:uuid_user', user_model.getUserById)
 app.post('/Users', user_model.createUser)
 app.put('/Users/:uuid_user', user_model.updateUser) 
 app.delete('/Users/:uuid_user', user_model.deleteUser)
+app.delete('/Users/system/:uuid_user', user_model.deleteSystemUser)
+
 
 
 //DATABASE Travel Agencies

@@ -31,14 +31,14 @@ const getUserById = (request, response) => {
   
   const createUser = (request, response) => {
     if(request.body.hasOwnProperty('name') && request.body.hasOwnProperty('password') && request.body.hasOwnProperty('email') ){
-      const { name, password, email, role } = request.body
+      const { name, password, email, role, iniciales, data } = request.body
       const uuidValue = uuid.v4()
       const pass = encryptPassword(password);
       const dateValue = createDateAsUTC();
       const id = new Date().getTime()%10000000;
 
-      pool.query('INSERT INTO public."Users" (uuid_user, password, name, id_user, email, role, status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', 
-        [uuidValue,  pass, name, id, email, role, 1, dateValue, dateValue], (error, results) => {
+      pool.query('INSERT INTO public."Users" (uuid_user, password, name, id_user, email, role, iniciales, data, status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', 
+        [uuidValue,  pass, name, id, email, role, iniciales, data, 1, dateValue, dateValue], (error, results) => {
         if (error) {
           throw error
         }
@@ -48,7 +48,7 @@ const getUserById = (request, response) => {
                 "status": 201,
                 "uuid_User": uuidValue,
                 "id_user": id,
-                name, email, role, pass,
+                name, email, role, pass,iniciales,
                 "created_at": dateValue,
                 "updated_at": dateValue
             }
@@ -64,14 +64,14 @@ const getUserById = (request, response) => {
   
   const updateUser = (request, response) => {
     const uuid = request.params.uuid_user
-    const { name, password, email, role } = request.body
+    const { name, password, email, role, iniciales } = request.body
     const dateValue = createDateAsUTC();
     
     if(request.body.hasOwnProperty('name') && request.body.hasOwnProperty('password') && request.body.hasOwnProperty('email') ){
         const pass = encryptPassword(password);
         pool.query(
-            'UPDATE  public."Users" set name = $2, password = $3, email = $4, role = $5, updated_at = $6  where uuid_user = $1', 
-            [uuid, name, pass, email, role, dateValue],
+            'UPDATE  public."Users" set name = $2, password = $3, email = $4, role = $5, iniciales = $6, updated_at = $7  where uuid_user = $1', 
+            [uuid, name, pass, email, role, iniciales, dateValue],
             (error, results) => {
               if (error) {
                 throw error
@@ -80,7 +80,7 @@ const getUserById = (request, response) => {
                 {
                 "status": 200,
                 "uuid_user": uuid,
-                name, email, role,
+                name, email, role, iniciales,
                 "updated_at": dateValue
                }
             )
@@ -112,6 +112,21 @@ const getUserById = (request, response) => {
        })
     })
   }
+
+  const deleteSystemUser = (request, response) => {
+    const uuid = request.params.uuid_user
+    
+    pool.query('delete from public."Users" where uuid_user = $1', 
+    [uuid], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send({
+        "status": 200,  
+        "uuid_user": uuid
+       })
+    })
+  }
   
   module.exports = {
     getUsers,
@@ -119,4 +134,5 @@ const getUserById = (request, response) => {
     createUser,
     updateUser,
     deleteUser,
+    deleteSystemUser,
   }

@@ -34,6 +34,7 @@ class CuponForm extends React.Component{
                 usuarios: [],
                 open: true,
                 name: '', 
+                iniciales: '',
                 role: '', 
                 correo: '',
                 password: '',
@@ -88,6 +89,7 @@ class CuponForm extends React.Component{
           this.setState({correo: row.email})
           this.setState({role: row.role})
           this.setState({password: row.password})
+          this.setState({iniciales: row.iniciales})
         }
 
         limpiarSTATE(){
@@ -95,6 +97,7 @@ class CuponForm extends React.Component{
           this.setState({name: ''})
           this.setState({correo: ''})
           this.setState({role: ''})
+          this.setState({iniciales: ''})
         }
 
         handleChange = (evt) => {
@@ -113,7 +116,12 @@ class CuponForm extends React.Component{
                 "password": document.getElementById("password").value,
                 "email": document.getElementById("correo").value,
                 "role": document.getElementById("role").value,
+                "iniciales": document.getElementById("iniciales").value,
+                "data": {}, //in case we need more data
             }
+
+            console.log(data)
+            
 
             if(this.state.UUID === ''){
                 API.post(`/Users/`, data).then(res => {
@@ -168,7 +176,8 @@ class CuponForm extends React.Component{
                       row.name,
                       row.email,
                       row.role,
-                      row.password
+                      row.password,
+                      row.iniciales
                     )))
                   
 
@@ -185,8 +194,8 @@ class CuponForm extends React.Component{
 
 
         // Generate Order Data
-        addTableData(UUID, name, email, role, password) {
-          return {UUID, name, email, role,password};
+        addTableData(UUID, name, email, role, password, iniciales) {
+          return {UUID, name, email, role,password,iniciales};
         }
 
     
@@ -259,6 +268,18 @@ render(){
                   fullWidth
                 />
 
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="iniciales"
+                  label="Iniciales"
+                  name="iniciales"
+                  value={this.state.iniciales}
+                  onChange={this.handleChange}
+                  type="text"
+                  fullWidth
+                />
+
 
 
 
@@ -281,7 +302,8 @@ render(){
             
             <TableCell align="right">Nombre</TableCell>
             <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Role</TableCell>            
+            <TableCell align="right">Role</TableCell>
+            <TableCell align="right">Iniciales</TableCell>            
           </TableRow>
 
           
@@ -295,6 +317,7 @@ render(){
               <TableCell align="right">{row.name}</TableCell>
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right">{row.role}</TableCell>
+              <TableCell align="right">{row.iniciales}</TableCell>
               
               {/* Edit */}
               <TableCell align="right">
