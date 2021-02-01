@@ -113,6 +113,7 @@ class CharterFrom extends React.Component{
 
               agencia: '',
               ciudad: '',
+              incluye: '',
 
               observaciones: '',
               confirmadopor: '',
@@ -262,14 +263,15 @@ class CharterFrom extends React.Component{
                       "uuid_hotel": val_uuid_hotel === undefined ? this.state.hotel_uuid : val_uuid_hotel,
                       "uuid_agencia": val_uuid_agencia === undefined ? this.state.agencia_uuid : val_uuid_agencia,
                       "folio_papeleta": document.getElementById("folio_papeleta").value,
-                  "fecha_salida": document.getElementById("fecha_salida").value,
-                  "fecha_regreso": document.getElementById("fecha_regreso").value,
+                      "fecha_salida": document.getElementById("fecha_salida").value,
+                      "fecha_regreso": document.getElementById("fecha_regreso").value,
                       "aborda": document.getElementById("aborda").value,
-                      "adultos_junios": document.getElementById("sgl-habitaciones").value,
-                      "menores_cargo": document.getElementById("dbl-habitaciones").value,
-                      "menosres_sincargo": document.getElementById("cpl-habitaciones").value,
+                      "adultos_juniors": document.getElementById("adultos_juniors").value,
+                      "menores_cargo": document.getElementById("menores_cargo").value,
+                      "menores_sin_cargo": document.getElementById("menores_sin_cargo").value,
                       "ciudad": document.getElementById("ciudad").value,
-                      "clave": document.getElementById("clave").value,
+                      "clave": document.getElementById("folio_papeleta").value,
+                      "incluye": document.getElementById("incluye").value,
                       "OBSERVACIONES": document.getElementById("observaciones").value,
                 }
             }
@@ -282,7 +284,16 @@ class CharterFrom extends React.Component{
                 try{
                  console.log(res.data)
                  window.location.href =  `/Charter?id=${res.data.uuid_charter}`; 
-                  //UUID, Folio, FolioPapeleta, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
+                  
+                 this.addTableData(
+                  res.res.data.uuid_charter,
+                  res.data.folio_papeleta,
+                  res.cliente.nombre,
+                  res.data.fecha_salida, 
+                  res.travelagency.nombre, 
+                  res.hotel.nombre
+                )
+
                   // this.addTableData(res.data.uuid_charter, 
                   //                   res.data.uuid_charter.split('-')[2]+'-'+res.data.uuid_charter.split('-')[3],
                   //                   res.data.data.folio,
@@ -366,14 +377,14 @@ class CharterFrom extends React.Component{
         seleccionarElemento(row){
           
 
-          API.get(`/Cupon/${row.UUID}`)
+          API.get(`/charters/${row.UUID}`)
               .then(res => {
                 if (res.status === 200) {
                   
                   res = res.data[0]
-                  console.log(row)
+                  console.log(res)
                   this.setState({UUID: row.UUID});
-                  this.setState({folio_papeleta: res.FolioPapeleta});
+                  this.setState({folio_papeleta: row.FolioPapeleta});
                   
                   this.setState({cliente: res.cliente.nombre});
                   this.setState({cliente_uuid: res.data.uuid_cliente});
@@ -382,24 +393,33 @@ class CharterFrom extends React.Component{
                   this.setState({hotel_uuid: res.data.uuid_hotel});
 
                   
-                  this.setState({fecha_entrada: res.data.fecha_entrada});
+                  
                   this.setState({fecha_salida: res.data.fecha_salida});
+                  this.setState({fecha_regreso: res.data.fecha_regreso});
+                  if(res.data.fecha_regreso !== ""){
+                    this.setState({redondo: true})
+                  }else{
+                    this.setState({redondo: false})
+                  }
                   this.setState({total_venta: res.data.Total_Venta});
-                  this.setState({numero_habitaciones: res.data_rooms.numero_habitaciones});
-                  this.setState({SGL: res.data_rooms.adultos.SGL});
-                  this.setState({DBL: res.data_rooms.adultos.DBL});
-                  this.setState({CPL: res.data_rooms.adultos.CPL});
 
-                  this.setState({SC: res.data_rooms.menores.SC});
-                  this.setState({CC: res.data_rooms.menores.CC});
-                  this.setState({JR: res.data_rooms.menores.JR});
+                  
+              
+
+
+                  this.setState({adultos: res.data.adultos_juniors});
+                  this.setState({sin_cargo: res.data.menores_sin_cargo});
+                  this.setState({con_cargo: res.data.menores_cargo});
+
 
                   this.setState({agencia: res.travelagency.nombre});
-                  this.setState({agencia_uuid: res.data_travelA.uuid_agencia});
+                  this.setState({ciudad: res.travelagency.ciudad});
+                  this.setState({incluye: res.data.incluye});
+                  
+                  
+                  this.setState({agencia_uuid: res.travelagency.uuid_agencia});
 
-                  this.setState({observaciones: res.data_travelA.observaciones});
-                  this.setState({confirmadopor: res.data_travelA.confirmadopor});
-                  this.setState({plancontratado: res.data_travelA.plancontratado});
+                  this.setState({observaciones: res.data.OBSERVACIONES});
 
                 }
 
@@ -422,7 +442,7 @@ class CharterFrom extends React.Component{
 
 render(){
     const { classes } = this.props;
-    const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , redondo, aborda, agencia , ciudad, clave, agencia_uuid,observaciones , cupones, adultos, con_cargo, sin_cargo} = this.state;
+    const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , redondo, aborda, agencia , ciudad, clave, agencia_uuid,observaciones , cupones, adultos, con_cargo, sin_cargo,incluye} = this.state;
 
     return (
         <React.Fragment>
@@ -566,6 +586,7 @@ render(){
           className={classes.input}
           placeholder="No. adultos y juniors"
           value={adultos}
+          id="adultos_juniors"
           inputProps={{ 'aria-label': 'search google maps' }}
         />
         <IconButton type="submit" className={classes.iconButton}   aria-label="search">
@@ -581,6 +602,7 @@ render(){
           className={classes.input}
           placeholder="No. Menores con cargo"
           value={con_cargo}
+          id="menores_cargo"
           inputProps={{ 'aria-label': 'search google maps' }}
         />
         <IconButton type="submit" className={classes.iconButton} aria-label="search">
@@ -595,6 +617,7 @@ render(){
           className={classes.input}
           placeholder="No. Menores sin cargo"
           value={sin_cargo}
+          id="menores_sin_cargo"
           inputProps={{ 'aria-label': 'search google maps' }}
         />
         <IconButton type="submit" className={classes.iconButton} aria-label="search">
@@ -609,10 +632,10 @@ render(){
               <Select
               autoFocus
                 labelId="demo-simple-select-helper-label"
-                id="aborda"
-                value={aborda}
+                id="incluye"
+                value={incluye}
                 onChange={this.handleChange}
-                label="ABORDA Y  HORA"
+                label="Incluye"
                 fullWidth
                 >
                 <MenuItem value={10}>INCLUYE DESAYUNO EN RESTAURANT ROSITA EN NVR.</MenuItem>
