@@ -64,6 +64,7 @@ class CharterDialog extends React.Component{
             if (res.status === 200) {
                
                 this.setState({charter_data: res.data[0]})
+                var res = res.data[0]
 
               //   [
               //     {
@@ -110,24 +111,21 @@ class CharterDialog extends React.Component{
               // ]
                 
   
-                // var data = res.data[0]
+                this.setState({PAPELETA: res.data.folio_papeleta})
+                this.setState({CLAVE: res.data.clave})
+                
+                this.setState({CLIENTE_NOMBRE: res.cliente.nombre})
+                this.setState({HOTEL_DESTINO: res.hotel.nombre})
+                this.setState({FECHA_SALIDA: res.data.fecha_salida})
+                this.setState({FECHA_REGRESO: res.data.fecha_regreso})                
+                // ABORDA
+                this.setState({TRAVELAGENCY_NOMBRE: res.travelagency.nombre})
+                this.setState({TRAVELAGENCY_CIUDAD: res.travelagency.ciudad})
+                // INCLUYE
+                this.setState({OBSERVACIONES: res.data.OBSERVACIONES})                
                 
                 
-
-                // this.setState({receiptId: data.uuid_receipt.split('-')[2]+'-'+data.uuid_receipt.split('-')[3]})
-                // this.setState({nombre: data.cliente.nombre})
-                // this.setState({cantidad: data.data.cantidad})
-                // this.setState({concepto: "Concepto"})
                 
-                // this.setState({reservacion: "SERVICIO"})
-                // this.setState({DEPOSITO_EN_GARANTIA: data.data.cantidad})
-                // this.setState({forma_pago: data.data.forma_pago})
-                // this.setState({importe_total: ""})
-                // this.setState({PAGOS_REGISTRADOS: ""})
-                // this.setState({SALDO_PENDIENTE: ''})
-                // this.setState({DESCRIPCION_DEL_SERVICO: ''})
-
-                // console.log(data)
             }
           })
 
@@ -221,11 +219,15 @@ class CharterDialog extends React.Component{
 
       if(open){
 
-    var {  nombre, receiptId, cantidad, concepto, CANTIDAD_EN_LETRA, DEPOSITO_EN_GARANTIA, reservacion, forma_pago, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE, DESCRIPCION_DEL_SERVICO } = this.state
+    var {  PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
+      TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, CLAVE , INCLUYE, OBSERVACIONES } = this.state
 
     
   
-    var receipt = PreviewHTML;
+    var receipt = PreviewHTML.setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, 
+                                  FECHA_REGRESO, ABORDA, TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, 
+                                  CLAVE , INCLUYE, OBSERVACIONES);
+      // var receipt = PreviewHTML.HTML;
         return(
           <div> 
 
