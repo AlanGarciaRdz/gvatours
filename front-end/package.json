@@ -30,7 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploys": "ENVIRONMENT=production react-scripts build && cp .htaccess-needed-host ./build/.htaccess && scp  -i \"~/Documents/alan/gvatours/gvatours.pem\" -r ./build/* ec2-user@52.7.16.247:/var/www/html/",
-    "deploy": "ENVIRONMENT=production react-scripts build && cp .htaccess-needed-host ./build/.htaccess && rsync -av --progress -e \"ssh -i \"~/Documents/alan/gvatours/gvatours.pem\"\" -r ./build/* ec2-user@52.7.16.247:/var/www/html/"
+    "deploy": "ENVIRONMENT=production react-scripts build && cp .htaccess-needed-host ./build/.htaccess && rsync -rave --progress -e \"ssh -i \"~/Documents/alan/gvatours/gvatours.pem\"\" -r ./build/* ec2-user@52.7.16.247:/var/www/html/"
   },
   "eslintConfig": {
     "extends": "react-app"

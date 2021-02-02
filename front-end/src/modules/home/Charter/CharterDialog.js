@@ -18,7 +18,7 @@ import { jsPDF } from "jspdf";
 import charter from '../../../images/charter'
 
 import CharterPDF from '../../../utils/CharterPDF';
-import charterHTML from './pdf_html'
+import PreviewHTML from './charter_html'
 
 
 import API from "../../../utils/API";
@@ -44,50 +44,90 @@ class CharterDialog extends React.Component{
    constructor(props){
       super(props)
       this.state = {
-        // open: true,
-        // cupon: ``,
-        // receipt_data: null,
-        // email: "agarcia@prueba.com", name: "alan", receiptId: "receiptId", cantidad:"cantidad", CANTIDAD_EN_LETRA:"CANTIDAD_EN_LETRA", DEPOSITO_EN_GARANTIA:"DEPOSITO_EN_GARANTIA", reservacion:"reservacion", forma_pago:"forma_pago", importe_total:"importe_total", PAGOS_REGISTRADOS:"PAGOS_REGISTRADOS", SALDO_PENDIENTE:"SALDO_PENDIENTE", DESCRIPCION_DEL_SERVICO:"DESCRIPCION_DEL_SERVICO"
         open: true,
         receipt: ``,
-        receipt_data: null
+        charter_data: null
       }
 
 
       this.handleClickOpen = this.handleClickOpen.bind(this);
       this.handleClose = this.handleClose.bind(this);
-      this.getReceiptData = this.getReceiptData.bind(this);
+      this.getCharterData = this.getCharterData.bind(this);
     }
 
 
-    getReceiptData = () =>{
+    getCharterData = () =>{
           
 
-      API.get(`/Receipts/${queryString.parse(this.props.location.search).id}`)
+      API.get(`/Charters/${queryString.parse(this.props.location.search).id}`)
           .then(res => {
             if (res.status === 200) {
                
-                this.setState({receipt_data: res.data[0]})
-                console.log(this.state.receipt_data)
+                this.setState({charter_data: res.data[0]})
 
-                var data = res.data[0]
+              //   [
+              //     {
+              //         "uuid_charter": "36958a62-a7c3-49f6-83df-54d3e3959c22",
+              //         "id_charter": 1191785,
+              //         "data": {
+              //             "clave": "AD  1241243",
+              //             "ciudad": "test",
+              //             "uuid_hotel": "c2a2359d-80b0-4058-8aa7-1443665af778",
+              //             "fecha_salida": "",
+              //             "uuid_agencia": "dd2e53a5-866b-43b9-b836-1ce79b31f8c5",
+              //             "uuid_cliente": "d0f72adb-6f92-4eab-a927-24932193286c",
+              //             "OBSERVACIONES": "observo",
+              //             "fecha_regreso": "",
+              //             "menores_cargo": "2",
+              //             "folio_papeleta": "AD  1241243",
+              //             "adultos_juniors": "1",
+              //             "menores_sin_cargo": "3"
+              //         },
+              //         "status": "1",
+              //         "created_at": "2021-01-31T06:00:00.000Z",
+              //         "updated_at": "2021-01-31T06:00:00.000Z",
+              //         "hotel": {
+              //             "correo": "cabanas@guayabitos.com",
+              //             "nombre": "Las Cabanas del Capitan2",
+              //             "destino": "Rincón de Guayabitos",
+              //             "telefono": "327 274 0304",
+              //             "direccion": "Rtno. Jacarandas 88, Rincón de Guayabitos, 63724 Rincón de Guayabitos, Nay."
+              //         },
+              //         "cliente": {
+              //             "correo": "agarcia@test.com",
+              //             "nombre": "alan_update",
+              //             "telefono": "3316954455",
+              //             "direccion": "dato salida"
+              //         },
+              //         "travelagency": {
+              //             "ciudad": "test",
+              //             "correo": "test",
+              //             "nombre": "nueva agencia",
+              //             "contacto": "test",
+              //             "telefono": "test"
+              //         }
+              //     }
+              // ]
+                
+  
+                // var data = res.data[0]
                 
                 
 
-                this.setState({receiptId: data.uuid_receipt.split('-')[2]+'-'+data.uuid_receipt.split('-')[3]})
-                this.setState({nombre: data.cliente.nombre})
-                this.setState({cantidad: data.data.cantidad})
-                this.setState({concepto: "Concepto"})
+                // this.setState({receiptId: data.uuid_receipt.split('-')[2]+'-'+data.uuid_receipt.split('-')[3]})
+                // this.setState({nombre: data.cliente.nombre})
+                // this.setState({cantidad: data.data.cantidad})
+                // this.setState({concepto: "Concepto"})
                 
-                this.setState({reservacion: "SERVICIO"})
-                this.setState({DEPOSITO_EN_GARANTIA: data.data.cantidad})
-                this.setState({forma_pago: data.data.forma_pago})
-                this.setState({importe_total: ""})
-                this.setState({PAGOS_REGISTRADOS: ""})
-                this.setState({SALDO_PENDIENTE: ''})
-                this.setState({DESCRIPCION_DEL_SERVICO: ''})
+                // this.setState({reservacion: "SERVICIO"})
+                // this.setState({DEPOSITO_EN_GARANTIA: data.data.cantidad})
+                // this.setState({forma_pago: data.data.forma_pago})
+                // this.setState({importe_total: ""})
+                // this.setState({PAGOS_REGISTRADOS: ""})
+                // this.setState({SALDO_PENDIENTE: ''})
+                // this.setState({DESCRIPCION_DEL_SERVICO: ''})
 
-                console.log(data)
+                // console.log(data)
             }
           })
 
@@ -110,9 +150,7 @@ class CharterDialog extends React.Component{
 
 
   componentDidMount(){
-
-  //  this.getReceiptData()
-
+    this.getCharterData()
   }
 
   
@@ -124,28 +162,16 @@ class CharterDialog extends React.Component{
       total_adultos_junior, menores_cargo, menores_sincargo, 
       agencia, ciudad, telefono, clave_reservacion, contacto, 
       observaciones, detalles}  = this.state
-    //var { receiptId, DESTINO, HOTEL, DIRECCION_HOTEL, TELEFONO_HOTEL, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES, NOMBRE_PASAJERO, TOTAL_PAGADO, NUM_HABITACIONES, NOMBRE_AGENCIA,  NUM_SGL, NUM_DBL, NUM_TPL,  NUM_CPL,  CIUDAD_AGENCIA, MEN_CC, MEN_SC,  MEN_JR, TELEFONO_AGENCIA, PLAN_CONTRATADO, CONTACTO_AGENCIA,  CONFIRMADO_POR, OBSERVACIONES, CLAVE } = this.state
-        ///https://artskydj.github.io/jsPDF/docs/jsPDF.html
-        const doc = new jsPDF('p', 'pt', 'letter');
+      const doc = new jsPDF('p', 'pt', 'letter');
         
-        CharterPDF.Header(doc, receiptId, cantidad)
+      CharterPDF.Header(doc, receiptId, cantidad)
 
-        CharterPDF.Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horario, 
-          total_adultos_junior, menores_cargo, menores_sincargo, 
-          agencia, ciudad, telefono, clave_reservacion, contacto, 
-          observaciones, detalles)
+      CharterPDF.Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horario, 
+        total_adultos_junior, menores_cargo, menores_sincargo, 
+        agencia, ciudad, telefono, clave_reservacion, contacto, 
+        observaciones, detalles)
 
-        CharterPDF.pieCharter(doc)
-
-        
-
-        // CharterPDF.FormaPago(doc, forma_pago)
-
-        // CharterPDF.PagosRegistrados(doc, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE)
-
-        // CharterPDF.Fecha(doc, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES)
-        // CharterPDF.Cliente(doc, NOMBRE_PASAJERO, TOTAL_PAGADO)
-        // CharterPDF.Cuadros(doc, NUM_HABITACIONES, NOMBRE_AGENCIA,  NUM_SGL, NUM_DBL, NUM_TPL,  NUM_CPL,  CIUDAD_AGENCIA, MEN_CC, MEN_SC,  MEN_JR, TELEFONO_AGENCIA, PLAN_CONTRATADO, CONTACTO_AGENCIA,  CONFIRMADO_POR, OBSERVACIONES, CLAVE);
+      CharterPDF.pieCharter(doc)
 
         doc.save(`${receiptId}.pdf`);
     
@@ -199,7 +225,7 @@ class CharterDialog extends React.Component{
 
     
   
-    var receipt = charterHTML;
+    var receipt = PreviewHTML;
         return(
           <div> 
 
@@ -221,7 +247,7 @@ class CharterDialog extends React.Component{
               </Toolbar>
             </AppBar>
             
-            <div dangerouslySetInnerHTML={{ __html: receipt}} />,
+            <div className="previewHTML" dangerouslySetInnerHTML={{ __html: receipt}} />,
             
           </Dialog>
         </div>

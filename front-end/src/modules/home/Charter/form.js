@@ -1,6 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -22,9 +20,6 @@ import RemoveIcon from '@material-ui/icons/Remove';
 
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
-
-// https://material-ui.com/components/text-fields/
-// search google maps
 
 import AutocompleteHotel from '../../core/AutocompleteHotel';
 import AutocompleteAgency from '../../core/AutocompleteAgency';
@@ -279,11 +274,9 @@ class CharterFrom extends React.Component{
             // console.log(cupondata)
 
             if(this.state.UUID === ''){
-              console.log("cupon")
               API.post(`/Charters/`, cupondata).then(res => {
                 try{
-                 console.log(res.data)
-                 window.location.href =  `/Charter?id=${res.data.uuid_charter}`; 
+                window.location.href =  `/Charter?id=${res.data.uuid_charter}`; 
                   
                  this.addTableData(
                   res.res.data.uuid_charter,
