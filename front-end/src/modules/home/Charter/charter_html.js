@@ -1,15 +1,9 @@
 import charter from '../../../images/charter'
 
-var {PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
-	TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, CLAVE , INCLUYE, OBSERVACIONES } = "";
-
-
-
-
 
 	
 function setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
-	TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, CLAVE , INCLUYE, OBSERVACIONES ) {
+	TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, CLAVE , INCLUYE, OBSERVACIONES , adultos_juniors, menores_cargo, menores_sin_cargo ) {
 		this.PAPELETA = PAPELETA;
 
 		return `<div style="padding: 2% 15%;">
@@ -79,8 +73,8 @@ function setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FEC
 		   </table>
 		   &nbsp;
 		</div>
-		<div class="datos_contratante_div">
-		   <table class="tabla_encabezado_color">
+		<div class="datos_contratante_charter">
+		   <table class="tabla_encabezado_charter">
 			  <tbody>
 				 <tr class="encabezado">
 					<td style="border-bottom: none;">FECHA SALIDA</td>
@@ -96,15 +90,15 @@ function setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FEC
 		   </table>
 		</div>
 		<!-- personas -->
-		<table style="height: 29px;" width="430">
+		<table style="height: 29px;" width="80%" id="personas">
 		   <tbody>
 			  <tr>
-				 <td style="width: 65px;">No. ADULTOS Y JUNIORS</td>
-				 <td style="width: 65px;">&nbsp;</td>
-				 <td style="width: 65px;">No. MENORES CON CARGO</td>
-				 <td style="width: 65px;">&nbsp;</td>
-				 <td style="width: 65px;">No. MENORES SIN CARGO</td>
-				 <td style="width: 65px;">&nbsp;</td>
+				 <td class="titulo" style="">No. ADULTOS Y JUNIORS</td>
+				 <td class="num_personas" style="">${adultos_juniors}</td>
+				 <td class="titulo" style="">No. MENORES CON CARGO</td>
+				 <td class="num_personas" style="">${menores_cargo}</td>
+				 <td class="titulo" style="">No. MENORES SIN CARGO</td>
+				 <td class="num_personas" style="">${menores_sin_cargo}</td>
 			  </tr>
 		   </tbody>
 		</table>
@@ -183,24 +177,25 @@ function setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FEC
 		</div>
 		<!-- footer -->
 		<DIV id="charter_footer">
-		   <P class="">Los puntos de Salida son:</P>
-		   <P class="">5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)</P>
-		   <P class="">6:00 am Plaza Forum sobre Blvd Tlaquepaque</P>
-		   <P class="">7:00 am Minerva Frente al Hotel Fiesta Americana Minerva</P>
-		   <P class="">7:15 am Central Zapopan en Oxxo y Pollo Pepe</P>
-		   <P class="">Se les pide estar 30 min antes para su registro</P>
-		   <P class=""">
+		   <P class="footer_texto">Los puntos de Salida son:</P>
+		   <P class="footer_texto">5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)</P>
+		   <P class="footer_texto">6:00 am Plaza Forum sobre Blvd Tlaquepaque</P>
+		   <P class="footer_texto">7:00 am Minerva Frente al Hotel Fiesta Americana Minerva</P>
+		   <P class="footer_texto">7:15 am Central Zapopan en Oxxo y Pollo Pepe</P>
+		   <P class="footer_texto">Se les pide estar 30 min antes para su registro</P>
+		   <P class="footer_texto_centrado">
 			  TELEFONO DE EMERGENCIA EN LA SALIDA 
 			  <NOBR>333-808-6093</NOBR>
-			  CON GUSTAVO JAUREGUI
+			  
 		   </P>
-		   <P class=""">FAVOR DE PRESENTARSE 30 MINUTOS ANTE DE SU SALIDA</P>
-		   <P class=""">
+		   <P class="footer_texto_centrado">CON GUSTAVO JAUREGUI</P>
+		   <P class="footer_texto_centrado">FAVOR DE PRESENTARSE 30 MINUTOS ANTE DE SU SALIDA</P>
+		   <P class="footer_texto_centrado">
 			  Av. Fidel Velazquez 
 			  <NOBR>#643-A,</NOBR>
 			  Col. Santa Elena Alcande., Cp.P. 44230, Guadalajara, Jal.
 		   </P>
-		   <P class=""">Tel. (33) 3631 3036 con 10 líneas</P>
+		   <P class="footer_texto_centrado">Tel. (33) 3631 3036 con 10 líneas</P>
 		</DIV>
 	 </div>
 	 </div>

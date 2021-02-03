@@ -40,6 +40,27 @@ table.folio_charter tr:nth-child(even) {
    font-size: 12px;
  }
 
+#personas {
+   padding: 10px 0 10px 0;
+}
+ #personas tr .titulo {
+   background-color: rgb(230, 93, 101);
+   color: white;
+   border-radius: 4px;
+   width:20%;
+ }
+
+ #personas tr .num_personas {
+   width:10%;
+   padding: 10px;
+   border: solid 1px rgb(7, 109, 150);
+   border-radius: 4px;
+   
+   
+ }
+ 
+
+
 
  #header_individual th{
       background-color: rgb(230, 93, 101);
@@ -51,7 +72,7 @@ table.folio_charter tr:nth-child(even) {
    /* background-color: rgb(230, 93, 101); */
    color: black;
    border-radius: 4px;
-   border: solid 1px rgb(7, 109, 150);;
+   border: solid 1px rgb(7, 109, 150);
    padding: 5px;
    padding-left: 15px;
 }
@@ -79,12 +100,30 @@ table.folio_charter tr:nth-child(even) {
    padding-bottom: 120px;
    padding-top: 5px;
 }
-.datos_contratante_div {
+.datos_contratante_charter {
    border: solid 1px rgb(7, 109, 150);
    border-radius: 15px;
-   width: 95%;
-   margin: auto;
+   /* width: 95%; */
+   /* margin: auto; */
 }
+
+table.tabla_encabezado_charter {
+   text-align: center;
+   border-collapse: collapse;
+   border-radius: 1em;
+   table-layout: fixed;
+   width: 80%;
+   /* background: rgb(230, 248, 255); */
+}
+
+table.tabla_encabezado_charter tr.encabezado{
+   border-radius: 1em;
+   table-layout: fixed;
+   background: rgb(230, 93, 101);
+   color: white;
+   /* border-bottom: 2px solid blue; */
+}
+
 table.datos_del_contratante {
   /* margin-left: 15px;
    */
@@ -92,7 +131,7 @@ table.datos_del_contratante {
   /* background-color: rgb(7, 109, 150);
    */
    background-color: rgb(230, 248, 255);
-   width: 97%;
+   /* width: 97%; */
    text-align: left;
    border-collapse: collapse;
 }
@@ -295,4 +334,19 @@ table.reservacion td, table.reservacion th {
 }
 table.reservacion tbody td {
    font-size: 14px;
+}
+
+/* footer */
+#charter_footer{
+   color: rgb(7, 109, 150);
+   font-size: small;
+   
+}
+
+.footer_texto {
+   padding: 5px;
+}
+
+.footer_texto_centrado {
+   text-align: center;
 }

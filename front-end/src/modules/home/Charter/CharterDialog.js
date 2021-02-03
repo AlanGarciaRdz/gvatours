@@ -122,7 +122,15 @@ class CharterDialog extends React.Component{
                 this.setState({TRAVELAGENCY_NOMBRE: res.travelagency.nombre})
                 this.setState({TRAVELAGENCY_CIUDAD: res.travelagency.ciudad})
                 // INCLUYE
-                this.setState({OBSERVACIONES: res.data.OBSERVACIONES})                
+                this.setState({OBSERVACIONES: res.data.OBSERVACIONES})   
+                
+                //pasajeros
+                this.setState({adultos_juniors: res.data.adultos_juniors})   
+                this.setState({menores_cargo: res.data.menores_cargo}) 
+                this.setState({menores_sin_cargo: res.data.menores_sin_cargo}) 
+                 
+
+                
                 
                 
                 
@@ -220,13 +228,13 @@ class CharterDialog extends React.Component{
       if(open){
 
     var {  PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
-      TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, CLAVE , INCLUYE, OBSERVACIONES } = this.state
+      TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, CLAVE , INCLUYE, OBSERVACIONES, adultos_juniors, menores_cargo, menores_sin_cargo } = this.state
 
     
   
     var receipt = PreviewHTML.setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, 
                                   FECHA_REGRESO, ABORDA, TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, 
-                                  CLAVE , INCLUYE, OBSERVACIONES);
+                                  CLAVE , INCLUYE, OBSERVACIONES , adultos_juniors, menores_cargo, menores_sin_cargo);
       // var receipt = PreviewHTML.HTML;
         return(
           <div> 
