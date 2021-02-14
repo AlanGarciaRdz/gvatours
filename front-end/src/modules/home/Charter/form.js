@@ -26,6 +26,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AutocompleteHotel from '../../core/AutocompleteHotel';
 import AutocompleteAgency from '../../core/AutocompleteAgency';
 import AutoCompleteClient from '../../core/AutoCompleteClient';
+import AutocompleteSelect from '../../core/AutocompleteSelect';
 
 import API from "../../../utils/API";
 
@@ -187,6 +188,12 @@ class CharterFrom extends React.Component{
           });
         };
 
+        handleChangeSelect = (evt) => {
+          console.log("---")
+          console.log(evt)
+          console.log("---")
+        }
+
         handleChangeDate = (evt) => {
           moment.lang('es', {
             months: 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
@@ -265,6 +272,13 @@ class CharterFrom extends React.Component{
             ciudad: ciudad }
           )
         }
+
+        updateItem = (item, name) => {
+        
+         this.setState({name: item})
+        console.log(name, item)
+        
+       }
 
    
 
@@ -397,8 +411,34 @@ class CharterFrom extends React.Component{
 
                   // newState.UUID= row.UUID;
                   // newState.folio_papeleta = row.FolioPapeleta
+                  
+                  // let newState = {...this.state}
+                  // newState.UUID = row.UUID;
+                  // newState.folio_papeleta = row.FolioPapeleta;
+                  // newState.cliente = res.cliente.nombre;
+                  // newState.cliente_uuid = res.data.uuid_cliente;
+                  // newState.hotel = res.hotel.nombre;
+                  // newState.hotel_uuid = res.data.uuid_hotel;
+                  // newState.fecha_salida = res.data.fecha_salida;
+                  // newState.fecha_regreso = res.data.fecha_regreso;
+                  // newState.redondo =res.data.redond;
+                  // newState.aborda = res.data.aborda;
+                  // newState.total_venta = res.data.Total_Venta
+                  // newState.adultos = res.data.adultos_juniors
+                  // newState.sin_cargo = res.data.menores_sin_cargo
+                  // newState.con_cargo = res.data.menores_cargo
+                  // newState.agencia = res.travelagency.nombre
+                  // newState.agencia_uuid = res.data.uuid_agencia
+                  // newState.ciudad = res.travelagency.ciudad
+                  // newState.incluye = res.data.incluye
+                  // newState.observaciones = res.data.OBSERVACIONES
 
-                  this.setState({UUID: row.UUID});
+                  
+                  
+                  // this.setState({newState})
+
+                    //  ----- -
+                  // this.setState({UUID: row.UUID});
                   this.setState({folio_papeleta: row.FolioPapeleta});
                   
                   this.setState({cliente: res.cliente.nombre});
@@ -412,12 +452,13 @@ class CharterFrom extends React.Component{
                   this.setState({fecha_regreso: res.data.fecha_regreso});
                   
                   this.setState({redondo:res.data.redondo})
+                  console.log(res.data.redondo)
                   
-                  document.getElementById("redondo").innerHTML = res.data.redondo;
+                  
                   
 
                   this.setState({aborda: res.data.aborda})
-                  document.getElementById("aborda").innerHTML = res.data.aborda;
+                  
 
                   this.setState({total_venta: res.data.Total_Venta});
 
@@ -429,7 +470,7 @@ class CharterFrom extends React.Component{
                   this.setState({agencia_uuid: res.data.uuid_agencia});
                   this.setState({ciudad: res.travelagency.ciudad});
                   this.setState({incluye: res.data.incluye});
-                  document.getElementById("incluye").innerHTML = res.data.incluye;
+                  
 
                   this.setState({observaciones: res.data.OBSERVACIONES});
 
@@ -449,13 +490,15 @@ class CharterFrom extends React.Component{
           this.setState({correo: ''})
           this.setState({ciudad: ''})
           this.setState({direccion: ''})
+          this.setState({redondo: ''})
         }
     
 
 render(){
     const { classes } = this.props;
     const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , redondo, aborda, agencia , ciudad, clave, agencia_uuid,observaciones , charters, adultos, con_cargo, sin_cargo,incluye} = this.state;
-
+    
+    
     
 
     return (
@@ -484,17 +527,24 @@ render(){
 
             <TextField
                  onChange={this.handleChange}  value={ciudad}  name="ciudad"
-                id="ciudad" label="CIUDAD"   type="text" fullWidth
+                id="ciudad" label="CIUDAD"   type="text" margin="dense" fullWidth
               />
 
 
-          <InputLabel id="trans_turistico" className={classes.iconButton}>TRANSPORTE TURISTICO:</InputLabel>
+          
              
+            
+            <InputLabel id="trans_turistico" className={classes.iconButton}>TRANSPORTE TURISTICO:</InputLabel>
             <Select autoFocus labelId="demo-simple-select-helper-label"   name="redondo"
-              id="redondo" value={redondo} onChange={this.handleChange}  label="SENCILLO/ REDONDO"   fullWidth    >
-              <MenuItem value={false}>TRANSPORTE TURISTICO VIAJE SENCILLO</MenuItem>
-              <MenuItem value={true}>TRANSPORTE TURISTICO VIAJE REDONDO</MenuItem>
+              id="redondo" value={redondo ? redondo : ""} onChange={this.handleChange}  
+              label="SENCILLO/ REDONDO"   fullWidth    >
+                <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="TRANSPORTE TURISTICO VIAJE SENCILLO">TRANSPORTE TURISTICO VIAJE SENCILLO</MenuItem>
+              <MenuItem value="TRANSPORTE TURISTICO VIAJE REDONDO">TRANSPORTE TURISTICO VIAJE REDONDO</MenuItem>
             </Select>
+            {/* <AutocompleteSelect value={redondo} name="redondo" label="TRANSPORTE TURISTICO" updateItem={this.updateItem} items={["TRANSPORTE TURISTICO VIAJE SENCILLO", "TRANSPORTE TURISTICO VIAJE REDONDO"]} /> */}
 
 
             <InputLabel className={classes.datepadding}  id="">FECHA DE SALIDA</InputLabel>
@@ -537,13 +587,13 @@ render(){
              <InputLabel id="demo-simple-select-helper-label" className={classes.iconButton}>ABORDA Y HORA</InputLabel>
              
               <Select
-              autoFocus  labelId="aborda" id="aborda"
-                value={aborda}  onChange={this.handleChange}  label="ABORDA Y  HORA" fullWidth
+              autoFocus  labelId="aborda" id="aborda" name="aborda"
+                value={aborda ? aborda : ""}  onChange={this.handleChange}  label="ABORDA Y  HORA" fullWidth
                 >
-                <MenuItem value={10}>5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)</MenuItem>
-                <MenuItem value={20}>6:00 am Plaza Forum sobre Blvd Tlaquepaque</MenuItem>
-                <MenuItem value={30}>7:00 am Minerva Frente al Hotel Fiesta Americana Minerva</MenuItem>
-                <MenuItem value={40}>7:15 am Central Zapopan en Oxxo y Pollo Pepe</MenuItem>
+                <MenuItem value="5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)">5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)</MenuItem>
+                <MenuItem value="6:00 am Plaza Forum sobre Blvd Tlaquepaque">6:00 am Plaza Forum sobre Blvd Tlaquepaque</MenuItem>
+                <MenuItem value="7:00 am Minerva Frente al Hotel Fiesta Americana Minerva">7:00 am Minerva Frente al Hotel Fiesta Americana Minerva</MenuItem>
+                <MenuItem value="7:15 am Central Zapopan en Oxxo y Pollo Pepe">7:15 am Central Zapopan en Oxxo y Pollo Pepe</MenuItem>
               </Select>
           
       <InputLabel id="demo-simple-select-helper-label" className={classes.iconButton}>No. adultos y juniors</InputLabel>
@@ -593,9 +643,9 @@ render(){
                 name="incluye"  onChange={this.handleChange}  label="Incluye"
                 fullWidth
               >
-                <MenuItem value={"rosita"} >INCLUYE DESAYUNO EN RESTAURANT ROSITA EN NVR.</MenuItem>
-                <MenuItem value={"pera"} >INCLUYE DESAYUNO EN COCINA PERA EN GDL</MenuItem>  
-                <MenuItem value={"no_incluye"} >NO INCLUYE</MenuItem>
+                <MenuItem value="INCLUYE DESAYUNO EN RESTAURANT ROSITA EN NVR.">INCLUYE DESAYUNO EN RESTAURANT ROSITA EN NVR.</MenuItem>
+                <MenuItem value="INCLUYE DESAYUNO EN COCINA PERA EN GDL">INCLUYE DESAYUNO EN COCINA PERA EN GDL</MenuItem>  
+                <MenuItem value="NO INCLUYE" >NO INCLUYE</MenuItem>
               </Select>
 
 
