@@ -101,7 +101,11 @@ class CuponForm extends React.Component{
         }
 
         handleChange = (evt) => {
-          const value = evt.target.value;
+          let value = evt.target.value;
+
+          if(evt.target.name === "role"){
+            value = 1
+          }
           this.setState({
             ...this.state,
             [evt.target.name]: value
@@ -260,7 +264,7 @@ render(){
                   autoFocus
                   margin="dense"
                   id="role"
-                  label="Rol"
+                  label="Permisios de Sistema 1 = Administrador  2 = Usuario"
                   name="role"
                   value={this.state.role}
                   onChange={this.handleChange}

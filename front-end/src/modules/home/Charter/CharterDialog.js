@@ -66,73 +66,74 @@ class CharterDialog extends React.Component{
                 this.setState({charter_data: res.data[0]})
                 var res = res.data[0]
 
-              //   [
-              //     {
-              //         "uuid_charter": "36958a62-a7c3-49f6-83df-54d3e3959c22",
-              //         "id_charter": 1191785,
-              //         "data": {
-              //             "clave": "AD  1241243",
-              //             "ciudad": "test",
-              //             "uuid_hotel": "c2a2359d-80b0-4058-8aa7-1443665af778",
-              //             "fecha_salida": "",
-              //             "uuid_agencia": "dd2e53a5-866b-43b9-b836-1ce79b31f8c5",
-              //             "uuid_cliente": "d0f72adb-6f92-4eab-a927-24932193286c",
-              //             "OBSERVACIONES": "observo",
-              //             "fecha_regreso": "",
-              //             "menores_cargo": "2",
-              //             "folio_papeleta": "AD  1241243",
-              //             "adultos_juniors": "1",
-              //             "menores_sin_cargo": "3"
-              //         },
-              //         "status": "1",
-              //         "created_at": "2021-01-31T06:00:00.000Z",
-              //         "updated_at": "2021-01-31T06:00:00.000Z",
-              //         "hotel": {
-              //             "correo": "cabanas@guayabitos.com",
-              //             "nombre": "Las Cabanas del Capitan2",
-              //             "destino": "Rincón de Guayabitos",
-              //             "telefono": "327 274 0304",
-              //             "direccion": "Rtno. Jacarandas 88, Rincón de Guayabitos, 63724 Rincón de Guayabitos, Nay."
-              //         },
-              //         "cliente": {
-              //             "correo": "agarcia@test.com",
-              //             "nombre": "alan_update",
-              //             "telefono": "3316954455",
-              //             "direccion": "dato salida"
-              //         },
-              //         "travelagency": {
-              //             "ciudad": "test",
-              //             "correo": "test",
-              //             "nombre": "nueva agencia",
-              //             "contacto": "test",
-              //             "telefono": "test"
-              //         }
-              //     }
-              // ]
+                //   [
+                //     {
+                //         "uuid_charter": "36958a62-a7c3-49f6-83df-54d3e3959c22",
+                //         "id_charter": 1191785,
+                //         "data": {
+                //             "clave": "AD  1241243",
+                //             "ciudad": "test",
+                //             "uuid_hotel": "c2a2359d-80b0-4058-8aa7-1443665af778",
+                //             "fecha_salida": "",
+                //             "uuid_agencia": "dd2e53a5-866b-43b9-b836-1ce79b31f8c5",
+                //             "uuid_cliente": "d0f72adb-6f92-4eab-a927-24932193286c",
+                //             "OBSERVACIONES": "observo",
+                //             "fecha_regreso": "",
+                //             "menores_cargo": "2",
+                //             "folio_papeleta": "AD  1241243",
+                //             "adultos_juniors": "1",
+                //             "menores_sin_cargo": "3"
+                //         },
+                //         "status": "1",
+                //         "created_at": "2021-01-31T06:00:00.000Z",
+                //         "updated_at": "2021-01-31T06:00:00.000Z",
+                //         "hotel": {
+                //             "correo": "cabanas@guayabitos.com",
+                //             "nombre": "Las Cabanas del Capitan2",
+                //             "destino": "Rincón de Guayabitos",
+                //             "telefono": "327 274 0304",
+                //             "direccion": "Rtno. Jacarandas 88, Rincón de Guayabitos, 63724 Rincón de Guayabitos, Nay."
+                //         },
+                //         "cliente": {
+                //             "correo": "agarcia@test.com",
+                //             "nombre": "alan_update",
+                //             "telefono": "3316954455",
+                //             "direccion": "dato salida"
+                //         },
+                //         "travelagency": {
+                //             "ciudad": "test",
+                //             "correo": "test",
+                //             "nombre": "nueva agencia",
+                //             "contacto": "test",
+                //             "telefono": "test"
+                //         }
+                //     }
+                // ]
+                  
                 
-  
                 this.setState({PAPELETA: res.data.folio_papeleta})
-                this.setState({CLAVE: res.data.clave})
+                
                 
                 this.setState({CLIENTE_NOMBRE: res.cliente.nombre})
                 this.setState({HOTEL_DESTINO: res.hotel.nombre})
                 this.setState({FECHA_SALIDA: res.data.fecha_salida})
-                this.setState({FECHA_REGRESO: res.data.fecha_regreso})                
+                this.setState({FECHA_REGRESO: res.data.fecha_regreso})   
                 // ABORDA
-                this.setState({TRAVELAGENCY_NOMBRE: res.travelagency.nombre})
-                this.setState({TRAVELAGENCY_CIUDAD: res.travelagency.ciudad})
-                // INCLUYE
-                this.setState({OBSERVACIONES: res.data.OBSERVACIONES})   
-                
+                this.setState({ABORDA: res.data.aborda})   
                 //pasajeros
                 this.setState({adultos_juniors: res.data.adultos_juniors})   
                 this.setState({menores_cargo: res.data.menores_cargo}) 
-                this.setState({menores_sin_cargo: res.data.menores_sin_cargo}) 
-                 
+                this.setState({menores_sin_cargo: res.data.menores_sin_cargo})             
+                
+                this.setState({TRAVELAGENCY_NOMBRE: res.travelagency.nombre})
+                this.setState({TRAVELAGENCY_CIUDAD: res.travelagency.ciudad})
 
+                this.setState({CLAVE: res.data.folio_papeleta})
+                // INCLUYE
+                this.setState({INCLUYE: res.data.incluye})   
                 
-                
-                
+                this.setState({redondo: res.data.redondo})   
+                this.setState({OBSERVACIONES: res.data.OBSERVACIONES})   
                 
             }
           })
@@ -162,24 +163,26 @@ class CharterDialog extends React.Component{
   
 
   GeneratePDF = () => {
-    var {  nombre, receiptId, cantidad, concepto, CANTIDAD_EN_LETRA, DEPOSITO_EN_GARANTIA, reservacion, forma_pago, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE, DESCRIPCION_DEL_SERVICO } = this.state
+    var {  receiptId, cantidad } = this.state
 
-    var { hotel, fecha_salida, fecha_regreso, aborda_horario, 
-      total_adultos_junior, menores_cargo, menores_sincargo, 
-      agencia, ciudad, telefono, clave_reservacion, contacto, 
-      observaciones, detalles}  = this.state
+    var { PAPELETA , CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
+      adultos_juniors, menores_cargo, menores_sin_cargo,
+      TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE,
+      redondo, OBSERVACIONES} = this.state 
+
+    
       const doc = new jsPDF('p', 'pt', 'letter');
         
-      CharterPDF.Header(doc, receiptId, cantidad)
+      CharterPDF.Header(doc, PAPELETA, cantidad)
 
-      CharterPDF.Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horario, 
-        total_adultos_junior, menores_cargo, menores_sincargo, 
-        agencia, ciudad, telefono, clave_reservacion, contacto, 
-        observaciones, detalles)
+      CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
+        adultos_juniors, menores_cargo, menores_sin_cargo, 
+        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE, 
+        redondo, OBSERVACIONES)
 
       CharterPDF.pieCharter(doc)
 
-        doc.save(`${receiptId}.pdf`);
+        doc.save(`${PAPELETA}.pdf`);
     
   }
 

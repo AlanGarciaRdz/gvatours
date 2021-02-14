@@ -3,9 +3,11 @@ import footer from '../images/footer';
 import footer2 from '../images/footer2';
 import { MoneyFormatter } from '../utils/helpers';
 
-function Header(doc, receiptId, cantidad) {
+function Header(doc, PAPELETA, cantidad) {
           const imgData = charter
           doc.addImage(imgData, 'PNG', 30, 30, 200, 80, 'FAST');
+          
+          PAPELETA = PAPELETA.split(' ')
 
         //   doc.setFontSize(12);
         //   doc.text(200, 35, 'CUPON DE');
@@ -33,8 +35,8 @@ function Header(doc, receiptId, cantidad) {
           doc.rect(470, 52, 100, 25,'F'); 
           
           doc.setTextColor(220, 43, 27);
-          doc.text(490, 64, "GJ");
-          doc.text(510, 64, "18191");
+          doc.text(490, 64, PAPELETA[0]);
+          doc.text(510, 64, PAPELETA[1]);
 
           doc.setDrawColor(0);
           doc.setFillColor(255, 255, 255);
@@ -43,10 +45,10 @@ function Header(doc, receiptId, cantidad) {
 }
 
 
-function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horario, 
-    total_adultos_junior, menores_cargo, menores_sincargo, 
-    agencia, ciudad, telefono, clave_reservacion, contacto, 
-    observaciones, detalles ) {
+function Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
+    adultos_juniors, menores_cargo, menores_sin_cargo, 
+    TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE, 
+    redondo, OBSERVACIONES ) {
 
         let starty = 120;
         let increment = 24;
@@ -61,7 +63,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
 
         starty += increment;
         doc.setTextColor(color_valores) 
-        doc.text(40, starty+13, "VALOR NOMBRE DEL PASAJERO");
+        doc.text(40, starty+13, CLIENTE_NOMBRE);
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
         
 
@@ -73,7 +75,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         starty += increment; 
         doc.setTextColor(color_valores) 
-        doc.text(40, starty+13, "VALOR HOTEL / DESTINO");
+        doc.text(40, starty+13, HOTEL_DESTINO);
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
         
         //FECHA
@@ -87,10 +89,10 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         starty += increment; 
         doc.setTextColor(color_valores) 
-        doc.text(40, starty+13, "09 OCT 2021");
-        doc.text(150, starty+13, "09 OCT 2021");
+        doc.text(40, starty+13, FECHA_SALIDA);
+        doc.text(150, starty+13, FECHA_REGRESO);
         //doc.text(300, starty+13, "MINERVA A LAS 07:00HRS");
-        doc.textWithLink( 'MINERVA A LAS 07:00HRS',300, starty+13,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
+        doc.textWithLink( ABORDA,300, starty+13,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
         //adultos y juniors
@@ -103,7 +105,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         doc.setTextColor(color_valores) 
         doc.roundedRect(120, starty, 40, 33, 3, 3, 'D');
-        doc.text(130, starty+20, "01");
+        doc.text(130, starty+20, adultos_juniors);
 
 
         //menores cargo
@@ -115,7 +117,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         doc.setTextColor(color_valores) 
         doc.roundedRect(300, starty, 40, 33, 3, 3, 'D');
-        doc.text(310, starty+20, "01");
+        doc.text(310, starty+20, menores_cargo);
         
         //menores sin cargo
         doc.setFillColor(232,68, 86) //red
@@ -126,7 +128,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         doc.setTextColor(color_valores) 
         doc.roundedRect(465, starty, 40, 33, 3, 3, 'D');
-        doc.text(475, starty+20, "01");
+        doc.text(475, starty+20, menores_sin_cargo);
         
 
         //Nombre agencia
@@ -138,7 +140,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         starty += increment; 
         doc.setTextColor(color_valores) 
-        doc.text(40, starty+13, "VALOR NOMBRE DE AGENCIA");
+        doc.text(40, starty+13, TRAVELAGENCY_NOMBRE);
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
         //CIUDAD
@@ -150,7 +152,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         starty += increment; 
         doc.setTextColor(color_valores) 
-        doc.text(40, starty+13, "VALOR CIUDAD");
+        doc.text(40, starty+13, TRAVELAGENCY_CIUDAD);
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
          //CLAVE RESERVACION
@@ -162,7 +164,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
          
          starty += increment; 
          doc.setTextColor(color_valores) 
-         doc.text(40, starty+13, "VALOR CLAVE DE RESERVACION");
+         doc.text(40, starty+13, CLAVE);
          doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
         //INCLUYE
@@ -174,7 +176,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         starty += increment; 
         doc.setTextColor(color_valores) 
-        var splitObservacion = doc.splitTextToSize("Incluye Desayuno en COCINA PERA en gdl", 400);
+        var splitObservacion = doc.splitTextToSize(INCLUYE, 400);
         doc.text(40, starty+13, splitObservacion);
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
@@ -187,7 +189,7 @@ function Detalles(doc, nombre, hotel, fecha_salida, fecha_regreso, aborda_horari
         
         starty += increment; 
         doc.setTextColor(color_valores) 
-        var splitObservacion = doc.splitTextToSize("TRANSPORTACIÓN TURÍSTICA SENCILLA PARA 01 PAX GDL -BUCERÍAS - GDL  SALIDA EL 09 OCT A LAS 07:00 HRS DE MINERVA (junto al Hotel Fiesta Americana Minerva)", 400);
+        var splitObservacion = doc.splitTextToSize(redondo + " -- "+ OBSERVACIONES + " -- " + ABORDA, 400);
         doc.text(40, starty+13, splitObservacion);
 
         doc.roundedRect(15, starty, 550, 95, 3, 3, 'D');

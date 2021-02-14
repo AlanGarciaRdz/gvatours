@@ -17,6 +17,7 @@ import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { mainListItems, secondaryListItems } from '../listItems';
 
 import ReceiptForm from './form' 
@@ -157,10 +158,11 @@ class Dashboard extends React.Component{
               <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                 GVA TOURS Charter
               </Typography>
-              <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
+              <IconButton color="inherit" onClick={() => window.location.replace('/')}>
+                {/* <Badge badgeContent={1} color="secondary"> */}
+                  {/* <NotificationsIcon /> */}
+                  <ExitToAppIcon />
+                {/* </Badge> */}
               </IconButton>
             </Toolbar>
           </AppBar>

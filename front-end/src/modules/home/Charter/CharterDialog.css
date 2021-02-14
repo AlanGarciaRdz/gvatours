@@ -112,7 +112,7 @@ table.tabla_encabezado_charter {
    border-collapse: collapse;
    border-radius: 1em;
    table-layout: fixed;
-   width: 80%;
+   width: 100%;
    /* background: rgb(230, 248, 255); */
 }
 
