@@ -7,7 +7,7 @@
     "test": "NODE_ENV=development nodemon src/app.js ",
     "start": "node app.js",
     "debug": "node --nolazy --inspect-brk=19001 app.js",
-    "deploy": "rsync -av --progress -e \"ssh -i \"~/Documents/alan/gvatours/gvatours.pem\"\" --exclude-from \"exclude-list.txt\" -r ./* ec2-user@52.7.16.247:/opt/gva-service",
+    "deploy": "rsync  -rave --progress -e \"ssh -i \"~/Documents/alan/gvatours/gvatours.pem\"\" --exclude-from \"exclude-list.txt\" -r ./* ec2-user@52.7.16.247:/opt/gva-service",
     "pm2start": "pm2 start ecosystem.config.js",
     "pm2delete": "pm2 delete gva_service",
     "killport": "kill $(lsof -t -i:19001)"
