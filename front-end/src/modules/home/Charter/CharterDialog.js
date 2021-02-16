@@ -19,10 +19,11 @@ import charter from '../../../images/charter'
 
 import CharterPDF from '../../../utils/CharterPDF';
 import PreviewHTML from './charter_html'
+import {isMobileDevice} from '../../../utils/helpers';
+
 
 
 import API from "../../../utils/API";
-
 
 
 function preventDefault(event) {
@@ -46,13 +47,15 @@ class CharterDialog extends React.Component{
       this.state = {
         open: true,
         receipt: ``,
-        charter_data: null
+        charter_data: null,
+        embed: ''
       }
 
 
       this.handleClickOpen = this.handleClickOpen.bind(this);
       this.handleClose = this.handleClose.bind(this);
       this.getCharterData = this.getCharterData.bind(this);
+      this.EmbededPDF = this.EmbededPDF.bind(this);
     }
 
 
@@ -134,8 +137,14 @@ class CharterDialog extends React.Component{
                 
                 this.setState({redondo: res.data.redondo})   
                 this.setState({OBSERVACIONES: res.data.OBSERVACIONES})   
+
+                if(!isMobileDevice()){
+                  this.EmbededPDF()
+                }
+                
                 
             }
+
           })
 
           
@@ -158,6 +167,7 @@ class CharterDialog extends React.Component{
 
   componentDidMount(){
     this.getCharterData()
+    
   }
 
   
@@ -184,6 +194,45 @@ class CharterDialog extends React.Component{
 
         doc.save(`${PAPELETA}.pdf`);
     
+  }
+
+  EmbededPDF = () => {
+    var {  receiptId, cantidad } = this.state
+
+    var { PAPELETA , CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
+      adultos_juniors, menores_cargo, menores_sin_cargo,
+      TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE,
+      redondo, OBSERVACIONES} = this.state 
+
+    
+      const doc = new jsPDF('p', 'pt', 'letter');
+        
+      CharterPDF.Header(doc, PAPELETA, cantidad)
+
+      CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
+        adultos_juniors, menores_cargo, menores_sin_cargo, 
+        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE, 
+        redondo, OBSERVACIONES)
+
+      CharterPDF.pieCharter(doc)
+
+        //doc.save(`${PAPELETA}.pdf`);
+        let data = doc.output('datauristring');
+        // doc.output('save', 'filename.pdf'); //Try to save PDF as a file (not works on ie before 10, and some mobile devices)
+        // doc.output('datauristring');        //returns the data uri string
+        // doc.output('datauri');              //opens the data uri in current window
+        // doc.output('dataurlnewwindow');     //opens the data uri in new window
+
+        let iframe = `<iframe type="application/pdf" src="${data}#toolbar=0&navpanes=0" width="100%" height="1100px" frameborder="0"></iframe>`;
+
+        this.setState({
+          embed: iframe
+        });
+
+        
+        
+        
+        
   }
 
   CreatePDF = () => {
@@ -222,7 +271,7 @@ class CharterDialog extends React.Component{
 
     render(){
       const { classes } = this.props;
-      var {open, receipt} = this.state;
+      var {open, receipt, embed} = this.state;
 
       const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -260,7 +309,9 @@ class CharterDialog extends React.Component{
               </Toolbar>
             </AppBar>
             
-            <div className="previewHTML" dangerouslySetInnerHTML={{ __html: receipt}} />,
+            {/* <div className="previewHTML" dangerouslySetInnerHTML={{ __html: receipt}} />, */}
+            
+            <div dangerouslySetInnerHTML={{ __html: this.state.embed}}/>
             
           </Dialog>
         </div>

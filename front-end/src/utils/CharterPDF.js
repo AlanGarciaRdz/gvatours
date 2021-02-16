@@ -5,7 +5,13 @@ import { MoneyFormatter } from '../utils/helpers';
 
 function Header(doc, PAPELETA, cantidad) {
           const imgData = charter
-          doc.addImage(imgData, 'PNG', 30, 30, 200, 80, 'FAST');
+          
+          try {
+            doc.addImage(imgData, 'PNG', 30, 30, 200, 80, 'FAST');
+          } catch (error) {
+            console.log(imgData)
+          }
+          
           
           PAPELETA = PAPELETA.split(' ')
 
@@ -14,7 +20,7 @@ function Header(doc, PAPELETA, cantidad) {
         //   doc.text(200, 55, 'CHARTER');
         //   doc.textWithLink('TURISTICO', 200, 70, { url: 'info@gvatours.com' });
 
-        doc.setFontSize(20);
+         doc.setFontSize(20);
         
           doc.textWithLink( 'CUPON DE',280, 46,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
           doc.text(280, 64, 'CHARTER');
@@ -36,7 +42,7 @@ function Header(doc, PAPELETA, cantidad) {
           
           doc.setTextColor(220, 43, 27);
           doc.text(490, 64, PAPELETA[0]);
-          doc.text(510, 64, PAPELETA[1]);
+          doc.text(510, 64, PAPELETA[PAPELETA.length-1]);
 
           doc.setDrawColor(0);
           doc.setFillColor(255, 255, 255);
@@ -89,14 +95,19 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRES
         
         starty += increment; 
         doc.setTextColor(color_valores) 
-        doc.text(40, starty+13, FECHA_SALIDA);
-        doc.text(150, starty+13, FECHA_REGRESO);
+        doc.text(50, starty+13, FECHA_SALIDA);
+        doc.text(180, starty+13, FECHA_REGRESO);
         //doc.text(300, starty+13, "MINERVA A LAS 07:00HRS");
-        doc.textWithLink( ABORDA,300, starty+13,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
-        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
+        //doc.textWithLink( ABORDA,300, starty+13,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
+
+        var splitAborda = doc.splitTextToSize(ABORDA, 250);
+        doc.text(300, starty+13, splitAborda);
+
+
+        doc.roundedRect(15, starty, 550, 30, 3, 3, 'D');
 
         //adultos y juniors
-        starty += increment; 
+        starty += increment+increment; 
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 95, 33, 3, 3, 'F');
         doc.setTextColor(color_labels)

@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === "development"){
 }
 
 if (process.env.NODE_ENV === "production"){
-  baseURLENV =  "http://www.sistemagvatours.com:19001";
+  baseURLENV =  "//52.7.16.247:19001";
 }
 
 

@@ -76,7 +76,10 @@ class AutocompleteAgency extends React.Component{
     if(this.props.value !== this.state.value){
       this.setState({value: this.props.value});
       this.setState({ciudad: this.props})
-      
+      //this.props.value = this.state.value;
+      console.log(this.state.Agencies)
+      console.log(this.props.uuid)
+      console.log(this.state.Agencies.find(e => (e.uuid_travelA === this.props.uuid)))
       this.props.updateAgencia(this.props.uuid, this.props.ciudad)
     }
   }
@@ -208,7 +211,7 @@ class AutocompleteAgency extends React.Component{
             }
 
 
-            // console.log(option)
+            console.log(option)
         
             this.setState({value: option.nombre_agencia});
             this.setState({ciudad: option.ciudad});

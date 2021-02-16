@@ -15,6 +15,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import moment from 'moment'
+import {isMobileDevice} from '../../../utils/helpers';
+
 
 
 import AddIcon from '@material-ui/icons/Add';
@@ -241,7 +243,7 @@ class CharterFrom extends React.Component{
 
         componentDidMount(){
           
-             console.log(this.state.folio_papeleta)
+          this.setState({open: !isMobileDevice()})
             this.getCharters()
         }
 
@@ -271,6 +273,8 @@ class CharterFrom extends React.Component{
             val_uuid_agencia: uuid_agencia,
             ciudad: ciudad }
           )
+
+          console.log(this.state.nombre_agencia)
         }
 
         updateItem = (item, name) => {
@@ -539,7 +543,7 @@ render(){
               id="redondo" value={redondo ? redondo : ""} onChange={this.handleChange}  
               label="SENCILLO/ REDONDO"   fullWidth    >
                 <MenuItem value="">
-                <em>None</em>
+                <em>No incluye</em>
               </MenuItem>
               <MenuItem value="TRANSPORTE TURISTICO VIAJE SENCILLO">TRANSPORTE TURISTICO VIAJE SENCILLO</MenuItem>
               <MenuItem value="TRANSPORTE TURISTICO VIAJE REDONDO">TRANSPORTE TURISTICO VIAJE REDONDO</MenuItem>
