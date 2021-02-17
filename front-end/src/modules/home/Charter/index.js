@@ -19,6 +19,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { mainListItems, secondaryListItems } from '../listItems';
+import {isMobileDevice} from '../../../utils/helpers';
 
 import ReceiptForm from './form' 
 
@@ -127,6 +128,10 @@ class Dashboard extends React.Component{
 
     handleDrawerClose(){
         this.setState({open: false})
+    }
+
+    componentDidMount(){
+      this.setState({open: !isMobileDevice()})
     }
 
   render(){

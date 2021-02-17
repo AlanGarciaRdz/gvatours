@@ -15,7 +15,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import moment from 'moment'
-import {isMobileDevice} from '../../../utils/helpers';
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import es from 'date-fns/locale/es';
+
+
 
 
 
@@ -113,6 +119,7 @@ class CharterFrom extends React.Component{
 
               agencia: '',
               ciudad: '',
+              agente: '',
 
 
               observaciones: '',
@@ -144,6 +151,8 @@ class CharterFrom extends React.Component{
             this.menores_cargo_plus = this.menores_cargo_plus.bind(this)
             this.menores_sin_cargo_minus = this.menores_sin_cargo_minus.bind(this)
             this.menores_sin_cargo_plus = this.menores_sin_cargo_plus.bind(this)
+
+            this.setStartDate = this.setStartDate.bind(this);
 
             
         
@@ -197,23 +206,38 @@ class CharterFrom extends React.Component{
         }
 
         handleChangeDate = (evt) => {
-          moment.lang('es', {
-            months: 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
-            monthsShort: 'Enero._Feb._Mar_Abr._May_Jun_Jul._Ago_Sept._Oct._Nov._Dec.'.split('_'),
-            weekdays: 'Domingo_Lunes_Martes_Miercoles_Jueves_Viernes_Sabado'.split('_'),
-            weekdaysShort: 'Dom._Lun._Mar._Mier._Jue._Vier._Sab.'.split('_'),
-            weekdaysMin: 'Do_Lu_Ma_Mi_Ju_Vi_Sa'.split('_')
-          }
-          );
-
-          const value = moment(evt.target.value).format('d MMM YYYY');            
+          var meses = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+           "Julio", "Agosto", "Sept", "Oct", "Nov", "Dic" ];
+           //2021-02-18
+          let fecha = moment(evt.target.value).day();
+          fecha += ` - ${meses[moment(evt.target.value).month()]}`;
+          fecha += ` - ${moment(evt.target.value).year()}`;
+          console.log(fecha)
           
           console.log(evt.target.name)
           this.setState({
             ...this.state,
-            [evt.target.name]: value
+            [evt.target.name]: fecha
           });
         };
+
+        setStartDate(evt){
+          let fecha = evt
+
+          this.setState({
+            ...this.state,
+            fecha_salida: fecha
+          });
+        }
+
+        setEndDate(evt){
+          let fecha = evt
+
+          this.setState({
+            ...this.state,
+            fecha_regreso: fecha
+          });
+        }
 
         handleChangeCheckbox = (evt) => {
           console.log(evt.target.name)
@@ -241,9 +265,12 @@ class CharterFrom extends React.Component{
           })
         }
 
+        
+
         componentDidMount(){
-          
-          this.setState({open: !isMobileDevice()})
+          if(!localStorage.getItem("63dd46ba")){
+            window.location.href = '/'
+          }
             this.getCharters()
         }
 
@@ -301,7 +328,7 @@ class CharterFrom extends React.Component{
                       "uuid_hotel": val_uuid_hotel === undefined ? this.state.hotel_uuid : val_uuid_hotel,
                       "uuid_agencia": val_uuid_agencia === undefined ? this.state.agencia_uuid : val_uuid_agencia,
                       "ciudad": document.getElementById("ciudad").value,
-                      
+                      "agente": document.getElementById("agente").value,
                       "redondo": document.getElementById("redondo").innerHTML,
                       "fecha_salida": document.getElementById("fecha_salida").value,
                       "fecha_regreso": document.getElementById("fecha_regreso").value,
@@ -473,6 +500,11 @@ class CharterFrom extends React.Component{
                   this.setState({agencia: res.travelagency.nombre});
                   this.setState({agencia_uuid: res.data.uuid_agencia});
                   this.setState({ciudad: res.travelagency.ciudad});
+                  
+                  this.setState({agente: res.data.agente ? res.data.agente : ""});
+                  
+                  
+
                   this.setState({incluye: res.data.incluye});
                   
 
@@ -496,13 +528,17 @@ class CharterFrom extends React.Component{
           this.setState({direccion: ''})
           this.setState({redondo: ''})
         }
+
+        
+        
     
 
 render(){
     const { classes } = this.props;
-    const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , redondo, aborda, agencia , ciudad, clave, agencia_uuid,observaciones , charters, adultos, con_cargo, sin_cargo,incluye} = this.state;
+    const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , redondo, aborda, agencia , ciudad, agente, agencia_uuid,observaciones , charters, adultos, con_cargo, sin_cargo,incluye, startDate} = this.state;
     
     
+    registerLocale('es', es)
     
 
     return (
@@ -534,57 +570,42 @@ render(){
                 id="ciudad" label="CIUDAD"   type="text" margin="dense" fullWidth
               />
 
-
-          
-             
+              <TextField
+                 onChange={this.handleChange}  value={agente}  name="agente"
+                id="agente" label="AGENTE"   type="text" margin="dense" fullWidth
+              />
+   
             
             <InputLabel id="trans_turistico" className={classes.iconButton}>TRANSPORTE TURISTICO:</InputLabel>
             <Select autoFocus labelId="demo-simple-select-helper-label"   name="redondo"
               id="redondo" value={redondo ? redondo : ""} onChange={this.handleChange}  
               label="SENCILLO/ REDONDO"   fullWidth    >
-                <MenuItem value="">
-                <em>No incluye</em>
-              </MenuItem>
+               
               <MenuItem value="TRANSPORTE TURISTICO VIAJE SENCILLO">TRANSPORTE TURISTICO VIAJE SENCILLO</MenuItem>
               <MenuItem value="TRANSPORTE TURISTICO VIAJE REDONDO">TRANSPORTE TURISTICO VIAJE REDONDO</MenuItem>
+              <MenuItem value="NO INCLUYE">
+                <em>No incluye</em>
+              </MenuItem>
             </Select>
             {/* <AutocompleteSelect value={redondo} name="redondo" label="TRANSPORTE TURISTICO" updateItem={this.updateItem} items={["TRANSPORTE TURISTICO VIAJE SENCILLO", "TRANSPORTE TURISTICO VIAJE REDONDO"]} /> */}
 
 
             <InputLabel className={classes.datepadding}  id="">FECHA DE SALIDA</InputLabel>
-            <TextField  required    id="fecha_salida"  value={fecha_salida}  name="fecha_salida"   type="date"
-              formatDate={(date) => {
-                moment.lang('es', {
-                  months: 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
-                  monthsShort: 'Enero._Feb._Mar_Abr._May_Jun_Jul._Ago_Sept._Oct._Nov._Dec.'.split('_'),
-                  weekdays: 'Domingo_Lunes_Martes_Miercoles_Jueves_Viernes_Sabado'.split('_'),
-                  weekdaysShort: 'Dom._Lun._Mar._Mier._Jue._Vier._Sab.'.split('_'),
-                  weekdaysMin: 'Do_Lu_Ma_Mi_Ju_Vi_Sa'.split('_')
-                }
-                );
-      
-                moment(date).format('d MMM YYYY')}}
-                onChange={this.handleChangeDate}  defaultValue={getCurrentDate()}  fullWidth autoComplete="fname"
-            />
+            {/* <TextField  required    id="fecha_salida"  value={fecha_salida}  name="fecha_salida"   type="date"
+              
+                onChange={this.handleChangeDate}  fullWidth autoComplete="fname"
+            /> */}
+          {/* https://reactdatepicker.com/#example-custom-date-format */}
 
-            {/* <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        /> */}
+          <DatePicker locale="es" id="fecha_salida" defaultValue={getCurrentDate()} dateFormat="dd-MMMM-yyyy" selected={fecha_salida} onChange={date => this.setStartDate(date)} name="fecha_salida" />
+
+         
            
            <div className={this.state.styleredondo}>
             <InputLabel className={classes.datepadding} id="demo-simple-select-label">FECHA DE REGRESO</InputLabel>
-              <TextField  required   id="fecha_regreso"   name="fecha_regreso"   type="date"   value={fecha_regreso} 
-               disabled={!redondo}   onChange={this.handleChange}   fullWidth   autoComplete="fname" />
+              {/* <TextField  required   id="fecha_regreso"   name="fecha_regreso"   type="date"   value={fecha_regreso} 
+               disabled={redondo !== "TRANSPORTE TURISTICO VIAJE REDONDO"}   onChange={this.handleChange}   fullWidth   autoComplete="fname" /> */}
+               <DatePicker disabled={redondo !== "TRANSPORTE TURISTICO VIAJE REDONDO"}  locale="es" id="fecha_regreso" defaultValue={getCurrentDate()} dateFormat="dd-MMMM-yyyy" selected={fecha_regreso} onChange={date => this.setEndDate(date)} name="fecha_regreso" />
            </div>
           
            

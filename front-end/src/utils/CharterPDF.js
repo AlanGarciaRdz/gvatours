@@ -53,7 +53,7 @@ function Header(doc, PAPELETA, cantidad) {
 
 function Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
     adultos_juniors, menores_cargo, menores_sin_cargo, 
-    TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE, 
+    TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
     redondo, OBSERVACIONES ) {
 
         let starty = 120;
@@ -155,16 +155,27 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRES
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
 
         //CIUDAD
+        
         starty += increment; 
         doc.setFillColor(232,68, 86) //red
-        doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+        doc.roundedRect(15, starty, 250, 17, 3, 3, 'F');
         doc.setTextColor(color_labels)
         doc.text(30, starty+13, 'CIUDAD');
+
+        //AGENTE
+        doc.setFillColor(232,68, 86) //red
+        doc.roundedRect(310, starty, 250, 17, 3, 3, 'F');
+        doc.setTextColor(color_labels)
+        doc.text(325, starty+13, 'AGENTE');
         
         starty += increment; 
         doc.setTextColor(color_valores) 
         doc.text(40, starty+13, TRAVELAGENCY_CIUDAD);
-        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
+        doc.roundedRect(15, starty, 250, 17, 3, 3, 'D');
+
+        doc.setTextColor(color_valores) 
+        doc.roundedRect(310, starty, 250, 17, 3, 3, 'D');
+        doc.text(325, starty+13, AGENTE);
 
          //CLAVE RESERVACION
          starty += increment; 

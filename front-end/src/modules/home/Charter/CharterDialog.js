@@ -130,6 +130,7 @@ class CharterDialog extends React.Component{
                 
                 this.setState({TRAVELAGENCY_NOMBRE: res.travelagency.nombre})
                 this.setState({TRAVELAGENCY_CIUDAD: res.travelagency.ciudad})
+                this.setState({AGENTE: res.data.agente ? res.data.agente : ''})
 
                 this.setState({CLAVE: res.data.folio_papeleta})
                 // INCLUYE
@@ -140,6 +141,8 @@ class CharterDialog extends React.Component{
 
                 if(!isMobileDevice()){
                   this.EmbededPDF()
+                }else{
+
                 }
                 
                 
@@ -177,7 +180,7 @@ class CharterDialog extends React.Component{
 
     var { PAPELETA , CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
       adultos_juniors, menores_cargo, menores_sin_cargo,
-      TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE,
+      TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
       redondo, OBSERVACIONES} = this.state 
 
     
@@ -187,7 +190,7 @@ class CharterDialog extends React.Component{
 
       CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
         adultos_juniors, menores_cargo, menores_sin_cargo, 
-        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE, 
+        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
         redondo, OBSERVACIONES)
 
       CharterPDF.pieCharter(doc)
@@ -201,7 +204,7 @@ class CharterDialog extends React.Component{
 
     var { PAPELETA , CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
       adultos_juniors, menores_cargo, menores_sin_cargo,
-      TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE,
+      TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
       redondo, OBSERVACIONES} = this.state 
 
     
@@ -211,7 +214,7 @@ class CharterDialog extends React.Component{
 
       CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
         adultos_juniors, menores_cargo, menores_sin_cargo, 
-        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, CLAVE, INCLUYE, 
+        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
         redondo, OBSERVACIONES)
 
       CharterPDF.pieCharter(doc)
@@ -228,6 +231,8 @@ class CharterDialog extends React.Component{
         this.setState({
           embed: iframe
         });
+
+        console.log(iframe)
 
         
         
@@ -287,7 +292,7 @@ class CharterDialog extends React.Component{
     var receipt = PreviewHTML.setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, 
                                   FECHA_REGRESO, ABORDA, TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, 
                                   CLAVE , INCLUYE, OBSERVACIONES , adultos_juniors, menores_cargo, menores_sin_cargo);
-      // var receipt = PreviewHTML.HTML;
+      var receipt = PreviewHTML.HTML;
         return(
           <div> 
 
