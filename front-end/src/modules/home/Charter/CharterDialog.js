@@ -139,10 +139,10 @@ class CharterDialog extends React.Component{
                 this.setState({redondo: res.data.redondo})   
                 this.setState({OBSERVACIONES: res.data.OBSERVACIONES})   
 
-                if(!isMobileDevice()){
-                  this.EmbededPDF()
+                if(isMobileDevice()){
+                  this.EmbededHTML()
                 }else{
-
+                  this.EmbededPDF()
                 }
                 
                 
@@ -200,7 +200,7 @@ class CharterDialog extends React.Component{
   }
 
   EmbededPDF = () => {
-    var {  receiptId, cantidad } = this.state
+    var {  cantidad } = this.state
 
     var { PAPELETA , CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
       adultos_juniors, menores_cargo, menores_sin_cargo,
@@ -219,7 +219,7 @@ class CharterDialog extends React.Component{
 
       CharterPDF.pieCharter(doc)
 
-        //doc.save(`${PAPELETA}.pdf`);
+        
         let data = doc.output('datauristring');
         // doc.output('save', 'filename.pdf'); //Try to save PDF as a file (not works on ie before 10, and some mobile devices)
         // doc.output('datauristring');        //returns the data uri string
@@ -231,13 +231,19 @@ class CharterDialog extends React.Component{
         this.setState({
           embed: iframe
         });
+  }
 
-        console.log(iframe)
+  EmbededHTML = () => {
+    var {  PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
+      TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, CLAVE , INCLUYE, OBSERVACIONES, adultos_juniors, menores_cargo, menores_sin_cargo } = this.state
 
-        
-        
-        
-        
+        var embed = PreviewHTML.setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, 
+          FECHA_REGRESO, ABORDA, TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, 
+          CLAVE , INCLUYE, OBSERVACIONES , adultos_juniors, menores_cargo, menores_sin_cargo);
+          console.log(embed)
+        this.setState({embed});
+
+        console.log(embed)
   }
 
   CreatePDF = () => {
@@ -283,16 +289,8 @@ class CharterDialog extends React.Component{
       });
 
       if(open){
-
-    var {  PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
-      TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, CLAVE , INCLUYE, OBSERVACIONES, adultos_juniors, menores_cargo, menores_sin_cargo } = this.state
-
+         
     
-  
-    var receipt = PreviewHTML.setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, 
-                                  FECHA_REGRESO, ABORDA, TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, 
-                                  CLAVE , INCLUYE, OBSERVACIONES , adultos_juniors, menores_cargo, menores_sin_cargo);
-      var receipt = PreviewHTML.HTML;
         return(
           <div> 
 
@@ -314,9 +312,10 @@ class CharterDialog extends React.Component{
               </Toolbar>
             </AppBar>
             
-            {/* <div className="previewHTML" dangerouslySetInnerHTML={{ __html: receipt}} />, */}
             
-            <div dangerouslySetInnerHTML={{ __html: this.state.embed}}/>
+              <div className="previewHTML" dangerouslySetInnerHTML={{ __html: this.state.embed}}/>
+                        
+            
             
           </Dialog>
         </div>
