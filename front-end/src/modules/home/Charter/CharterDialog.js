@@ -130,6 +130,7 @@ class CharterDialog extends React.Component{
                 this.setState({menores_sin_cargo: res.data.menores_sin_cargo})             
                 
                 this.setState({TRAVELAGENCY_NOMBRE: res.travelagency.nombre})
+                this.setState({TRAVELAGENCY_TELEFONO: res.travelagency.telefono})
                 this.setState({TRAVELAGENCY_CIUDAD: res.travelagency.ciudad})
                 this.setState({AGENTE: res.data.agente ? res.data.agente : ''})
 
@@ -181,7 +182,7 @@ class CharterDialog extends React.Component{
 
     var { PAPELETA , CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
       adultos_juniors, menores_cargo, menores_sin_cargo,
-      TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
+      TRAVELAGENCY_NOMBRE,TRAVELAGENCY_TELEFONO, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
       redondo, OBSERVACIONES} = this.state 
 
     
@@ -191,7 +192,7 @@ class CharterDialog extends React.Component{
 
       CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
         adultos_juniors, menores_cargo, menores_sin_cargo, 
-        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
+        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_TELEFONO, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
         redondo, OBSERVACIONES)
 
       CharterPDF.pieCharter(doc)
@@ -205,7 +206,7 @@ class CharterDialog extends React.Component{
 
     var { PAPELETA , CLIENTE_NOMBRE, HOTEL,DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
       adultos_juniors, menores_cargo, menores_sin_cargo,
-      TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
+      TRAVELAGENCY_NOMBRE,TRAVELAGENCY_TELEFONO, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
       redondo, OBSERVACIONES} = this.state 
 
     
@@ -215,7 +216,7 @@ class CharterDialog extends React.Component{
 
       CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL,DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
         adultos_juniors, menores_cargo, menores_sin_cargo, 
-        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
+        TRAVELAGENCY_NOMBRE, TRAVELAGENCY_TELEFONO, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
         redondo, OBSERVACIONES)
 
       CharterPDF.pieCharter(doc)
