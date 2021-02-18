@@ -80,7 +80,12 @@ class AutocompleteAgency extends React.Component{
       //this.props.value = this.state.value;
       let current = this.state.Agencies.find(e => (e.uuid_travelA === Currentuuid))
       console.log(current)
-      this.props.updateAgencia(current.uuid_travelA, current.ciudad, current.nombre_agencia)
+      try {
+        this.props.updateAgencia(current.uuid_travelA, current.ciudad, current.nombre_agencia)  
+      } catch (error) {
+        
+      }
+      
       
     }
   }

@@ -197,7 +197,7 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
         doc.setTextColor(color_labels)
-        doc.text(30, starty+13, 'INCLUYE');
+        doc.text(30, starty+13, 'OBSERVACIONES');
         
         starty += increment; 
         doc.setTextColor(color_valores) 
@@ -210,7 +210,7 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
         doc.setTextColor(color_labels)
-        doc.text(30, starty+13, 'OBSERVACIONES');
+        doc.text(30, starty+13, 'INCLUYE');
         
         starty += increment; 
         doc.setTextColor(color_valores) 

@@ -75,13 +75,24 @@ class AutocompleteHotel extends React.Component{
 
   componentDidUpdate(){
     const {Currentuuid} = this.state;
+    console.log("---")
+    console.log(this.props)
+    console.log("---")
     
     if(this.props.value !== ""){
 
       if(this.props.value !== this.state.value){
         this.setState({value: this.props.value});
-        let currentHotel = this.state.Hoteles.find(e => (e.uuid_hotel === Currentuuid))    
-        this.props.updateHotel(currentHotel.uuid_hotel, currentHotel.name_hotel, currentHotel.destino)
+        console.log(this.props)
+        let currentHotel = this.state.Hoteles.find(e => (e.uuid_hotel === Currentuuid))
+        console.log(currentHotel)
+        try {
+          this.props.updateHotel(currentHotel.uuid_hotel, currentHotel.name_hotel, currentHotel.destino)  
+        } catch (error) {
+          this.props.updateHotel(this.props.uuid)
+          console.log(`uuid hotel`+this.props.uuid)
+        }
+        
       }
     }
 

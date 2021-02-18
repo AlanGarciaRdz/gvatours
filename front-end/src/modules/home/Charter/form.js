@@ -504,14 +504,17 @@ class CharterFrom extends React.Component{
                   
                   this.setState({cliente: res.cliente.nombre});
                   this.setState({cliente_uuid: res.data.uuid_cliente});
+                  this.setState({val_uuid_cliente: res.data.uuid_cliente})
                   
                   this.setState({hotel: res.hotel.nombre});
+                  this.setState({hotel_destino: res.hotel.destino});
                   this.setState({hotel_uuid: res.data.uuid_hotel});
+                  this.setState({val_uuid_hotel: res.data.uuid_hotel});
                   
                   console.log(res.data.fecha_salida)
                   
                   this.setState({fecha_salida: new Date(res.data.fecha_salida)});
-                  this.setState({fecha_regreso: new Date(res.data.fecha_regreso)});
+                  this.setState({fecha_regreso: res.data.fecha_regreso !== "" ? new Date(res.data.fecha_regreso) : '' });
                   
                   this.setState({redondo:res.data.redondo})
                   console.log(res.data.redondo)
@@ -530,6 +533,7 @@ class CharterFrom extends React.Component{
 
                   this.setState({agencia: res.travelagency.nombre});
                   this.setState({agencia_uuid: res.data.uuid_agencia});
+                  this.setState({val_uuid_agencia: res.data.uuid_agencia});
                   this.setState({ciudad: res.travelagency.ciudad});
                   
                   this.setState({agente: res.data.agente ? res.data.agente : ""});
@@ -715,7 +719,7 @@ render(){
               >
                 <MenuItem value="INCLUYE DESAYUNO EN RESTAURANT ROSITA EN NVR.">INCLUYE DESAYUNO EN RESTAURANT ROSITA EN NVR.</MenuItem>
                 <MenuItem value="INCLUYE DESAYUNO EN COCINA PERA EN GDL">INCLUYE DESAYUNO EN COCINA PERA EN GDL</MenuItem>  
-                <MenuItem value="NO INCLUYE" >NO INCLUYE</MenuItem>
+                <MenuItem value="N/A" >N/A</MenuItem>
               </Select>
 
 

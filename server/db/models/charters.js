@@ -42,11 +42,12 @@ const getCharterById = (request, response) => {
   })
 }
 
+
+
 const getCharterByIdFE = (request, response) => {
   
   const uuid_charter = request.params.uuid_charter
   
-
   pool.query(`SELECT Ch.*, public."Hotels".data as Hotel, public."Clients".data as Cliente, ta.data as TravelAgency`
             +` FROM public."Charters" as Ch `
             +` join public."Clients" on (Ch.data->>'uuid_cliente')::uuid = public."Clients".uuid_client`
