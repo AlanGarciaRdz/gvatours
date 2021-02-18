@@ -25,9 +25,11 @@ class AutocompleteHotel extends React.Component{
       toggleOpen: false,
       dialogValue: {
                     name_hotel: '',
-                    destino: ''
+                    destino: '',
+                    uuid_hotel: ''
                    },
       Hoteles: [],
+      Currentuuid: ''
     }
 
 
@@ -57,7 +59,7 @@ class AutocompleteHotel extends React.Component{
 
   handleSubmit = event => {
     const {dialogValue} = this.state;
-
+    
     event.preventDefault();
     this.setState({setValue:{
       name_hotel: dialogValue.name_hotel,
@@ -65,20 +67,26 @@ class AutocompleteHotel extends React.Component{
     }
     });
 
+    
     this.addHotel();
     
     this.handleClose();
   };
 
   componentDidUpdate(){
-    const open = this.state;
+    const {Currentuuid} = this.state;
     
     if(this.props.value !== ""){
+
       if(this.props.value !== this.state.value){
         this.setState({value: this.props.value});
-        this.props.updateHotel(this.props.uuid)
+        let currentHotel = this.state.Hoteles.find(e => (e.uuid_hotel === Currentuuid))    
+        this.props.updateHotel(currentHotel.uuid_hotel, currentHotel.name_hotel, currentHotel.destino)
       }
     }
+
+
+
     
   }
 
@@ -122,7 +130,7 @@ class AutocompleteHotel extends React.Component{
       "direccion": "",
       "telefono": "",
       "correo": "",
-      "destino": `${this.state.dialogValue.name_hotel}`
+      "destino": `${this.state.dialogValue.destino}`
     }
   }
 
@@ -130,13 +138,18 @@ class AutocompleteHotel extends React.Component{
     
     try{
       // console.log(res.data)
-      this.setState({value: res.data.data.nombre});
+      this.setState({value: res.data.data.nombre, Currentuuid: res.data.uuid_hotel});
     
-      this.props.updateHotel(res.data.uuid_hotel)
+      
 
       this.onAddHOTEL(res.data.uuid_hotel, res.data.data.nombre, res.data.data.destino)
+      
+      this.props.updateHotel(res.data.uuid_hotel, res.data.data.nombre, res.data.data.destino)
+      
+      
 
     }catch(error){
+      console.log(error)
       console.error("400 HOTEL")
       return "400 HOTEL"
     }
@@ -204,10 +217,11 @@ class AutocompleteHotel extends React.Component{
             }
 
 
-            // console.log(option)
+            
             this.setState({value: option.name_hotel});
-
-            this.props.updateHotel(option.uuid_hotel)
+            
+          
+            this.props.updateHotel(option.uuid_hotel, option.name_hotel, option.destino)
 
             return option.name_hotel;
           }

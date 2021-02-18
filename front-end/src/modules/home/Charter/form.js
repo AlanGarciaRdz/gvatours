@@ -96,6 +96,7 @@ class CharterFrom extends React.Component{
                 val_uuid_cliente: null,
                 val_uuid_hotel: null,
                 val_uuid_agencia: null,
+                val_uuid_usuario: localStorage.getItem("4055bf1e") + ' ',
                 data_clientes: [],
                 data_agencias: [],
                 data_hoteles: [],
@@ -105,7 +106,8 @@ class CharterFrom extends React.Component{
               folio_papeleta: '',
               cliente: '',
               hotel: '',
-              fecha_salida: '',
+              hotel_destino: '',
+              fecha_salida: new Date(),
               fecha_regreso: '',
               total_venta: '',
               numero_habitaciones: '',
@@ -138,6 +140,7 @@ class CharterFrom extends React.Component{
             
 
             this.createCharter = this.createCharter.bind(this);
+            this.CreateClient = this.CreateClient.bind(this);
 
             this.handleClientChange = this.handleClientChange.bind(this);
             this.handleHotelChange = this.handleHotelChange.bind(this);
@@ -166,7 +169,6 @@ class CharterFrom extends React.Component{
           if(this.state.adultos > 0){
             this.setState({ adultos: this.state.adultos - 1 })
           }
-          
         }
 
         menores_cargo_minus(){
@@ -222,6 +224,7 @@ class CharterFrom extends React.Component{
         };
 
         setStartDate(evt){
+          console.log(`dateee ${evt}`)
           let fecha = evt
 
           this.setState({
@@ -282,10 +285,12 @@ class CharterFrom extends React.Component{
               
         }
 
-        handleHotelChange = (uuid_hotel) => {
-          // console.log("uuid Hotel",uuid_hotel)
+        handleHotelChange = (uuid_hotel, name_hotel, destino) => {
+          console.log(`uuid Hotel ${uuid_hotel} , ${name_hotel} , ${destino}`)
           this.setState({
-            val_uuid_hotel: uuid_hotel}
+            val_uuid_hotel: uuid_hotel,
+            hotel: name_hotel,
+            hotel_destino: destino}
           )
         }
 
@@ -294,11 +299,12 @@ class CharterFrom extends React.Component{
           
         }
 
-        handleAgencyChange = (uuid_agencia, ciudad) => {
-           console.log(`uuid Agencia ${uuid_agencia} , ${ciudad}` )
+        handleAgencyChange = (uuid_agencia, ciudad, nombre_agencia) => {
+           console.log(`uuid Agencia ${uuid_agencia} , ${ciudad} , ${nombre_agencia}` )
           this.setState({
             val_uuid_agencia: uuid_agencia,
-            ciudad: ciudad }
+            ciudad: ciudad,
+            agencia: nombre_agencia }
           )
 
           console.log(this.state.nombre_agencia)
@@ -311,13 +317,29 @@ class CharterFrom extends React.Component{
         
        }
 
+       CreateClient= async () => {
+        const {cliente, val_uuid_cliente}  = this.state
+        await API.post(`/clients/`, {
+          "data": { "nombre": cliente  }
+        }).then(res => {
+          return(res.data.uuid_client)
+        })
+       }
    
 
-        createCharter(){
-          var {val_uuid_cliente, val_uuid_hotel, val_uuid_agencia } = this.state
+        createCharter = async () => {
+          var {cliente,val_uuid_cliente, val_uuid_hotel, val_uuid_agencia, val_uuid_usuario, agencia, hotel } = this.state
+          if(val_uuid_cliente === null){
+            
+            await API.post(`/clients/`, {
+              "data": { "nombre": cliente  }
+            }).then(cl => {
+              val_uuid_cliente = cl.data.uuid_client
+              console.log(`new client ${val_uuid_cliente}`)
+            })
+          }
           
-          console.log(val_uuid_cliente)
-          if(val_uuid_cliente === null || val_uuid_hotel === null || val_uuid_agencia === null){
+          if(val_uuid_hotel === null || val_uuid_agencia === null){
             console.error("needs client and hotel and agency")
           }else {
             var cupondata = 
@@ -325,21 +347,22 @@ class CharterFrom extends React.Component{
                 "data": {
                   "folio_papeleta": document.getElementById("folio_papeleta").value,
                   "uuid_cliente": val_uuid_cliente === undefined ? this.state.cliente_uuid : val_uuid_cliente,
-                      "uuid_hotel": val_uuid_hotel === undefined ? this.state.hotel_uuid : val_uuid_hotel,
-                      "uuid_agencia": val_uuid_agencia === undefined ? this.state.agencia_uuid : val_uuid_agencia,
-                      "ciudad": document.getElementById("ciudad").value,
-                      "agente": document.getElementById("agente").value,
-                      "redondo": document.getElementById("redondo").innerHTML,
-                      "fecha_salida": document.getElementById("fecha_salida").value,
-                      "fecha_regreso": document.getElementById("fecha_regreso").value,
-                      "aborda": document.getElementById("aborda").innerHTML,
-                      "adultos_juniors": document.getElementById("adultos_juniors").value,
-                      "menores_cargo": document.getElementById("menores_cargo").value,
-                      "menores_sin_cargo": document.getElementById("menores_sin_cargo").value,
-                      
-                      "clave": document.getElementById("folio_papeleta").value,
-                      "incluye": document.getElementById("incluye").innerHTML,
-                      "OBSERVACIONES": document.getElementById("observaciones").value,
+                  "uuid_hotel": val_uuid_hotel === undefined ? this.state.hotel_uuid : val_uuid_hotel,
+                  "uuid_agencia": val_uuid_agencia === undefined ? this.state.agencia_uuid : val_uuid_agencia,
+                  "uuid_usuario": val_uuid_usuario === undefined ? this.state.val_uuid_usuario : val_uuid_usuario,
+                  "ciudad": document.getElementById("ciudad").value,
+                  "agente": document.getElementById("agente").value,
+                  "redondo": document.getElementById("redondo").innerHTML,
+                  "fecha_salida": document.getElementById("fecha_salida").value,
+                  "fecha_regreso": document.getElementById("fecha_regreso").value,
+                  "aborda": document.getElementById("aborda").innerHTML,
+                  "adultos_juniors": document.getElementById("adultos_juniors").value,
+                  "menores_cargo": document.getElementById("menores_cargo").value,
+                  "menores_sin_cargo": document.getElementById("menores_sin_cargo").value,
+                  
+                  "clave": document.getElementById("folio_papeleta").value,
+                  "incluye": document.getElementById("incluye").innerHTML,
+                  "OBSERVACIONES": document.getElementById("observaciones").value,
                 }
             }
 
@@ -349,15 +372,22 @@ class CharterFrom extends React.Component{
               API.post(`/Charters/`, cupondata).then(res => {
                 try{
                 window.location.href =  `/Charter?id=${res.data.uuid_charter}`; 
-                  
+                let row = 
                  this.addTableData(
-                  res.res.data.uuid_charter,
-                  res.data.folio_papeleta,
-                  res.cliente.nombre,
-                  res.data.fecha_salida, 
-                  res.travelagency.nombre, 
-                  res.hotel.nombre
+                  res.data.uuid_charter,
+                  res.data.data.folio_papeleta,
+                  cliente,
+                  cupondata.data.fecha_salida, 
+                  agencia, 
+                  hotel
                 )
+
+                
+                let items = this.state.charters
+                items.unshift(row)
+                
+                this.setState({charters: items});
+                //addTableData(UUID, FolioPapeleta, NombreCliente, Fecha_Salida, Agencia, Hotel) {
 
                 
                 }catch(error){
@@ -478,9 +508,10 @@ class CharterFrom extends React.Component{
                   this.setState({hotel: res.hotel.nombre});
                   this.setState({hotel_uuid: res.data.uuid_hotel});
                   
+                  console.log(res.data.fecha_salida)
                   
-                  this.setState({fecha_salida: res.data.fecha_salida});
-                  this.setState({fecha_regreso: res.data.fecha_regreso});
+                  this.setState({fecha_salida: new Date(res.data.fecha_salida)});
+                  this.setState({fecha_regreso: new Date(res.data.fecha_regreso)});
                   
                   this.setState({redondo:res.data.redondo})
                   console.log(res.data.redondo)
@@ -535,7 +566,9 @@ class CharterFrom extends React.Component{
 
 render(){
     const { classes } = this.props;
-    const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , redondo, aborda, agencia , ciudad, agente, agencia_uuid,observaciones , charters, adultos, con_cargo, sin_cargo,incluye, startDate} = this.state;
+    const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , 
+      redondo, aborda, agencia , ciudad, agente, agencia_uuid,observaciones , charters, adultos, con_cargo, 
+      sin_cargo,incluye, startDate, hotel_destino} = this.state;
     
     
     registerLocale('es', es)
@@ -556,10 +589,19 @@ render(){
                     fullWidth autoComplete="fname"
               />
             
-            <AutoCompleteClient id="clientAuto" value={cliente} uuid={cliente_uuid} edit={true} updateClient={this.handleClientChange}/>
+            {/* <AutoCompleteClient id="clientAuto" value={cliente} uuid={cliente_uuid} edit={true} updateClient={this.handleClientChange}/> */}
+            <TextField
+                 onChange={this.handleChange}  value={cliente}  name="cliente"
+                id="cliente" label="CLIENTE"   type="text" margin="dense" fullWidth
+              />
             
             
-            <AutocompleteHotel value={hotel} uuid={hotel_uuid} updateHotel={this.handleHotelChange}/>
+            <AutocompleteHotel value={hotel? hotel : ""} uuid={hotel_uuid} updateHotel={this.handleHotelChange}/>
+
+            <TextField
+                 onChange={this.handleChange}  value={hotel_destino? hotel_destino : ""}  name="hotel_destino"
+                id="hotel_destino" label="DESTINO"   type="text" margin="dense" fullWidth
+              />
             
 
             
@@ -597,7 +639,10 @@ render(){
             /> */}
           {/* https://reactdatepicker.com/#example-custom-date-format */}
 
-          <DatePicker locale="es" id="fecha_salida" defaultValue={getCurrentDate()} dateFormat="dd-MMMM-yyyy" selected={fecha_salida} onChange={date => this.setStartDate(date)} name="fecha_salida" />
+          <DatePicker locale="es" id="fecha_salida" 
+          // defaultValue={getCurrentDate()} 
+          
+          dateFormat="dd-MMMM-yyyy" selected={fecha_salida} onChange={date => this.setStartDate(date)} name="fecha_salida" />
 
          
            
@@ -659,7 +704,7 @@ render(){
         </IconButton>
         
    
-           <InputLabel id="demo-simple-select-helper-label" className={classes.iconButton}>INCLUYE</InputLabel>
+           <InputLabel id="demo-simple-select-helper-label" className={classes.iconButton}>OBSERVACIONES</InputLabel>
             
               <Select  autoFocus  labelId="incluye"
                 id="incluye"  
@@ -676,7 +721,7 @@ render(){
 
               <TextField   autoFocus  onChange={this.handleChange}
                 margin="dense"   value={observaciones}  name="observaciones"
-                id="observaciones" label="Observaciones"  type="text" fullWidth
+                id="observaciones" label="INCLUYE"  type="text" fullWidth
               />
     
 

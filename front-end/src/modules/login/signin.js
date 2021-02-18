@@ -74,6 +74,8 @@ class SignIn extends React.Component{
         localStorage.setItem('09b267c0', res.data.role);
         localStorage.setItem('6443a053', res.data.name);
         localStorage.setItem('c7383f2e', res.data.email);
+        localStorage.setItem('4055bf1e', res.data.uuid_user);
+        localStorage.setItem('4718acf4', res.data.id_user);
         localStorage.setItem('63dd46ba', res.data.iniciales);
         this.setState({ isSignedUp: true }); // after signing up, set the state to true. This will trigger a re-render
       }else{

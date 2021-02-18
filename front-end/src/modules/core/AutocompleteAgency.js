@@ -26,6 +26,7 @@ class AutocompleteAgency extends React.Component{
                     contacto: ''
                    },
       Agencies: [],
+      Currentuuid: ''
     }
 
 
@@ -70,17 +71,17 @@ class AutocompleteAgency extends React.Component{
   };
 
   componentDidUpdate(){
-    const open = this.state;
+    const {Currentuuid} = this.state;
 
     if(this.props.value !== ""){
     if(this.props.value !== this.state.value){
       this.setState({value: this.props.value});
       this.setState({ciudad: this.props})
       //this.props.value = this.state.value;
-      console.log(this.state.Agencies)
-      console.log(this.props.uuid)
-      console.log(this.state.Agencies.find(e => (e.uuid_travelA === this.props.uuid)))
-      this.props.updateAgencia(this.props.uuid, this.props.ciudad)
+      let current = this.state.Agencies.find(e => (e.uuid_travelA === Currentuuid))
+      console.log(current)
+      this.props.updateAgencia(current.uuid_travelA, current.ciudad, current.nombre_agencia)
+      
     }
   }
   }
@@ -104,7 +105,7 @@ class AutocompleteAgency extends React.Component{
     API.get(`/TravelA/`).then(res => {
       try{
         if(res.data[0].hasOwnProperty('data')){
-          console.log("------")
+          
           console.log(res.data[0])
           res.data.map(row => ( 
             this.onAddAgency(row.uuid_travelA, row.data.nombre, row.data.contacto, row.data.ciudad)
@@ -136,9 +137,11 @@ class AutocompleteAgency extends React.Component{
     try{
       // console.log(res.data)
 
-      this.setState({value: res.data.data.nombre});
+      
+      this.setState({value: res.data.data.nombre, Currentuuid: res.data.uuid_travelA,});
 
-      this.props.updateAgencia(res.data.uuid_travelA)
+      
+      this.props.updateAgencia(res.data.uuid_travelA, res.data.ciudad, res.data.data.nombre)
 
       this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto, res.data.ciudad)
         
@@ -211,12 +214,12 @@ class AutocompleteAgency extends React.Component{
             }
 
 
-            console.log(option)
+            
         
             this.setState({value: option.nombre_agencia});
             this.setState({ciudad: option.ciudad});
 
-            this.props.updateAgencia(option.uuid_travelA, option.ciudad)
+            this.props.updateAgencia(option.uuid_travelA, option.ciudad, option.nombre_agencia)
             
 
             return option.nombre_agencia;
