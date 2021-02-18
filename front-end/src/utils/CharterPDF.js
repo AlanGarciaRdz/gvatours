@@ -51,7 +51,7 @@ function Header(doc, PAPELETA, cantidad) {
 }
 
 
-function Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
+function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
     adultos_juniors, menores_cargo, menores_sin_cargo, 
     TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
     redondo, OBSERVACIONES ) {
@@ -80,12 +80,15 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRES
         doc.text(30, starty+13, 'HOTEL / DESTINO');
         
         starty += increment; 
-        doc.setTextColor(color_valores) 
-        doc.text(40, starty+13, HOTEL_DESTINO);
-        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
+        doc.setTextColor(color_valores)
+        var splithoteldestino= doc.splitTextToSize(HOTEL  + ' / ' +  DESTINO, 250);
+        doc.text(40, starty+13, splithoteldestino);
+
+        // doc.text(40, starty+13, HOTEL  + ' / ' +  DESTINO);
+        doc.roundedRect(15, starty, 550, 30, 3, 3, 'D');
         
         //FECHA
-        starty += increment; 
+        starty += increment+10; 
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 550, 17, 3, 3, 'F');
         doc.setTextColor(color_labels)
@@ -107,7 +110,7 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRES
         doc.roundedRect(15, starty, 550, 30, 3, 3, 'D');
 
         //adultos y juniors
-        starty += increment+increment; 
+        starty += increment+10; 
         doc.setFillColor(232,68, 86) //red
         doc.roundedRect(15, starty, 95, 33, 3, 3, 'F');
         doc.setTextColor(color_labels)
@@ -214,7 +217,7 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRES
         var splitObservacion = doc.splitTextToSize(redondo + " -- "+ OBSERVACIONES + " -- " + ABORDA, 400);
         doc.text(40, starty+13, splitObservacion);
 
-        doc.roundedRect(15, starty, 550, 95, 3, 3, 'D');
+        doc.roundedRect(15, starty, 550, 72, 3, 3, 'D');
 
 
 }

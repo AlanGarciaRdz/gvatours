@@ -118,7 +118,8 @@ class CharterDialog extends React.Component{
                 
                 
                 this.setState({CLIENTE_NOMBRE: res.cliente.nombre})
-                this.setState({HOTEL_DESTINO: res.hotel.nombre})
+                this.setState({HOTEL: res.hotel.nombre})
+                this.setState({DESTINO: res.hotel.destino})
                 this.setState({FECHA_SALIDA: res.data.fecha_salida})
                 this.setState({FECHA_REGRESO: res.data.fecha_regreso})   
                 // ABORDA
@@ -178,7 +179,7 @@ class CharterDialog extends React.Component{
   GeneratePDF = () => {
     var {  receiptId, cantidad } = this.state
 
-    var { PAPELETA , CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
+    var { PAPELETA , CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
       adultos_juniors, menores_cargo, menores_sin_cargo,
       TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
       redondo, OBSERVACIONES} = this.state 
@@ -188,7 +189,7 @@ class CharterDialog extends React.Component{
         
       CharterPDF.Header(doc, PAPELETA, cantidad)
 
-      CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
+      CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
         adultos_juniors, menores_cargo, menores_sin_cargo, 
         TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
         redondo, OBSERVACIONES)
@@ -202,7 +203,7 @@ class CharterDialog extends React.Component{
   EmbededPDF = () => {
     var {  cantidad } = this.state
 
-    var { PAPELETA , CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
+    var { PAPELETA , CLIENTE_NOMBRE, HOTEL,DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
       adultos_juniors, menores_cargo, menores_sin_cargo,
       TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
       redondo, OBSERVACIONES} = this.state 
@@ -212,7 +213,7 @@ class CharterDialog extends React.Component{
         
       CharterPDF.Header(doc, PAPELETA, cantidad)
 
-      CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
+      CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL,DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
         adultos_juniors, menores_cargo, menores_sin_cargo, 
         TRAVELAGENCY_NOMBRE, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
         redondo, OBSERVACIONES)
@@ -234,10 +235,10 @@ class CharterDialog extends React.Component{
   }
 
   EmbededHTML = () => {
-    var {  PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
+    var {  PAPELETA, CLIENTE_NOMBRE, HOTEL,DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
       TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, CLAVE , INCLUYE, OBSERVACIONES, adultos_juniors, menores_cargo, menores_sin_cargo } = this.state
 
-        var embed = PreviewHTML.setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, 
+        var embed = PreviewHTML.setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL,DESTINO, FECHA_SALIDA, 
           FECHA_REGRESO, ABORDA, TRAVELAGENCY_NOMBRE , TRAVELAGENCY_CIUDAD, 
           CLAVE , INCLUYE, OBSERVACIONES , adultos_juniors, menores_cargo, menores_sin_cargo);
           console.log(embed)
