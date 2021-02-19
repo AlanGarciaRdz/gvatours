@@ -116,7 +116,6 @@ class CharterDialog extends React.Component{
                 
                 this.setState({PAPELETA: res.data.folio_papeleta})
                 
-                
                 this.setState({CLIENTE_NOMBRE: res.cliente.nombre})
                 this.setState({HOTEL: res.hotel.nombre})
                 this.setState({DESTINO: res.hotel.destino})

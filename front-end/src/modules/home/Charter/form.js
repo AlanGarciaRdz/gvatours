@@ -96,7 +96,7 @@ class CharterFrom extends React.Component{
                 val_uuid_cliente: null,
                 val_uuid_hotel: null,
                 val_uuid_agencia: null,
-                val_uuid_usuario: localStorage.getItem("4055bf1e") + ' ',
+                val_uuid_usuario: localStorage.getItem("4055bf1e") + '',
                 data_clientes: [],
                 data_agencias: [],
                 data_hoteles: [],
@@ -140,7 +140,7 @@ class CharterFrom extends React.Component{
             
 
             this.createCharter = this.createCharter.bind(this);
-            this.CreateClient = this.CreateClient.bind(this);
+            
 
             this.handleClientChange = this.handleClientChange.bind(this);
             this.handleHotelChange = this.handleHotelChange.bind(this);
@@ -154,6 +154,7 @@ class CharterFrom extends React.Component{
             this.menores_cargo_plus = this.menores_cargo_plus.bind(this)
             this.menores_sin_cargo_minus = this.menores_sin_cargo_minus.bind(this)
             this.menores_sin_cargo_plus = this.menores_sin_cargo_plus.bind(this)
+            this.EliminarCharter = this.EliminarCharter.bind(this);
 
             this.setStartDate = this.setStartDate.bind(this);
 
@@ -317,18 +318,11 @@ class CharterFrom extends React.Component{
         
        }
 
-       CreateClient= async () => {
-        const {cliente, val_uuid_cliente}  = this.state
-        await API.post(`/clients/`, {
-          "data": { "nombre": cliente  }
-        }).then(res => {
-          return(res.data.uuid_client)
-        })
-       }
+      
    
 
         createCharter = async () => {
-          var {cliente,val_uuid_cliente, val_uuid_hotel, val_uuid_agencia, val_uuid_usuario, agencia, hotel } = this.state
+          var {DB_cliente, cliente, aborda, redondo, incluye, val_uuid_cliente, val_uuid_hotel, val_uuid_agencia, val_uuid_usuario, agencia, hotel } = this.state
           if(val_uuid_cliente === null){
             
             await API.post(`/clients/`, {
@@ -337,6 +331,15 @@ class CharterFrom extends React.Component{
               val_uuid_cliente = cl.data.uuid_client
               console.log(`new client ${val_uuid_cliente}`)
             })
+          }else{
+            if(cliente !== DB_cliente){
+              await API.put(`/clients/${val_uuid_cliente}`, {
+                "data": { "nombre": cliente  }
+              }).then(cl => {
+                val_uuid_cliente = cl.data.uuid_client
+                console.log(`new client ${val_uuid_cliente}`)
+              })
+            }
           }
           
           if(val_uuid_hotel === null || val_uuid_agencia === null){
@@ -349,24 +352,25 @@ class CharterFrom extends React.Component{
                   "uuid_cliente": val_uuid_cliente === undefined ? this.state.cliente_uuid : val_uuid_cliente,
                   "uuid_hotel": val_uuid_hotel === undefined ? this.state.hotel_uuid : val_uuid_hotel,
                   "uuid_agencia": val_uuid_agencia === undefined ? this.state.agencia_uuid : val_uuid_agencia,
-                  "uuid_usuario": val_uuid_usuario === undefined ? this.state.val_uuid_usuario : val_uuid_usuario,
+                  "uuid_usuario": val_uuid_usuario === undefined ? 'default' : val_uuid_usuario,
                   "ciudad": document.getElementById("ciudad").value,
                   "agente": document.getElementById("agente").value,
-                  "redondo": document.getElementById("redondo").innerHTML,
+                  "redondo": redondo ? document.getElementById("redondo").innerHTML : '',
                   "fecha_salida": document.getElementById("fecha_salida").value,
                   "fecha_regreso": document.getElementById("fecha_regreso").value,
-                  "aborda": document.getElementById("aborda").innerHTML,
+                  "aborda": aborda ? document.getElementById("aborda").innerHTML : '',
                   "adultos_juniors": document.getElementById("adultos_juniors").value,
                   "menores_cargo": document.getElementById("menores_cargo").value,
                   "menores_sin_cargo": document.getElementById("menores_sin_cargo").value,
                   
                   "clave": document.getElementById("folio_papeleta").value,
-                  "incluye": document.getElementById("incluye").innerHTML,
+                  "incluye": incluye ? document.getElementById("incluye").innerHTML : '',
                   "OBSERVACIONES": document.getElementById("observaciones").value,
                 }
             }
 
             console.log(cupondata)
+           
 
             if(this.state.UUID === ''){
               API.post(`/Charters/`, cupondata).then(res => {
@@ -399,7 +403,7 @@ class CharterFrom extends React.Component{
             }else{
               API.put(`/Charters/${this.state.UUID}`, cupondata).then(res => {
                 try{
-                  console.log(res.data)
+                  window.location.href =  `/Charter?id=${res.data.uuid_charter}`; 
                   // this.limpiarSTATE()
                 }catch(error){
                   console.log(error)
@@ -457,6 +461,15 @@ class CharterFrom extends React.Component{
         }
 
      
+        EliminarCharter(){
+          API.delete(`/charters/${this.state.UUID}`)
+              .then(res => {
+                if (res.status === 200) {
+                  // alert("deleted")
+                  this.limpiarSTATE()
+                }
+              })
+        }
 
 
         seleccionarElemento(row){
@@ -499,10 +512,11 @@ class CharterFrom extends React.Component{
                   // this.setState({newState})
 
                     //  ----- -
-                  // this.setState({UUID: row.UUID});
+                  this.setState({UUID: row.UUID});
                   this.setState({folio_papeleta: row.FolioPapeleta});
                   
                   this.setState({cliente: res.cliente.nombre});
+                  this.setState({DB_cliente: res.cliente.nombre});
                   this.setState({cliente_uuid: res.data.uuid_cliente});
                   this.setState({val_uuid_cliente: res.data.uuid_cliente})
                   
@@ -738,6 +752,11 @@ render(){
             <Button variant="contained" color="primary" href="#contained-buttons" onClick={this.createCharter} >
               Guardar o Crear 
             </Button>
+            {this.state.UUID &&
+            <Button variant="contained" color="red" href="#contained-buttons" onClick={this.EliminarCharter} >
+              Eliminiar
+            </Button>
+            }
           
   
 
