@@ -20,6 +20,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
+import Alert from '@material-ui/lab/Alert';
+
 
 
 
@@ -122,6 +124,7 @@ class CharterFrom extends React.Component{
               agencia: '',
               ciudad: '',
               agente: '',
+              errorAlert: null,
 
 
               observaciones: '',
@@ -323,7 +326,7 @@ class CharterFrom extends React.Component{
 
         createCharter = async () => {
           var {DB_cliente, cliente, aborda, redondo, incluye, val_uuid_cliente, val_uuid_hotel, val_uuid_agencia, val_uuid_usuario, agencia, hotel } = this.state
-          if(val_uuid_cliente === null){
+          if(val_uuid_cliente === null){ //NEW CHARTER and ADD NEW CLIENT
             
             await API.post(`/clients/`, {
               "data": { "nombre": cliente  }
@@ -332,12 +335,12 @@ class CharterFrom extends React.Component{
               console.log(`new client ${val_uuid_cliente}`)
             })
           }else{
-            if(cliente !== DB_cliente){
+            if(cliente !== DB_cliente){  //UPDATE CLIENT DATA
               await API.put(`/clients/${val_uuid_cliente}`, {
                 "data": { "nombre": cliente  }
               }).then(cl => {
                 val_uuid_cliente = cl.data.uuid_client
-                console.log(`new client ${val_uuid_cliente}`)
+                console.log(`updated client ${val_uuid_cliente}`)
               })
             }
           }
@@ -372,7 +375,7 @@ class CharterFrom extends React.Component{
             console.log(cupondata)
            
 
-            if(this.state.UUID === ''){
+            if(this.state.UUID === ''){ //IF ITS A NEW CHARTER CUPON
               API.post(`/Charters/`, cupondata).then(res => {
                 try{
                 window.location.href =  `/Charter?id=${res.data.uuid_charter}`; 
@@ -395,9 +398,13 @@ class CharterFrom extends React.Component{
 
                 
                 }catch(error){
-                  console.error(error)
+                  // this.setState({alerta: "REPETIDO"})
                   return "400 Cupon"
                 }
+              }).catch(error => {
+                
+                this.setState({errorAlert: error.response.data});
+                console.log(error.response.data)
               })
 
             }else{
@@ -473,6 +480,7 @@ class CharterFrom extends React.Component{
 
 
         seleccionarElemento(row){
+          this.setState({errorAlert: null})
           
 
           API.get(`/charters/${row.UUID}`)
@@ -594,7 +602,7 @@ render(){
 
     return (
         <React.Fragment>
-
+          
           <Typography variant="h6" gutterBottom>
             CUPON DE CHARTER TURISTICO
           </Typography>
@@ -748,7 +756,10 @@ render(){
               
              </Grid>
 
-          
+             {this.state.errorAlert &&
+              <Alert severity="error">{this.state.errorAlert}</Alert>
+             }
+            
             <Button variant="contained" color="primary" href="#contained-buttons" onClick={this.createCharter} >
               Guardar o Crear 
             </Button>
