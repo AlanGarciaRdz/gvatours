@@ -2,6 +2,8 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 import { withStyles } from '@material-ui/core/styles';
 import {getCurrentDate} from '../../../utils/helpers';
 import Button from '@material-ui/core/Button'
@@ -133,7 +135,16 @@ class CharterFrom extends React.Component{
 
               adultos: 0,
               sin_cargo: 0,
-              con_cargo: 0
+              con_cargo: 0,
+
+
+              //Pagination
+              datatables: {
+                length: 0,
+                rowsPerPage: 5,
+                page: 0
+              }
+              
             }
     
             this.getCharters = this.getCharters.bind(this);
@@ -158,6 +169,8 @@ class CharterFrom extends React.Component{
             this.menores_sin_cargo_minus = this.menores_sin_cargo_minus.bind(this)
             this.menores_sin_cargo_plus = this.menores_sin_cargo_plus.bind(this)
             this.EliminarCharter = this.EliminarCharter.bind(this);
+            this.handleChangePage = this.handleChangePage.bind(this);
+            this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
 
             this.setStartDate = this.setStartDate.bind(this);
 
@@ -287,6 +300,23 @@ class CharterFrom extends React.Component{
             this.setState({
               val_uuid_cliente: uuid_cliente})
               
+        }
+
+        handleChangePage = (event, newPage) => {
+          const { datatables } = this.state;
+          const newState = { ...datatables };
+          newState.page = newPage;
+          this.setState({datatables: newState})
+        }
+
+        handleChangeRowsPerPage = (event) => {
+          const { datatables } = this.state;
+          const newState = { ...datatables };
+          newState.rowsPerPage =  parseInt(event.target.value, 10)
+          newState.page = 0;
+
+          this.setState({datatables: newState})
+
         }
 
         handleHotelChange = (uuid_hotel, name_hotel, destino) => {
@@ -449,8 +479,24 @@ class CharterFrom extends React.Component{
                     )))
                     
                     this.setState({charters: rowsP});
-                    //console.log("charters")
-                    console.log(this.state.charters)
+                    const { datatables } = this.state;
+                    const newState = { ...datatables };
+                    
+                    //---
+                    // datatables: {
+                    //   length: 0,
+                    //   rowsPerPage: 0,
+                    //   page: 0
+                    // }
+
+                    newState.length = res.data.length;
+                    
+
+                    this.setState({ datatables: newState });
+                    console.log(newState)
+                    
+              
+                    
                   
                   
                 }else{
@@ -489,37 +535,6 @@ class CharterFrom extends React.Component{
                   //EDICION
                   res = res.data[0]
                   console.log(res)
-                  // const newState = { ...this.state };
-
-                  // newState.UUID= row.UUID;
-                  // newState.folio_papeleta = row.FolioPapeleta
-                  
-                  // let newState = {...this.state}
-                  // newState.UUID = row.UUID;
-                  // newState.folio_papeleta = row.FolioPapeleta;
-                  // newState.cliente = res.cliente.nombre;
-                  // newState.cliente_uuid = res.data.uuid_cliente;
-                  // newState.hotel = res.hotel.nombre;
-                  // newState.hotel_uuid = res.data.uuid_hotel;
-                  // newState.fecha_salida = res.data.fecha_salida;
-                  // newState.fecha_regreso = res.data.fecha_regreso;
-                  // newState.redondo =res.data.redond;
-                  // newState.aborda = res.data.aborda;
-                  // newState.total_venta = res.data.Total_Venta
-                  // newState.adultos = res.data.adultos_juniors
-                  // newState.sin_cargo = res.data.menores_sin_cargo
-                  // newState.con_cargo = res.data.menores_cargo
-                  // newState.agencia = res.travelagency.nombre
-                  // newState.agencia_uuid = res.data.uuid_agencia
-                  // newState.ciudad = res.travelagency.ciudad
-                  // newState.incluye = res.data.incluye
-                  // newState.observaciones = res.data.OBSERVACIONES
-
-                  
-                  
-                  // this.setState({newState})
-
-                    //  ----- -
                   this.setState({UUID: row.UUID});
                   this.setState({folio_papeleta: row.FolioPapeleta});
                   
@@ -540,9 +555,6 @@ class CharterFrom extends React.Component{
                   
                   this.setState({redondo:res.data.redondo})
                   console.log(res.data.redondo)
-                  
-                  
-                  
 
                   this.setState({aborda: res.data.aborda})
                   
@@ -595,6 +607,8 @@ render(){
     const { folio_papeleta ,cliente , cliente_uuid, hotel , hotel_uuid,fecha_regreso ,fecha_salida ,SGL ,DBL ,CPL , 
       redondo, aborda, agencia , ciudad, agente, agencia_uuid,observaciones , charters, adultos, con_cargo, 
       sin_cargo,incluye, startDate, hotel_destino} = this.state;
+
+      const {datatables} = this.state;
     
     
     registerLocale('es', es)
@@ -785,8 +799,12 @@ render(){
             <TableCell>Accion</TableCell>
           </TableRow>
         </TableHead>
+       
         <TableBody>
-          {charters.map(row => (
+          {(datatables.rowsPerPage > 0
+            ? charters.slice(datatables.page * datatables.rowsPerPage, datatables.page * datatables.rowsPerPage + datatables.rowsPerPage)
+            : charters
+          ).map(row => (
             <TableRow key={row.UUID}>
               <TableCell component="th" scope="row">
                 {row.FolioPapeleta}
@@ -796,7 +814,7 @@ render(){
               <TableCell>{row.Agencia}</TableCell>
               <TableCell>{row.Hotel}</TableCell>
               
-              {/* PDF */}
+              
               <TableCell>
               <Link href={`/Charter?id=${row.UUID}`} color="inherit">
                 <ListItem button>
@@ -804,19 +822,35 @@ render(){
                 </ListItem>
               </Link>
              </TableCell>
-             {/* PDF */}
-              {/* Edit */}
+             
+             
               <TableCell>
                 <ListItem button onClick={() => this.seleccionarElemento(row)}>
                     <Create />
                 </ListItem>
              </TableCell>
-             {/* Edit */} 
-              
               
             </TableRow>
           ))}
-        </TableBody>
+          </TableBody>
+
+
+
+        <TableFooter>
+          <TableRow>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 15 , 25]}
+            // component="div"
+            // colSpan={3}
+            count={datatables.length}  // rows.length
+            rowsPerPage={datatables.rowsPerPage} // rowsPerPage
+            
+            page={datatables.page} // page
+            onChangePage={this.handleChangePage} // handleChangePage
+            onChangeRowsPerPage={this.handleChangeRowsPerPage} //handleChangeRowsPerPage            
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
         </React.Fragment>
