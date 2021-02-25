@@ -120,11 +120,11 @@ class ReceiptForm extends React.Component{
             API.get(`/ClientCupon/${uuid_cliente}`)
             .then(res => {
               if (res.status === 200) {
-                console.log("---")
+                
                 //console.log(res.data)
                 this.setState({ClientCuponArray: res.data})
-                console.log(this.state.ClientCuponArray)
-                console.log("---")
+                //console.log(this.state.ClientCuponArray)
+                
 
               }
             })

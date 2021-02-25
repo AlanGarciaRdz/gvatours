@@ -107,7 +107,6 @@ class CharterFrom extends React.Component{
 
 
               UUID: '',
-              folio_papeleta: '',
               cliente: '',
               hotel: '',
               hotel_destino: '',
@@ -218,10 +217,22 @@ class CharterFrom extends React.Component{
           });
         };
 
+        handleChangeFolio = (evt) => {
+          const value = evt.target.value;
+          console.log(value)
+          this.setState({
+            ...this.state,
+            [evt.target.name]: value
+          },() => {
+            this.getCharters()
+          });
+          
+        }
+
         handleChangeSelect = (evt) => {
-          console.log("---")
-          console.log(evt)
-          console.log("---")
+          
+          // console.log(evt)
+          
         }
 
         handleChangeDate = (evt) => {
@@ -462,7 +473,10 @@ class CharterFrom extends React.Component{
         getCharters() {
           
             
-            API.get('/Charters')
+            //API.get('/Charters')
+            console.log(this.state.folio_papeleta)
+            
+            API.get(`/Charters/filter/${ this.state.folio_papeleta }`)
               .then(res => {
                 if (res.status === 200) {
                   var  rowsP = []
@@ -625,7 +639,7 @@ render(){
           <Grid container spacing={3}>
             <Grid item  sm={9}>
               <TextField  required   id="folio_papeleta"   label="folio_papeleta"
-                    type="text"  name="folio_papeleta"   value={folio_papeleta}     onChange={this.handleChange}
+                    type="text"  name="folio_papeleta"   value={folio_papeleta}     onChange={this.handleChangeFolio}
                     fullWidth autoComplete="fname"
               />
             

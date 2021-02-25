@@ -75,9 +75,6 @@ class AutocompleteHotel extends React.Component{
 
   componentDidUpdate(){
     const {Currentuuid} = this.state;
-    console.log("---")
-    console.log(this.props)
-    console.log("---")
     
     if(this.props.value !== ""){
 

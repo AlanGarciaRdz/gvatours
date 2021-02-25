@@ -183,12 +183,29 @@ const authenticate = (userReq) => {
       .then((data) => data.rows[0])
   }
 
+  const diffs = (newdata, dbdata) => {
+    var result = {};
+    
+    for(key in newdata) {
+        if(dbdata[key] != newdata[key]) {
+          result[key] = newdata[key]
+          delete dbdata[key]
+        };
+    }
+    
+    for(key in dbdata) {
+      result[key] = dbdata[key]
+    }
+    return result;
+}
+
 
 
 module.exports = {
     createDateAsUTC,
     encryptPassword,
-    checkPassword
+    checkPassword,
+    diffs
 }
 
 

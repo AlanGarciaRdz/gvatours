@@ -103,10 +103,13 @@ app.get('/ClientReceipt/:uuid_client', receipt_model.getClientReceipts)
 
 //DATABASE Charter
 app.get('/Charters', charter_model.getCharters)
+app.get('/Charters/filter/:iniciales', charter_model.getChartersFiltro)
 app.get('/Charters/:uuid_charter', charter_model.getCharterByIdFE)
 app.post('/Charters', charter_model.createCharter)
 app.put('/Charters/:uuid_charter', charter_model.updateCharter) 
 app.delete('/Charters/:uuid_charter', charter_model.deleteCharter)
+app.patch('/Charters/:uuid_charter', charter_model.rollbackCharter)
+
 
 
 //DATABASE Transport 
