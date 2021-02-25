@@ -475,8 +475,10 @@ class CharterFrom extends React.Component{
             
             //API.get('/Charters')
             console.log(this.state.folio_papeleta)
-            
-            API.get(`/Charters/filter/${ this.state.folio_papeleta }`)
+
+            const url = this.state.folio_papeleta == '' ? `/Charters` : `/Charters/filter/${ this.state.folio_papeleta }`
+
+            API.get(url)
               .then(res => {
                 if (res.status === 200) {
                   var  rowsP = []
@@ -801,7 +803,7 @@ render(){
 
 
           <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
+      <Table stickyHeader className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>Folio Papeleta</TableCell>
@@ -861,7 +863,11 @@ render(){
             
             page={datatables.page} // page
             onChangePage={this.handleChangePage} // handleChangePage
-            onChangeRowsPerPage={this.handleChangeRowsPerPage} //handleChangeRowsPerPage            
+            onChangeRowsPerPage={this.handleChangeRowsPerPage} //handleChangeRowsPerPage    
+            SelectProps={{
+              inputProps: { 'aria-label': 'roaws per page' },
+              native: true,
+            }}        
             />
           </TableRow>
         </TableFooter>
