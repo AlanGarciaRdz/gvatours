@@ -13,7 +13,7 @@ function Header(doc, PAPELETA, cantidad) {
           }
           
           
-          PAPELETA = PAPELETA.split(' ')
+        //   PAPELETA = PAPELETA.split(' ')
 
         //   doc.setFontSize(12);
         //   doc.text(200, 35, 'CUPON DE');
@@ -41,8 +41,8 @@ function Header(doc, PAPELETA, cantidad) {
           doc.rect(470, 52, 100, 25,'F'); 
           
           doc.setTextColor(220, 43, 27);
-          doc.text(490, 64, PAPELETA[0]);
-          doc.text(510, 64, PAPELETA[PAPELETA.length-1]);
+          doc.text(490, 64, PAPELETA);
+        //   doc.text(510, 64, PAPELETA[PAPELETA.length-1]);
 
           doc.setDrawColor(0);
           doc.setFillColor(255, 255, 255);
