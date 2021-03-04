@@ -21,7 +21,10 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from '../../home/listItems';
 import {isMobileDevice} from '../../../utils/helpers';
 
-import CuponForm from './form'
+
+import AgenciaForm from './form'
+
+
 
 
 
@@ -142,6 +145,8 @@ class Agencias extends React.Component{
    
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+    
+
     return (
         <div className={classes.root}>
           <CssBaseline />
@@ -194,7 +199,7 @@ class Agencias extends React.Component{
                 <Grid item xs={12}>
                   <Paper className={classes.paper}>
                     {/* <HomeCupons /> */}
-                    {<CuponForm/>}
+                    {<AgenciaForm/>}
                   </Paper>
                 </Grid>
               </Grid>

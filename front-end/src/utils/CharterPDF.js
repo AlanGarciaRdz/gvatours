@@ -5,7 +5,8 @@ import { MoneyFormatter } from '../utils/helpers';
 
 function Header(doc, PAPELETA, cantidad) {
           const imgData = charter
-          
+          console.log(imgData)
+        
           try {
             doc.addImage(imgData, 'PNG', 30, 30, 200, 80, 'FAST');
           } catch (error) {
@@ -81,7 +82,7 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
         
         starty += increment; 
         doc.setTextColor(color_valores)
-        var splithoteldestino= doc.splitTextToSize(HOTEL  + ' / ' +  DESTINO, 250);
+        var splithoteldestino= doc.splitTextToSize(HOTEL  + ' / ' +  DESTINO, 400);
         doc.text(40, starty+13, splithoteldestino);
 
         // doc.text(40, starty+13, HOTEL  + ' / ' +  DESTINO);

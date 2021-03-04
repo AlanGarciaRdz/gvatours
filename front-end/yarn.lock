@@ -1323,6 +1323,79 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@rpldy/life-events@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@rpldy/life-events/-/life-events-0.10.0.tgz#3b9347c49156c8d6fb113b2d526fb0973907ddef"
+  integrity sha512-eeNf4cu5cpfWio3RQWWKMcOj2cnkocMfIQhrYbQWeEZVWOOZxj71LG9Kr2YgLRRiSn3dRIx4Xrv5JbDl9q9A5Q==
+  dependencies:
+    "@rpldy/shared" "^0.10.0"
+    is-promise "^4.0.0"
+
+"@rpldy/sender@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@rpldy/sender/-/sender-0.10.0.tgz#6331cecb1d4d1af2c11ab35369ebf0d722f4f8e6"
+  integrity sha512-LnLs7QxULdhM247lOqHXz72qjBboDgExJuh3FJ99WIuqvjFqz5VtyBanHWpE/QPjPJRmgPfv2hDlPVf63Haj7Q==
+  dependencies:
+    "@rpldy/shared" "^0.10.0"
+
+"@rpldy/shared-ui@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@rpldy/shared-ui/-/shared-ui-0.10.0.tgz#59b4306a6373cbfcfd5a83b1974a02b717b34589"
+  integrity sha512-QrtszhSO+MeSDK7AJWvvXEQjL+pnF9KRW6vcwr30C4AMfTGnXF/IKq3qGYYYsBoaJV3M2Q8kxHLj3OrEStWV+g==
+  dependencies:
+    "@rpldy/shared" "^0.10.0"
+    "@rpldy/uploader" "^0.10.0"
+
+"@rpldy/shared@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@rpldy/shared/-/shared-0.10.0.tgz#0d6ba5b2c411d27235b0358fbefc1e5ac9fa185f"
+  integrity sha512-0v09CEjVcMPljfopd9Cjhw4shdw9yD/POvqRnlLqmAVLLBlPToAuxIKqkFAp0uY9qPnNGnNC9B7OFLWuqZwLuQ==
+  dependencies:
+    invariant "^2.2.4"
+    just-throttle "^1.1.0"
+
+"@rpldy/simple-state@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@rpldy/simple-state/-/simple-state-0.10.0.tgz#9580ed568d86332ba877b56d7828839f428a285e"
+  integrity sha512-8UImgzykrAElFckMId5bQYZL8nSGWsTUUaM88mUgUGrX6xm6yj5HD+qC5ZW+2pq8bfn55D7Q2JSV5yI6nQ5faw==
+  dependencies:
+    "@rpldy/shared" "^0.10.0"
+
+"@rpldy/upload-button@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@rpldy/upload-button/-/upload-button-0.10.0.tgz#86a36773bf7523491b1d1830f2e052cf660c0e86"
+  integrity sha512-1CicZDFtopzVmOvYPCEth31pWIWgha7/xkktB+0+M87r3jnvtAO1f/xsJs7uplvEpbh3fAsihG9a0nPTexGEZw==
+  dependencies:
+    "@rpldy/shared-ui" "^0.10.0"
+
+"@rpldy/upload-preview@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@rpldy/upload-preview/-/upload-preview-0.10.0.tgz#5ff8db1cabe04da8a935bbc2508bed17a4c84f3a"
+  integrity sha512-qvuIm6i7V5uagf2QKxjgxNwio84IGS/zDXxnXV5XwvAPe0U7RsTbdyV8ir9w5NMoD3ZiCzkKaoJ3SfttDEWygg==
+  dependencies:
+    "@rpldy/shared" "^0.10.0"
+    "@rpldy/shared-ui" "^0.10.0"
+
+"@rpldy/uploader@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@rpldy/uploader/-/uploader-0.10.0.tgz#d029878f38b15be43aa26d7941f91fd33863e758"
+  integrity sha512-P9bJhkBB1fLDafL29dSrgLMzbnINC0EfxDRnWxuJM4krCLza6dIPyFdm/A3hduPN6+fx/zJekP0DNJiG9Ff+Dw==
+  dependencies:
+    "@rpldy/life-events" "^0.10.0"
+    "@rpldy/sender" "^0.10.0"
+    "@rpldy/shared" "^0.10.0"
+    "@rpldy/simple-state" "^0.10.0"
+
+"@rpldy/uploady@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@rpldy/uploady/-/uploady-0.10.0.tgz#7657c762ec1143a88b6a3e14160b96a1e8b48a26"
+  integrity sha512-rBSRye6cnkehDlTM77PYbMaL9zrHD+wLD0Sr571fir8UtImBFtnHlZm8n3G6AsCjGmZws3PWmMqlMSV6RQ2brQ==
+  dependencies:
+    "@rpldy/life-events" "^0.10.0"
+    "@rpldy/shared" "^0.10.0"
+    "@rpldy/shared-ui" "^0.10.0"
+    "@rpldy/uploader" "^0.10.0"
+
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-4.2.0.tgz#dadcb6218503532d6884b210e7f3c502caaa44b1"
@@ -5833,6 +5906,11 @@ is-promise@^2.1.0:
   resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
   integrity sha1-eaKp7OfwlugPNtKy87wWwf9L8/o=
 
+is-promise@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-4.0.0.tgz#42ff9f84206c1991d26debf520dd5c01042dd2f3"
+  integrity sha512-hvpoI6korhJMnej285dSg6nu1+e6uxs7zG3BYAm5byqDsgJNWwxzM6z6iZiAgQR4TJ30JmBTOwqZUw3WlyH3AQ==
+
 is-regex@^1.0.4, is-regex@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/is-regex/-/is-regex-1.0.5.tgz#39d589a358bf18967f726967120b8fc1aed74eae"
@@ -6624,6 +6702,11 @@ jsx-ast-utils@^2.1.0, jsx-ast-utils@^2.2.1:
   dependencies:
     array-includes "^3.0.3"
     object.assign "^4.1.0"
+
+just-throttle@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/just-throttle/-/just-throttle-1.1.0.tgz#178d305ece9876a8a0759abd8d403aafcc6e4849"
+  integrity sha512-iePC/13XYX1Tyn9C6jY+DG3UEejkDvrKsw5xxgGhtGUwYWmoJm4CoKexscBKELOu3FTyCDzjr21ZJ67AXnz+bg==
 
 keycode@^2.1.8:
   version "2.2.0"

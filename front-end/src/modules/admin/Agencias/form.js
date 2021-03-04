@@ -6,6 +6,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import ListItem from '@material-ui/core/ListItem';
 import Create from '@material-ui/icons/Create';
+import Uploady from "@rpldy/uploady";
+import UploadButton from  "@rpldy/upload-button";
+import UploadPreview from "@rpldy/upload-preview";
 
 import API from "../../../utils/API";
 
@@ -162,6 +165,7 @@ class CuponForm extends React.Component{
 
         getTravelA() {
           
+          
             API.get('/TravelA')
               .then(res => {
                 if (res.status === 200) {
@@ -204,6 +208,7 @@ render(){
     const { classes } = this.props;
     const {agencias} = this.state;
 
+    
     return (
         <React.Fragment>
   
@@ -270,10 +275,22 @@ render(){
 
 
 
+
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+            <Uploady destination={{url: process.env.NODE_ENV === "development" ? "http://localhost:19001/Upload" : "//52.7.16.247:19001/Upload"}}>
+              <UploadButton text="Logo Agencia"/>
+
+              
+              <UploadPreview
+                      fallbackUrl="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-6.jpg"/>
+            </Uploady>
             </Grid>
 
 
-          <Grid item xs={12} sm={6}>
+
+          <Grid item xs={8} sm={6}>
             <Button variant="contained" color="primary" href="#contained-buttons" onClick={() => this.crear_editar_borrar_elemento(1)} >
               Crear/Editar Agencia
             </Button>
