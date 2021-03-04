@@ -20,7 +20,7 @@ var helmet = require('helmet');
 app.use(helmet());
 
 app.use(fileUpload({
-    limits: { fileSize: 50 * 1024 },
+    limits: { fileSize: 550 * 1024 },
   }));
 
 const client_model = require('./db/models/clients')
