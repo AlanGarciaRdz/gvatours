@@ -140,7 +140,7 @@ const getCuponByClientId = (request, response) => {
       if (error) {
         throw error
       }
-      response.status(200).send({
+      response.status(200).send({ 
         "uuid_cupon": uuid,
         "id_Cupon": 1,
         "updated_at": dateValue

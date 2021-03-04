@@ -28,16 +28,16 @@ const getCharters = (request, response) => {
 
   const getChartersFiltro = (request, response) => {
     const Iniciales = request.params.iniciales ? request.params.iniciales.trim() : ''
-
+    
     const filter = ` and Ch.data->>'folio_papeleta' LIKE '${ Iniciales }%' `
-
-    pool.query(`SELECT Ch.*, public."Hotels".data as Hotel, public."Clients".data as Cliente, ta.data as TravelAgency, Users.data as Users`
+    
+    pool.query(`SELECT Ch.*, public."Hotels".data as Hotel, public."Clients".data as Cliente, ta.data as TravelAgency `
     +` FROM public."Charters" as Ch `
     +` join public."Clients" on (Ch.data->>'uuid_cliente')::uuid = public."Clients".uuid_client`
     +` join public."Hotels" on (Ch.data->>'uuid_hotel')::uuid = public."Hotels".uuid_hotel`
     +` join public."TravelAgencies" as ta on (Ch.data->>'uuid_agencia')::uuid = ta."uuid_travelA"`
-    +` join public."Users" as Users on (Ch.data->>'uuid_usuario')::uuid = Users.uuid_user`
-    +` where Ch.status = 1  ${Iniciales ? filter : '' } ORDER BY updated_at DESC `, (error, results) => { 
+    //+` join public."Users" as Users on (Ch.data->>'uuid_usuario')::uuid = Users.uuid_user`
+    +` where Ch.status = 1  ${Iniciales != '' ? filter : '' } ORDER BY updated_at DESC `, (error, results) => { 
       if (error) {
         throw error
       }

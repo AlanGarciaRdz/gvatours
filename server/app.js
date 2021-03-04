@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const pdf = require('html-pdf');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 
 
@@ -18,6 +19,10 @@ require('dotenv').config(); //Read the .env vars
 var helmet = require('helmet');
 app.use(helmet());
 
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 },
+  }));
+
 const client_model = require('./db/models/clients')
 const user_model = require('./db/models/users')
 const login_model = require('./db/models/login')
@@ -27,6 +32,8 @@ const cupon_model = require('./db/models/cupon')
 const receipt_model = require('./db/models/receipts')
 const transport_model = require('./db/models/transportcontracts')
 const charter_model = require('./db/models/charters')
+
+const image_manager = require('./src/image')
 
 
 
@@ -42,6 +49,9 @@ app.get('/', (req, res) => {
     res.send({"status": "GVA TOURS API SERVICE A-OK"});
 })
 
+
+//UPLOAD
+app.post('/upload', image_manager.UploadImage);
 
 //DATABASE Clients
 app.get('/clients', client_model.getClients)
