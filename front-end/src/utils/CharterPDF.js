@@ -1,16 +1,16 @@
 import charter from '../images/charter'
 import footer from '../images/footer';
-import footer2 from '../images/footer2';
 import { MoneyFormatter } from '../utils/helpers';
 
 function Header(doc, PAPELETA, cantidad) {
-          const imgData = charter
-          console.log(imgData)
+          
+          
         
           try {
-            doc.addImage(imgData, 'PNG', 30, 30, 200, 80, 'FAST');
+            
+            doc.addImage(charter, 'PNG', 30, 30, 200, 80);
           } catch (error) {
-            console.log(imgData)
+            console.log(charter)
           }
           
           
@@ -55,7 +55,7 @@ function Header(doc, PAPELETA, cantidad) {
 function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
     adultos_juniors, menores_cargo, menores_sin_cargo, 
     TRAVELAGENCY_NOMBRE, TRAVELAGENCY_TELEFONO,TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
-    redondo, OBSERVACIONES ) {
+    redondo, OBSERVACIONES, LOGOAGENCIA ) {
 
         let starty = 120;
         let increment = 24;
@@ -193,17 +193,50 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
         doc.roundedRect(310, starty, 250, 17, 3, 3, 'D');
         doc.text(325, starty+13, AGENTE);
 
-         //CLAVE RESERVACION
-         starty += increment; 
-         doc.setFillColor(232,68, 86) //red
-         doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
-         doc.setTextColor(color_labels)
-         doc.text(30, starty+13, 'CLAVE DE RESERVACION');
+        
+        // if(LOGOAGENCIA){ //REMOVE ! to production
+          //CLAVE RESERVACION
+          starty += increment; 
+          doc.setFillColor(232,68, 86) //red
+          doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+          doc.setTextColor(color_labels)
+          doc.text(30, starty+13, 'CLAVE DE RESERVACION');
+
+          try {
+            // starty += increment; 
+            doc.addImage(LOGOAGENCIA, 'JPEG', 385, starty-3, 80, 80,undefined,'FAST');
+            
+            doc.setTextColor(color_valores)  
+            //doc.roundedRect(310, starty, 250, 70, 3, 3, 'D');
+            
+          } catch (error) {
+            console.log(error)
+            // console.log(LOGOAGENCIA)
+          }
+           
+          starty += increment; 
+          doc.setTextColor(color_valores) 
+          doc.text(40, starty+13, CLAVE);
+          doc.roundedRect(15, starty, 250, 17, 3, 3, 'D');
+          starty += (increment/4); 
          
-         starty += increment; 
-         doc.setTextColor(color_valores) 
-         doc.text(40, starty+13, CLAVE);
-         doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
+
+        //  }else{
+
+        //   //CLAVE RESERVACION
+        //   starty += increment; 
+        //   doc.setFillColor(232,68, 86) //red
+        //   doc.roundedRect(15, starty, 185, 17, 3, 3, 'F');
+        //   doc.setTextColor(color_labels)
+        //   doc.text(30, starty+13, 'CLAVE DE RESERVACION');
+          
+        //   starty += increment; 
+        //   doc.setTextColor(color_valores) 
+        //   doc.text(40, starty+13, CLAVE);
+        //   doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
+          
+        //  }
+         
 
         //INCLUYE
         starty += increment; 
@@ -215,8 +248,8 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
         starty += increment; 
         doc.setTextColor(color_valores) 
         var splitObservacion = doc.splitTextToSize(INCLUYE, 400);
-        doc.text(40, starty+13, splitObservacion);
-        doc.roundedRect(15, starty, 550, 17, 3, 3, 'D');
+        doc.text(40, starty+18, splitObservacion);
+        doc.roundedRect(15, starty+5, 550, 17, 3, 3, 'D');
 
           //OBSERVACIONES
         starty += increment; 
@@ -241,7 +274,7 @@ function xcenter(doc, phrase){
 }
 
 function pieCharter(doc){
-    let starty = 630;
+    let starty = 635;
     let incremento = 17;
 
     doc.addImage(footer, 'PNG', 0, starty, doc.internal.pageSize.width, 305);

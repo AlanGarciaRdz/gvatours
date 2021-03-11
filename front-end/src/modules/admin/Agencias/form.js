@@ -6,9 +6,19 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import ListItem from '@material-ui/core/ListItem';
 import Create from '@material-ui/icons/Create';
-import Uploady from "@rpldy/uploady";
+import Uploady, {UploadyContext} from "@rpldy/uploady";
 import UploadButton from  "@rpldy/upload-button";
 import UploadPreview from "@rpldy/upload-preview";
+import UploadImage from './UploadImage'
+import InputLabel from '@material-ui/core/InputLabel';
+
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
+
 
 import API from "../../../utils/API";
 
@@ -43,7 +53,9 @@ class CuponForm extends React.Component{
                 correo_agencia: '',
                 ciudad: '',
                 telefono: '',
-                UUID:''
+                UUID:'',
+                imageurl: ''
+
             }
 
             this.getTravelA = this.getTravelA.bind(this);
@@ -57,7 +69,8 @@ class CuponForm extends React.Component{
             this.handleAgencyChange = this.handleAgencyChange.bind(this);
 
             this.seleccionarElemento = this.seleccionarElemento.bind(this);   
-            this.handleChange = this.handleChange.bind(this);         
+            this.handleChange = this.handleChange.bind(this);    
+            this.clickbuton = this.clickbuton.bind(this);     
         
         }
 
@@ -95,6 +108,15 @@ class CuponForm extends React.Component{
           this.setState({telefono: row.telefono})
           this.setState({correo_agencia: row.correo})
           this.setState({contacto: row.contacto})
+          this.setState({imageurl: row.imageurl})
+          this.setState({base64: row.base64})
+          console.log(row)
+          
+
+
+          localStorage.setItem('4e9e8ad1', row.imageurl)
+          localStorage.setItem('4c6a8493', row.base64)
+
         }
 
         limpiarSTATE(){
@@ -104,6 +126,9 @@ class CuponForm extends React.Component{
           this.setState({telefono: ''})
           this.setState({correo_agencia: ''})
           this.setState({contacto: ''})
+
+          localStorage.removeItem('4e9e8ad1')
+          localStorage.removeItem('4c6a8493')
         }
 
         handleChange = (evt) => {
@@ -124,6 +149,8 @@ class CuponForm extends React.Component{
                 "telefono": document.getElementById("telefono").value,
                 "correo": document.getElementById("correo_agencia").value,
                 "contacto": document.getElementById("contacto").value,
+                "imageurl": localStorage.getItem('4e9e8ad1') ? localStorage.getItem('4e9e8ad1') : '',
+                "base64": localStorage.getItem('4c6a8493') ? localStorage.getItem('4c6a8493') : ''
               }
             }
 
@@ -183,7 +210,10 @@ class CuponForm extends React.Component{
                       row.data.contacto, 
                       row.data.correo,
                       row.data.ciudad, 
-                      row.data.telefono
+                      row.data.telefono,
+                      row.data.base64,
+                      row.data.imageurl
+
                     )))
                     this.setState({agencias: rowsP});
                     console.log(this.state.agencias)
@@ -198,9 +228,15 @@ class CuponForm extends React.Component{
 
 
         // Generate Order Data
-        addTableData(UUID, HUUID, nombre, contacto, correo, ciudad, telefono) {
-          return {UUID, HUUID, nombre, contacto, correo, ciudad, telefono };
+        addTableData(UUID, HUUID, nombre, contacto, correo, ciudad, telefono, base64, imageurl) {
+          return {UUID, HUUID, nombre, contacto, correo, ciudad, telefono, base64, imageurl };
         }
+
+        clickbuton(e){
+          debugger;
+          console.log("boton")
+        }
+
 
     
 
@@ -273,19 +309,48 @@ render(){
                   fullWidth
                 />
 
+                
+
 
 
 
             </Grid>
 
             <Grid item xs={12} sm={6}>
-            <Uploady destination={{url: process.env.NODE_ENV === "development" ? "http://localhost:19001/Upload" : "//52.7.16.247:19001/Upload"}}>
-              <UploadButton text="Logo Agencia"/>
 
-              
-              <UploadPreview
-                      fallbackUrl="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-6.jpg"/>
-            </Uploady>
+            <Card className={classes.root}>
+              <CardActionArea>
+                <CardMedia
+                  component='img' src={`data:image/png;base64, ${this.state.base64}`} 
+                  title="Logo Agencia"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                      LOGO DE LA AGENCIA MAX 500 kb (100 px x 100 px)
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    
+                      <TextField
+                      autoFocus
+                      margin="dense"
+                      id="imageurl"
+                      label="Ubicacion de la imagen"
+                      name="imageurl"
+                      disabled
+                      value={this.state.imageurl}
+                      onChange={this.handleChange}
+                      type="text"
+                      fullWidth
+                    />
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                  <UploadImage/>
+              </CardActions>
+            </Card>
+
+            
             </Grid>
 
 

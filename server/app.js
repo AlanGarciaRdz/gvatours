@@ -137,49 +137,4 @@ app.get('/raw/Cupon/:uuid_cupon', cupon_model.getCuponById)
 app.get('/raw/TransportC/:uuid_contract', transport_model.getTransportCById)
 app.get('/raw/Recepits:/uuid_recepit', receipt_model.getReceiptById)
 
-
-
-
-// const contrato = require('./documents/contrato_transporte')
-// const recibo = require('./documents/recibo')
-// const cupon = require('./documents/cupon')
-
-// // POST - PDF generation
-
-// app.post('/contrato-transporte', (req, res) => {
-//     pdf.create(contrato(req.body), {}).toFile('result.pdf', (err) => {
-//         if(err){
-//             console.log(err)
-//             res.send(Promise.reject());
-//         }
-//         res.send(Promise.reject());
-        
-//     })
-// })
-
-// app.post('/cupon', (req, res) => {
-//     pdf.create(cupon(req.body), {}).toFile('result.pdf', (err) => {
-//         if(err){
-//             res.send(Promise.reject());
-//         }
-//         res.send(Promise.reject());
-//     })
-// })
-
-// app.post('/recibo', (req, res) => {
-//     pdf.create(recibo(req.body), {}).toFile('result.pdf', (err) => {
-//         if(err){
-//             res.send(Promise.reject());
-//         }
-//         res.send(Promise.reject());
-//     })
-// })
-
-
-// // GET - send the generated PDF to the client 
-
-// app.get('/fetch-pdf', (req, res) => {
-//     res.sendFile(`${__dirname}/result.pdf`)
-// })
-
 app.listen(port, () => console.log(`1 listening port ${port}`));

@@ -105,6 +105,8 @@ class CharterDialog extends React.Component{
                 //         },
                 //         "travelagency": {
                 //             "ciudad": "test",
+                //             "base64": "iVBORw0KG",
+                //             "imageurl": "http://sistemagvatours.com/logos/imagen1.png",
                 //             "correo": "test",
                 //             "nombre": "nueva agencia",
                 //             "contacto": "test",
@@ -131,8 +133,9 @@ class CharterDialog extends React.Component{
                 this.setState({TRAVELAGENCY_NOMBRE: res.travelagency.nombre})
                 this.setState({TRAVELAGENCY_TELEFONO: res.travelagency.telefono})
                 this.setState({TRAVELAGENCY_CIUDAD: res.travelagency.ciudad})
+                this.setState({LOGOAGENCIA: res.travelagency.base64})
                 this.setState({AGENTE: res.data.agente ? res.data.agente : ''})
-
+                
                 this.setState({CLAVE: res.data.folio_papeleta})
                 // INCLUYE
                 this.setState({INCLUYE: res.data.incluye})   
@@ -182,8 +185,8 @@ class CharterDialog extends React.Component{
     var { PAPELETA , CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
       adultos_juniors, menores_cargo, menores_sin_cargo,
       TRAVELAGENCY_NOMBRE,TRAVELAGENCY_TELEFONO, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
-      redondo, OBSERVACIONES} = this.state 
-
+      redondo, OBSERVACIONES, LOGOAGENCIA} = this.state 
+      
     
       const doc = new jsPDF('p', 'pt', 'letter');
         
@@ -192,7 +195,7 @@ class CharterDialog extends React.Component{
       CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
         adultos_juniors, menores_cargo, menores_sin_cargo, 
         TRAVELAGENCY_NOMBRE, TRAVELAGENCY_TELEFONO, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
-        redondo, OBSERVACIONES)
+        redondo, OBSERVACIONES, LOGOAGENCIA)
 
       CharterPDF.pieCharter(doc)
 
@@ -206,7 +209,7 @@ class CharterDialog extends React.Component{
     var { PAPELETA , CLIENTE_NOMBRE, HOTEL,DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA,
       adultos_juniors, menores_cargo, menores_sin_cargo,
       TRAVELAGENCY_NOMBRE,TRAVELAGENCY_TELEFONO, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE,
-      redondo, OBSERVACIONES} = this.state 
+      redondo, OBSERVACIONES,LOGOAGENCIA} = this.state 
 
     
       const doc = new jsPDF('p', 'pt', 'letter');
@@ -216,7 +219,7 @@ class CharterDialog extends React.Component{
       CharterPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL,DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
         adultos_juniors, menores_cargo, menores_sin_cargo, 
         TRAVELAGENCY_NOMBRE, TRAVELAGENCY_TELEFONO, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
-        redondo, OBSERVACIONES)
+        redondo, OBSERVACIONES,LOGOAGENCIA)
 
       CharterPDF.pieCharter(doc)
 
