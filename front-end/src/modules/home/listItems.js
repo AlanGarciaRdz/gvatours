@@ -17,6 +17,8 @@ import Explore from '@material-ui/icons/Explore';
 import Hotel from '@material-ui/icons/Hotel';
 import DriveEtaIcon from '@material-ui/icons/DriveEta';
 
+import "./listItems.css"
+
 
 
 
@@ -24,7 +26,7 @@ import DriveEtaIcon from '@material-ui/icons/DriveEta';
 
 export const mainListItems = (
   <div>
-      <Link href="/home"  color="inherit">
+      <Link href="/home"  color="inherit" >
         <ListItem button>
         <ListItemIcon>
             <DashboardIcon />
@@ -43,14 +45,7 @@ export const mainListItems = (
     </Link>
     
 
-    <Link href="/Cupones" color="inherit">
-    <ListItem button>
-      <ListItemIcon>
-        <Assignment />
-      </ListItemIcon>
-      <ListItemText primary="Cupones" />
-    </ListItem>
-  </Link>
+   
     
   <Link href="/Contratos"  color="inherit">
         <ListItem button>
@@ -61,7 +56,16 @@ export const mainListItems = (
         </ListItem>
     </Link>
 
-    <Link href="/Recibos"  color="inherit">
+    <Link href="/Cupones" color="inherit" className='disabled-link'>
+    <ListItem button>
+      <ListItemIcon>
+        <Assignment />
+      </ListItemIcon>
+      <ListItemText primary="Cupones" />
+    </ListItem>
+     </Link>
+
+    <Link href="/Recibos"  color="inherit" className='disabled-link'>
         <ListItem button>
         <ListItemIcon>
             <MonetizationOn />
