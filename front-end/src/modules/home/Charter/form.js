@@ -111,6 +111,7 @@ class CharterFrom extends React.Component{
               hotel: '',
               hotel_destino: '',
               fecha_salida: new Date(),
+              fecha_salida_internal: new Date(),
               fecha_regreso: '',
               total_venta: '',
               numero_habitaciones: '',
@@ -252,13 +253,18 @@ class CharterFrom extends React.Component{
         };
 
         setStartDate(evt){
+          
           console.log(`dateee ${evt}`)
+
           let fecha = evt
 
           this.setState({
             ...this.state,
-            fecha_salida: fecha
+            fecha_salida: fecha,
+            fecha_salida_internal: fecha
           });
+
+          
         }
 
         setEndDate(evt){
@@ -266,7 +272,8 @@ class CharterFrom extends React.Component{
 
           this.setState({
             ...this.state,
-            fecha_regreso: fecha
+            fecha_regreso: fecha,
+            fecha_regreso_internal: fecha
           });
         }
 
@@ -400,8 +407,11 @@ class CharterFrom extends React.Component{
                   "ciudad": document.getElementById("ciudad").value,
                   "agente": document.getElementById("agente").value,
                   "redondo": redondo ? document.getElementById("redondo").innerHTML : '',
+
                   "fecha_salida": document.getElementById("fecha_salida").value,
+                  "fecha_salida_internal": this.state.fecha_salida,
                   "fecha_regreso": document.getElementById("fecha_regreso").value,
+                  "fecha_regreso_internal": this.state.fecha_regreso_internal,
                   "aborda": aborda ? document.getElementById("aborda").innerHTML : '',
                   "adultos_juniors": document.getElementById("adultos_juniors").value,
                   "menores_cargo": document.getElementById("menores_cargo").value,
@@ -565,9 +575,11 @@ class CharterFrom extends React.Component{
                   this.setState({val_uuid_hotel: res.data.uuid_hotel});
                   
                   console.log(res.data.fecha_salida)
+                  console.log(res.data.fecha_salida_internal)
                   
-                  this.setState({fecha_salida: new Date(res.data.fecha_salida)});
-                  this.setState({fecha_regreso: res.data.fecha_regreso !== "" ? new Date(res.data.fecha_regreso) : '' });
+                  
+                  this.setState({fecha_salida: new Date(res.data.fecha_salida_internal)}); 
+                  this.setState({fecha_regreso: res.data.fecha_regreso !== "" ? new Date(res.data.fecha_regreso_internal) : '' });
                   
                   this.setState({redondo:res.data.redondo})
                   console.log(res.data.redondo)
@@ -698,7 +710,7 @@ render(){
           <DatePicker locale="es" id="fecha_salida" 
           // defaultValue={getCurrentDate()} 
           
-          dateFormat="dd-MMMM-yyyy" selected={fecha_salida} onChange={date => this.setStartDate(date)} name="fecha_salida" />
+          dateFormat="dd-MMMM-yyyy" selected={fecha_salida} datetime={fecha_salida} onChange={date => this.setStartDate(date)} name="fecha_salida" />
 
          
            
