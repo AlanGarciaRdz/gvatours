@@ -263,7 +263,8 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
         var splitObservacion = doc.splitTextToSize(redondo + " -- "+ OBSERVACIONES + " -- " + ABORDA, 400);
         doc.text(40, starty+13, splitObservacion);
 
-        doc.roundedRect(15, starty, 550, 72, 3, 3, 'D');
+        doc.roundedRect(15, starty, 550, 62, 3, 3, 'D');
+        starty += increment; 
 
 
 }
@@ -274,16 +275,17 @@ function xcenter(doc, phrase){
 }
 
 function pieCharter(doc){
-    let starty = 635;
-    let incremento = 17;
+    let starty = 615;
+    let incremento = 13;
 
     doc.addImage(footer, 'PNG', 0, starty, doc.internal.pageSize.width, 305);
     
     doc.setLineDash([1, 1], 0);
     doc.line(15, starty-incremento, 560, starty-incremento);
     
+    let righty = starty
     doc.setTextColor(7, 109, 150) // azul blue
-    doc.setFontSize(11);
+    doc.setFontSize(10);
     const salidas1 = "Los puntos de Salida son:";
     doc.text(30, starty, salidas1);
     const salidas2 = "5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)";
@@ -301,11 +303,49 @@ function pieCharter(doc){
     const salidas6 = "Se les pide estar 30 min antes para su registro";
     starty += incremento; 
     doc.text(30, starty, salidas6);
+    ///
+    const regreso1 = "Los Horario de Regreso son los siguientes:";
+    doc.text(350, righty, regreso1);
+    const regreso2 = "Pto. Vallarta de 1:20 pm a 2:00 pm";
+    righty += incremento; 
+    doc.text(350, righty, regreso2);
+    const regreso3 = "Nvo. Vallarta de 2:00 pm a 2:30 pm";
+    righty += incremento; 
+    doc.text(350, righty, regreso3);
+    const regreso4 = "Bucerias 2:30 pm";
+    righty += incremento; 
+    doc.text(350, righty, regreso4);
+    const regreso5 = "Punta de Mita 3:00 pm a 3:20 pm";
+    righty += incremento; 
+    doc.text(350, righty, regreso5);
+    const regreso6 = "Sayulita 3:30 pm";
+    righty += incremento; 
+    doc.text(350, righty, regreso6);
+    const regreso7 = "Guayabitos de 3:30 pm a 4:00 pm";
+    righty += incremento; 
+    doc.text(350, righty, regreso7);
+    const regreso8 = "Los horarios son reconfirmados el dia";
+    righty += incremento; 
+    doc.text(350, righty, regreso8);
+    const regreso9 = "de su Salida en Guadalajara";
+    righty += incremento; 
+    doc.text(350, righty, regreso9);
+
+    
+    incremento = 16
+    starty += incremento*3; 
+    
+    
+
+    
+
+
 
     doc.setLineDash([1, 1], 0);
     doc.line(15, starty+5, 560, starty+5);
 
     doc.setFontSize(12)
+    
     doc.setFont("normal" ,"bold");
     
     doc.setTextColor(7, 109, 150) // azul blue
@@ -319,6 +359,7 @@ function pieCharter(doc){
     doc.text(leyenda2, xcenter(doc,leyenda2), starty );
 
     doc.setFontSize(8)
+    incremento = 10;
     doc.setTextColor(72,59, 130)
     const leyenda3  = "Av. Fidel Velazquez #643-A, Col. Santa Elena Alcande., Cp.P. 44230, Guadalajara, Jal. "
     starty += incremento; 

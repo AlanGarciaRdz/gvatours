@@ -113,6 +113,7 @@ class CharterFrom extends React.Component{
               fecha_salida: new Date(),
               fecha_salida_internal: new Date(),
               fecha_regreso: '',
+              fecha_regreso_internal: new Date(),
               total_venta: '',
               numero_habitaciones: '',
               SGL: '',
@@ -171,6 +172,7 @@ class CharterFrom extends React.Component{
             this.EliminarCharter = this.EliminarCharter.bind(this);
             this.handleChangePage = this.handleChangePage.bind(this);
             this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+            this.fixdateError = this.fixdateError.bind(this);
 
             this.setStartDate = this.setStartDate.bind(this);
 
@@ -551,6 +553,18 @@ class CharterFrom extends React.Component{
         }
 
 
+        fixdateError(fecha = "11-mayo-2021") {
+           
+          let date = fecha.split('-');
+          var meses = [ "enero", "febrero", "marzo", "abril", "mayo", "junio", 
+           "julio", "agosto", "septiembre", "octubre", "nomviembre", "diciembre" ];
+          
+           if(meses.indexOf(date[1]) > -1){
+              return new Date(date[2],  meses.indexOf(date[1]), date[0])
+           }
+
+        }
+
         seleccionarElemento(row){
           this.setState({errorAlert: null})
           
@@ -579,7 +593,13 @@ class CharterFrom extends React.Component{
                   
                   
                   this.setState({fecha_salida: new Date(res.data.fecha_salida_internal)}); 
-                  this.setState({fecha_regreso: res.data.fecha_regreso !== "" ? new Date(res.data.fecha_regreso_internal) : '' });
+                  
+                  if(res.data.fecha_regreso && res.data.fecha_regreso_internal === undefined){
+                    this.setState({fecha_regreso: this.fixdateError(res.data.fecha_regreso) });
+                  }else{
+                    this.setState({fecha_regreso: res.data.fecha_regreso !== "" ? new Date(res.data.fecha_regreso_internal) : '' });
+                  }
+                  
                   
                   this.setState({redondo:res.data.redondo})
                   console.log(res.data.redondo)
@@ -601,7 +621,6 @@ class CharterFrom extends React.Component{
                   this.setState({agente: res.data.agente ? res.data.agente : ""});
                   
                   
-
                   this.setState({incluye: res.data.incluye});
                   
 
@@ -708,17 +727,21 @@ render(){
           {/* https://reactdatepicker.com/#example-custom-date-format */}
 
           <DatePicker locale="es" id="fecha_salida" 
-          // defaultValue={getCurrentDate()} 
-          
-          dateFormat="dd-MMMM-yyyy" selected={fecha_salida} datetime={fecha_salida} onChange={date => this.setStartDate(date)} name="fecha_salida" />
+          dateFormat="dd-MMMM-yyyy" 
+          selected={fecha_salida} 
+          datetime={fecha_salida} 
+          onChange={date => this.setStartDate(date)} name="fecha_salida" />
 
          
            
            <div className={this.state.styleredondo}>
             <InputLabel className={classes.datepadding} id="demo-simple-select-label">FECHA DE REGRESO</InputLabel>
-              {/* <TextField  required   id="fecha_regreso"   name="fecha_regreso"   type="date"   value={fecha_regreso} 
-               disabled={redondo !== "TRANSPORTE TURISTICO VIAJE REDONDO"}   onChange={this.handleChange}   fullWidth   autoComplete="fname" /> */}
-               <DatePicker disabled={redondo !== "TRANSPORTE TURISTICO VIAJE REDONDO"}  locale="es" id="fecha_regreso" defaultValue={getCurrentDate()} dateFormat="dd-MMMM-yyyy" selected={fecha_regreso} onChange={date => this.setEndDate(date)} name="fecha_regreso" />
+               <DatePicker disabled={redondo !== "TRANSPORTE TURISTICO VIAJE REDONDO"}  
+               locale="es" id="fecha_regreso" 
+               dateFormat="dd-MMMM-yyyy"
+               //defaultValue={getCurrentDate()} 
+               selected={fecha_regreso} 
+               onChange={date => this.setEndDate(date)} name="fecha_regreso" />
            </div>
           
            

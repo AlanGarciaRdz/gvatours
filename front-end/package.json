@@ -31,6 +31,7 @@
   },
   "scripts": {
     "start": "ENVIRONMENT=development react-scripts start",
+    "test_db": "REACT_APP_TEST_DB=development_db react-scripts start",
     "build": "ENVIRONMENT=production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

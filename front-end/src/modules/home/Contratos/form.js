@@ -48,6 +48,9 @@ class ContratosForm extends React.Component{
         constructor(props){
             super(props)
             this.state = {
+                folio_contrato: "",
+                cliente: "",
+                
                 Contratos: [],
                 open: true,
                 Clientes: [
@@ -65,6 +68,10 @@ class ContratosForm extends React.Component{
                 data_hoteles: [],
             }
     
+            /* new*/
+
+            this.handleChangeName = this.handleChangeName.bind(this);
+            /* end */
             this.getContratos = this.getContratos.bind(this);
             this.addTableData = this.addTableData.bind(this);
             this.filterById = this.filterById.bind(this)
@@ -75,6 +82,7 @@ class ContratosForm extends React.Component{
             this.handleClientChange = this.handleClientChange.bind(this);
             this.handleHotelChange = this.handleHotelChange.bind(this);
             this.handleAgencyChange = this.handleAgencyChange.bind(this);
+
 
             
         
@@ -121,6 +129,16 @@ class ContratosForm extends React.Component{
           this.setState({
             val_uuid_agencia: uuid_agencia}
           )
+        }
+
+        handleChangeName = (evt) => {
+          this.setState({
+            ...this.state,
+            [evt.target.name]: evt.target.value
+          },() => {
+            this.getContratos()
+          });
+          
         }
 
    
@@ -186,7 +204,9 @@ class ContratosForm extends React.Component{
 
         getContratos() {
             
-            API.get('/TransportC')
+          const url = this.state.folio_contrato == '' ? '/TransportC' : `/TransportC/filter/${ this.state.folio_contrato }`
+           debugger;
+           API.get('/TransportC')
               .then(res => {
                 if (res.status === 200) {
                   
@@ -233,16 +253,37 @@ render(){
     const { classes } = this.props;
     const {Clientes, Hoteles , Contratos} = this.state;
 
+    const { folio_contrato, cliente, hotel, hotel_uuid } = this.state;
+
     return (
         <React.Fragment>
 
           <Typography variant="h6" gutterBottom>
-            Informacion General
+            CONTRATO TURISMO
           </Typography>
+
+          
+
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-                <AutoCompleteClient updateClient={this.handleClientChange}/>
-            </Grid>
+            <Grid item  sm={9}>
+              <TextField  required   id="folio_contrato"   label="folio_contrato"
+                    type="text"  name="folio_contrato"   value={folio_contrato}     onChange={this.handleChangeName}
+                    fullWidth autoComplete="fname"
+              />
+
+              <TextField
+                 onChange={this.handleChange}  value={cliente}  name="cliente"
+                id="cliente" label="CLIENTE"   type="text" margin="dense" fullWidth
+              />
+
+              <AutocompleteHotel value={hotel? hotel : ""} uuid={hotel_uuid} updateHotel={this.handleHotelChange}/>
+
+              </Grid>
+
+
+
+              
+
             <Grid item xs={12} sm={6}>
                 <AutocompleteHotel updateHotel={this.handleHotelChange}/>
             </Grid>
