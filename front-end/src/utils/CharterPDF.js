@@ -281,7 +281,7 @@ function pieCharter(doc){
     doc.addImage(footer, 'PNG', 0, starty, doc.internal.pageSize.width, 305);
     
     doc.setLineDash([1, 1], 0);
-    doc.line(15, starty-incremento, 560, starty-incremento);
+    // doc.line(15, starty-incremento, 560, starty-incremento);
     
     let righty = starty
     doc.setTextColor(7, 109, 150) // azul blue
@@ -333,7 +333,7 @@ function pieCharter(doc){
 
     
     incremento = 16
-    starty += incremento*3; 
+    starty += incremento*2.5; 
     
     
 
@@ -342,44 +342,42 @@ function pieCharter(doc){
 
 
     doc.setLineDash([1, 1], 0);
-    doc.line(15, starty+5, 560, starty+5);
+    doc.line(15, starty, 560, starty);
 
-    doc.setFontSize(12)
+    doc.setFontSize(10)
     
     doc.setFont("normal" ,"bold");
     
-    doc.setTextColor(7, 109, 150) // azul blue
-    const leyenda1  = "TELEFONO DE EMERGENCIA EN LA SALIDA 333-808-6093 CON GUSTAVO JAUREGUI";
-    starty += incremento; 
+    doc.setTextColor(7, 109, 150) // azul
+
+    starty += 10;
+    let leyenda0  = "Charter Terrestre es un servicio de Transporte Turístico, el cual debe de estar acompañado de una Reservación de Hotel;";
+    doc.text(leyenda0, xcenter(doc,leyenda0), starty );
+
+    starty += 10;
+    leyenda0  = "por eso es obligatorio presentar su Cupón o confirmación de Hospedaje al abordar la unidad en el punto de salida;";
+    doc.text(leyenda0, xcenter(doc,leyenda0), starty );
+
+    starty += 10;
+    leyenda0  = "el no presentarlo,  será motivo para negar el servicio.";
+    doc.text(leyenda0, xcenter(doc,leyenda0), starty );
     
+
+    starty += 10;
+    const leyenda1  = "TELEFONO DE EMERGENCIA EN LA SALIDA 333-808-6093 CON GUSTAVO JAUREGUI";
     doc.text(leyenda1, xcenter(doc,leyenda1), starty );
-    // doc.text(30, starty, leyenda1);
-    const leyenda2  = "FAVOR DE PRESENTARSE 30 MINUTOS ANTE DE SU SALIDA";
-    starty += incremento; 
-    doc.text(leyenda2, xcenter(doc,leyenda2), starty );
+    
 
     doc.setFontSize(8)
-    incremento = 10;
-    doc.setTextColor(72,59, 130)
-    const leyenda3  = "Av. Fidel Velazquez #643-A, Col. Santa Elena Alcande., Cp.P. 44230, Guadalajara, Jal. "
-    starty += incremento; 
+    
+    starty += 10;
+    doc.setTextColor(7, 109, 150)
+    const leyenda3  = "Av. Fidel Velazquez #643-A, Col. Santa Elena Alcande., CP 44230, Guadalajara, Jal. "
     doc.text(leyenda3, xcenter(doc,leyenda3), starty );
     const leyenda4  = "Tel. (33) 3631 3036 con 10 líneas";
-    starty += incremento; 
+    starty += 10; 
     doc.text(leyenda4, xcenter(doc,leyenda4), starty );
 
-
-    
-   
-
-   
-
-
-
-
-
-
-    
 }
 
 function FormaPago(doc, forma_pago){
@@ -389,7 +387,6 @@ function FormaPago(doc, forma_pago){
 
     doc.text(30, 220, 'FORMA DE PAGO');
     doc.text(200, 220, forma_pago);
-
 
     doc.roundedRect(15, 205, 582, 22, 3, 3);
 
