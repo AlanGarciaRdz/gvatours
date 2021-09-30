@@ -14,12 +14,14 @@ import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { mainListItems, secondaryListItems } from '../listItems';
-import ContratosForm from './form'
+import {isMobileDevice} from '../../../utils/helpers';
+
+import ReceiptForm from './form' 
 
 
 import Copyright from '../../core/Copyright'
@@ -128,6 +130,10 @@ class Dashboard extends React.Component{
         this.setState({open: false})
     }
 
+    componentDidMount(){
+      this.setState({open: !isMobileDevice()})
+    }
+
   render(){
     const { classes } = this.props;
     const {open} =  this.state;
@@ -155,12 +161,13 @@ class Dashboard extends React.Component{
                 <MenuIcon />
               </IconButton>
               <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              GVA TOURS CONTRATOS
+                GVA TOURS CONTRATOS
               </Typography>
-              <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
+              <IconButton color="inherit" onClick={() => window.location.replace('/')}>
+                {/* <Badge badgeContent={1} color="secondary"> */}
+                  {/* <NotificationsIcon /> */}
+                  <ExitToAppIcon />
+                {/* </Badge> */}
               </IconButton>
             </Toolbar>
           </AppBar>
@@ -192,7 +199,7 @@ class Dashboard extends React.Component{
                 <Grid item xs={12}>
                   <Paper className={classes.paper}>
                     {/* <HomeCupons /> */}
-                    <ContratosForm/>
+                    <ReceiptForm/>
                   </Paper>
                 </Grid>
               </Grid>

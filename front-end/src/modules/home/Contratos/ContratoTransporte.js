@@ -54,12 +54,14 @@ class ContratoTransporte extends React.Component{
 
 
     getContratoData = () =>{
+      
           
       if(queryString.parse(this.props.location.search).id !== undefined){
         API.get(`/TransportC/${queryString.parse(this.props.location.search).id}`)
           .then(res => {
             if (res.status === 200) {
                 this.setState({cupon_data: res.data[0]})
+                
                 console.log(this.state.cupon_data)
                 var data = res.data[0]
                 // this.setState({receiptId: data ? data.uuid_cupon.split('-')[2]+'-'+data.uuid_cupon.split('-')[3]: ''})
@@ -343,33 +345,36 @@ class ContratoTransporte extends React.Component{
           </tr>
           <tr >
           <td>
-             <p id="clausula_text">1. Los pasajeros se comprometen a respetar los horarios e itinerarios estipulados tanto de salidas como de Ilegadas, de no ser asi se le cobrarå al contratante el tiempo excedente proporcionalmente a 10 estipulado en este contrato, por 10 que en caso de ampliar la ruta, el horario o cualquier modificaciön al kilometraje acordado, en el presente contrato, serå cubierto con una cantidad adicional fijada por la empresa transportista en la ciudad donde se celebrö el contrato. </p>
+             <p id="clausula_text">1. Los pasajeros se comprometen a respetar los horarios e itinerarios estipulados tanto de salidas como de llegadas, de no ser así se le cobrará al contratante el tiempo excedente proporcionalmente a lo estipulado en este contrato, por lo que en caso de ampliar la ruta, el horario o cualquier modificación al kilometraje acordado, en el presente contrato, será cubierto con una cantidad adicional fijada por la empresa transportista en la ciudad donde se celebró el contrato. </p>
 
-             <p id="clausula_text">2. Cuando el contratante cancela este contrato tendrå derecho al importe total del mismo, siempre y cuando 10 haga con un minimo de 15 dias antes de la fecha y horario establecido de salida. Si el aviso de cancelaciön se realiza entre 14 a 10 dias la sanciön serå del 30%, si es de 9 a 5 dias la sanciön serå del 50% y de 4 dias a la fecha y hora de salida serå del 100%. Esto mismo aplica para la cancelaciön de los servicios adicionales contratados. El aviso de cancelaciön deberå darse por escrito y con acuse de recibido. </p>
+             <p id="clausula_text">2. Cuando el contratante cancela este contrato tendrá derecho al importe total del mismo, siempre y cuando lo haga con un mínimo de 15 días antes de la fecha y horario establecido de salida. </p>
+             <p id="clausula_text"> 2.1 Si el aviso de cancelación se realiza entre 14 a 10 días la sanción será del 30%, si es de 9 a 5 días la sanción será del 50% y de 4 días a la fecha y hora de salida será del 100%. Esto mismo aplica para la cancelación de los servicios adicionales contratados. </p>
+             <p id="clausula_text"> 2.1 El aviso de cancelación deberá darse por escrito y con acuse de recibido.  </p>
+
              
-             <p id="clausula_text">3.Si el contratante interrumpiera su viaje en un lugar u horariO intermedio de 10 acordado en el presente contrato por causas no imputables a GVA Tours S.A. de el cliente NO tendrå derecho al reembolso. </p>
+             <p id="clausula_text">3. Si el contratante interrumpiera su viaje en un lugar u horario intermedio de lo acordado en el presente contrato por causas no imputables a GVA Tours S.A. de C.V., el cliente NO tendrá derecho al reembolso. </p>
              
-             <p id="clausula_text">4. El nümero de pasajeros en ningün caso deberå exceder la capacidad autorizada del vehiculo que se contrate, de 10 contrario GVATours S.A.de C.V. solo estarå obligado a aceptar y realizar el viaje con la capacidad de personas previamente establecida en el contrato. Si aün asi el contratante continuara exigiendo el servicio y a voluntad de GVA Tours S.A. de C.V. se realizara el mismo.El contratante de harå responsable de todas y cada una de las sanciones que la Secretaria de Comunicacio- nes y Transportes o cualesquiera Otra autoridad aplique al respecto, sin responsabilidad para GVA Tours S.A. de C.V. 5. En el caso en que la unidad contratada no se presente en el lugar y fecha establecidos, la empresa GVA Tours SA. de C.V., queda obligada a devolver el importe cobrado; el contratante no podrå exigir una mayor cantidad a la expresada en el presente contrato.</p>
+             <p id="clausula_text">4. El número de pasajeros en ningún caso deberá exceder la capacidad autorizada del vehículo que se contrate, de lo contrario GVA Tours S.A. de C.V. solo estará obligado a aceptar y realizar el viaje con la capacidad de personas previamente establecida en el contrato. Si aun así el contratante continuara exigiendo el servicio y a voluntad de GVA Tours S.A. de C.V. se realizara el mismo. El contratante se hará responsable de todas y cada una de las sanciones que la Secretaria de Comunicaciones y Transportes o cualesquiera otra autoridad aplique al respecto, sin responsabilidad para GVA Tours S.A. de C.V.             </p>
              
              </td>
           <td>
-             <p id="clausula_text">5. En el caso en que la unidad contratada no se presente en el lugar y fecha establecidos, la empresa GVA Tours S.A. de C.V., queda obligada a devolver el importe cobrado; el contratante no podrå exigir una mayor cantidad a la expresada en el presente contrato.</p>
+             <p id="clausula_text">5. En el caso en que la unidad contratada no se presente en el lugar y fecha establecidos, la empresa GVA Tours S.A. de C.V., queda obligada a devolver el importe cobrado; el contratante no podrá exigir una mayor cantidad a la expresada en el presente contrato. </p>
 
-             <p id="clausula_text">6. GVA Tours SA de C.V. no se hace responsable de dahos o perjuicios que se provoquen al contratante por retrasos en Ilegada o salida de cualquiera de los puntos senalados en el contrato debido a las fallas mecånicas, condiciones desfavo- rabies del tiempo, impedimento de pasos, revisiones oficiales y otras causas de fuerza mayor. </p>
+             <p id="clausula_text">6. GVA Tours S.A. de C.V. no se hace responsable de daños o perjuicios que se provoquen al contratante por retrasos en llegada o salida de cualquiera de los puntos señalados en el contrato debido a las fallas mecánicas, condiciones desfavorables del tiempo, impedimento de pasos, revisiones oficiales y otras causas de fuerza mayor.  </p>
 
-             <p id="clausula_text">7. Se prohibe al contratante conjuntamente con los pasajeros ingerir bebidas alcohölicas y/o drogas durante el trayecto del viaje. La empresa se reserva el derecho de trasportaciön de esta (s) persona (s). </p>
+             <p id="clausula_text">7. Se prohíbe al contratante conjuntamente con los pasajeros ingerir bebidas alcohólicas y/o drogas durante el trayecto del viaje. La empresa se reserva el derecho de transportación de esta (s) persona (s). </p>
 
-             <p id="clausula_text">8. Los dahos ocasionados al autobüs por negligencia o culpa directa del contratante o pasajeros, serån cobrados en su totalidad al contratante. </p>
+             <p id="clausula_text">8. Los daños ocasionados al autobús por negligencia o culpa directa del contratante o pasajeros, serán cobrados en su totalidad al contratante.         </p>
 
-             <p id="clausula_text">9. GVA Tours S.A. de C.V. no se hace responsable por objetos olvidados en el autobüs por alguno de los pasajeros. </p>
+             <p id="clausula_text">9. GVA Tours S.A. de C.V. no se hace responsable por objetos olvidados en el autobús por alguno de los pasajeros.         </p>
 
-             <p id="clausula_text">10. Los autobuses no pueden entrar en caminos estrechos o d terraceria que pongan en peligro la unidad. Cualquier daho perjuicio por insistencia del cliente sera cobrada en su totalidad. </p>
+             <p id="clausula_text">10. Los autobuses no pueden entrar en caminos estrechos o de terracería que pongan en peligro a la unidad. Cualquier daño o perjuicio por insistencia del cliente será cobrada en su totalidad.        </p>
 
-             <p id="clausula_text">11. Por disposiciones de la Secretaria de Hacienda y Créd Püblico, las empresas de autotransporte estarån sujetas régimen simplificado segün el articulo 67 de titulo IIA de Ia del impuesto sobre la renta. La empresa transportadora reflejarå el IVA en su facturaciön, de acuerdo al articulo 15 impuesto del valor agregado. </p>
+             <p id="clausula_text">11. Por disposiciones de la Secretaria de Hacienda y Crédito Público, las empresas de autotransporte estarán sujetas al régimen simplificado según el artículo 67 de título IIA de la Ley del impuesto sobre la renta. La empresa transportara no reflejará el IVA en su facturación, de acuerdo al artículo 15 del impuesto del valor agregado.        </p>
 
-             <p id="clausula_text">12. En caso de requerirse alguna modificaciön en el itinerario horario autorizo a para que realice los tråmites necesarios que procedan originad por dichas modificaciones Ia contrato. </p>
+             <p id="clausula_text">12. En caso de requerirse alguna modificación en el itinerario u horario autorizo a ___________________________________________________________ para que realice los trámites necesarios que procedan originados por dichas modificaciones la contrato. </p>
 
-             <p id="clausula_text">13. GVA Tours S.A. de C.V. se obliga en caso de descompostura reemplazar la unidad con caracteristicas semejantes a contratada, en un plazo de tiempo igual al tiempo de recorrido del punto de descompostura a Ia base de la empresa en ciudad de Guadalajara.</p>
+             <p id="clausula_text">13. GVA Tours S.A. de C.V. se obliga en caso de descompostura reemplazar la unidad con características semejantes a la contratada, en un plazo de tiempo igual al tiempo de recorrido del punto de descompostura a la base de la empresa en la ciudad de Guadalajara.          </p>
 
 
           </td>

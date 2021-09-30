@@ -56,6 +56,7 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
     adultos_juniors, menores_cargo, menores_sin_cargo, 
     TRAVELAGENCY_NOMBRE, TRAVELAGENCY_TELEFONO,TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
     redondo, OBSERVACIONES, LOGOAGENCIA ) {
+        alert("fsad")
 
         let starty = 120;
         let increment = 24;
@@ -204,7 +205,7 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
 
           try {
             // starty += increment; 
-            doc.addImage(LOGOAGENCIA, 'JPEG', 385, starty-3, 80, 80,undefined,'FAST');
+            doc.addImage(LOGOAGENCIA, 'JPEG', 355, starty-3, 150, 80,undefined,'FAST');
             
             doc.setTextColor(color_valores)  
             //doc.roundedRect(310, starty, 250, 70, 3, 3, 'D');
@@ -263,7 +264,7 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
         var splitObservacion = doc.splitTextToSize(redondo + " -- "+ OBSERVACIONES + " -- " + ABORDA, 400);
         doc.text(40, starty+13, splitObservacion);
 
-        doc.roundedRect(15, starty, 550, 62, 3, 3, 'D');
+        doc.roundedRect(15, starty, 550, 52, 3, 3, 'D');
         starty += increment; 
 
 
@@ -357,9 +358,14 @@ function pieCharter(doc){
     starty += 10;
     leyenda0  = "por eso es obligatorio presentar su Cupón o confirmación de Hospedaje al abordar la unidad en el punto de salida;";
     doc.text(leyenda0, xcenter(doc,leyenda0), starty );
+    
 
     starty += 10;
     leyenda0  = "el no presentarlo,  será motivo para negar el servicio.";
+    doc.text(leyenda0, xcenter(doc,leyenda0), starty );
+
+    starty += 10;
+    leyenda0  = "Cualquier cambio de fecha aplica un cargo de $200 por persona adulto y niños sujeto a disponibilidad";
     doc.text(leyenda0, xcenter(doc,leyenda0), starty );
     
 

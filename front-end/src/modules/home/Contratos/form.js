@@ -1,27 +1,20 @@
 import React from 'react';
-import clsx from 'clsx';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
-import {getCurrentDate} from '../../../utils/helpers';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/Icon';
+import InputLabel from '@material-ui/core/InputLabel';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Assignment from '@material-ui/icons/Assignment';
-import ListItemText from '@material-ui/core/ListItemText';
-
-import AutocompleteHotel from '../../core/AutocompleteHotel';
-import AutocompleteAgency from '../../core/AutocompleteAgency';
-import AutoCompleteClient from '../../core/AutoCompleteClient';
-
 import API from "../../../utils/API";
 
 import { TableContainer, Table,TableHead,TableRow,TableCell,TableBody, Paper  } 
@@ -205,7 +198,7 @@ class ContratosForm extends React.Component{
         getContratos() {
             
           const url = this.state.folio_contrato == '' ? '/TransportC' : `/TransportC/filter/${ this.state.folio_contrato }`
-           debugger;
+           
            API.get('/TransportC')
               .then(res => {
                 if (res.status === 200) {
@@ -219,19 +212,22 @@ class ContratosForm extends React.Component{
 
                   //TODO
                       rowsP = 
-                        res.data.map(row => (                          
+                        res.data.map(row => (  
+                          
+                                            
                           this.addTableData(
                             row.uuid_contract, //UUID
-                            row.uuid_contract.split('-')[2]+'-'+row.uuid_contract.split('-')[3], //FOLIO
-                            row.data.uuid_cliente, //Cliente
-                            row.data.uuid_agencia,
+                            "alan",//row.uuid_contract.split('-')[2]+'-'+row.uuid_contract.split('-')[3], //FOLIO
+                            row.data.cliente_nombre, //Cliente
+                            row.data_vehicle.tipo_unidad,
                             row.data.destino,
+                            row.data.fecha_salida,
                             row.data.anticipo,
                             row.data.importe_total,
                             row.status
                           )
                         ))
-            
+                      console.log(rowsP)
                         this.setState({Contratos: rowsP});
                     
                     //console.log(this.state.Contratos)
@@ -243,8 +239,8 @@ class ContratosForm extends React.Component{
               })
           }
 
-        addTableData(UUID, Folio, uuid_cliente, uuid_agencia, destino, anticipo, importe_total, status) {
-          return {UUID, Folio, uuid_cliente, uuid_agencia, destino, anticipo, importe_total, status};
+        addTableData(UUID, Folio, cliente_nombre, tipo_unidad, destino, fecha_salida, anticipo, importe_total, status) {
+          return {UUID, Folio, cliente_nombre, tipo_unidad, destino, fecha_salida, anticipo, importe_total, status};
         }
 
     
@@ -255,198 +251,106 @@ render(){
 
     const { folio_contrato, cliente, hotel, hotel_uuid } = this.state;
 
+    const { fecha_salida, fecha_contrato, fecha_regreso } = this.state
+
     return (
         <React.Fragment>
 
-          <Typography variant="h6" gutterBottom>
-            CONTRATO TURISMO
-          </Typography>
-
-          
-
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             <Grid item  sm={9}>
               <TextField  required   id="folio_contrato"   label="folio_contrato"
                     type="text"  name="folio_contrato"   value={folio_contrato}     onChange={this.handleChangeName}
-                    fullWidth autoComplete="fname"
-              />
+                    fullWidth autoComplete="fname"/>
 
-              <TextField
-                 onChange={this.handleChange}  value={cliente}  name="cliente"
-                id="cliente" label="CLIENTE"   type="text" margin="dense" fullWidth
-              />
+              <Typography variant="h7" gutterBottom> DATOS DEL CONTRATANTE </Typography>
+              <InputLabel className={classes.datepadding}  id="">FECHA DE CONTRATO</InputLabel>
+                <DatePicker locale="es" id="fecha_contrato" 
+                  dateFormat="dd-MMMM-yyyy" 
+                  selected={fecha_contrato} 
+                  datetime={fecha_contrato} 
+                  onChange={date => this.setStartDate(date)} name="fecha_contrato" />
 
-              <AutocompleteHotel value={hotel? hotel : ""} uuid={hotel_uuid} updateHotel={this.handleHotelChange}/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="cliente_nombre" id="cliente_nombre" label="CLIENTE"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="cliente_direccion" id="cliente_direccion" label="DIRECCION"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="cliente_ciudad" id="cliente_ciudad" label="CIUDAD"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="cliente_telefono" id="cliente_telefono" label="TELEFONO"   type="text" margin="dense" fullWidth/>
+                
+              <Typography variant="h7" gutterBottom> DATOS DE SALIDA Y REGRESO DEL VIAJE </Typography>
+                <TextField onChange={this.handleChange}  value={cliente}  name="destino" id="destino" label="DESTINO"   type="text" margin="dense" fullWidth/>
+                <InputLabel className={classes.datepadding}  id="">FECHA DE SALIDA</InputLabel>
+                <DatePicker locale="es" id="fecha_salida" 
+                  dateFormat="dd-MMMM-yyyy" 
+                  selected={fecha_salida} 
+                  datetime={fecha_salida} 
+                  onChange={date => this.setStartDate(date)} name="fecha_salida" />
 
-              </Grid>
+                
+                <TextField onChange={this.handleChange}  value={cliente}  name="hora_salida" id="hora_salida" label="HORA_SALIDA"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="hora_presentarse" id="hora_presentarse" label="HORA_PRESENTARSE"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="encargado" id="encargado" label="ENCARGADO"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="direccion_salida" id="direccion_salida" label="DIRECCION_SALIDA"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="entre_calles" id="entre_calles" label="ENTRE_CALLES"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="colonia_ciudad" id="colonia_ciudad" label="CIUDAD"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="punto_referencia" id="punto_referencia" label="PUNTO_REFERENCIA"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="itinerario" id="itinerario" label="ITINERARIO"   type="text" margin="dense" fullWidth/>
+                
+                <InputLabel className={classes.datepadding}  id="">FECHA DE REGRESO</InputLabel>
+                <DatePicker locale="es" id="fecha_regreso" 
+                  dateFormat="dd-MMMM-yyyy" 
+                  selected={fecha_regreso} 
+                  datetime={fecha_regreso} 
+                  onChange={date => this.setStartDate(date)} name="fecha_regreso" />
 
+                <TextField onChange={this.handleChange}  value={cliente}  name="hora_regreso" id="hora_regreso" label="HORA REGRESO"   type="text" margin="dense" fullWidth/>
 
+              <Typography variant="h7" gutterBottom> CARACTERISTICAS DE LA UNIDAD CONTRATADA </Typography>
+                <TextField onChange={this.handleChange}  value={cliente}  name="data_vehicle_tipo_unidad" id="data_vehicle_tipo_unidad" label="TIPO UNIDAD"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="data_vehicle_capacidad" id="data_vehicle_capacidad" label="CAPACIDAD"   type="text" margin="dense" fullWidth/>
+                
+                <FormControlLabel control={
+                  <Switch checked={true} color="primary" label="Primary" />
+                } name="aire_acondicionado" id="aire_acondicionado" label="AIRE ACONDICIONADO" />
 
-              
+                <FormControlLabel control={
+                  <Switch checked={true} color="primary" label="Primary" />
+                } name="sanitario" id="sanitario" label="SANITARIO" />
 
-            <Grid item xs={12} sm={6}>
-                <AutocompleteHotel updateHotel={this.handleHotelChange}/>
+                <FormControlLabel control={
+                  <Switch checked={true} color="primary" label="Primary" />
+                } name="tv/dvd" id="tv/dvd" label="TV/DVD" />
+
+                <FormControlLabel control={
+                  <Switch checked={true} color="primary" label="Primary" />
+                } name="microfono" id="microfono" label="MICROFONO" />
+
+                <FormControlLabel control={
+                  <Switch checked={true} color="primary" label="Primary" />
+                } name="stereo" id="stereo" label="STEREO" />
+
+                <FormControlLabel control={
+                  <Switch checked={true} color="primary" label="Primary" />
+                } name="otros_1" id="otros_1" label="OTROS"  />
+
+                <FormControlLabel control={
+                  <Switch checked={true} color="primary" label="Primary" />
+                } name="otros_2" id="otros_2" label="OTROS"  />
+
+            </Grid>
+
+            <Grid item  sm={9}>
+              <Typography variant="h7" gutterBottom > PAGOS </Typography>              
+                <TextField onChange={this.handleChange}  value={cliente}  name="importe_total" id="importe_total" label="IMPORTE TOTAL"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="anticipo" id="anticipo" label="ANTICIPO"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente}  name="saldo" id="saldo" label="SALDO"   type="text" margin="dense" fullWidth/>
             </Grid>
             
-            <Grid item xs={12} sm={6}>
-            <TextField
-                required
-                id="fecha_entrada"
-                label="fecha_entrada"
-                type="date"
-                defaultValue={getCurrentDate()}
-                fullWidth
-                autoComplete="fname"
-            />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <TextField
-                    required
-                    id="fecha_salida"
-                    name="fecha_salida"
-                    label="Fecha Salida"
-                    type="date"
-                    defaultValue={getCurrentDate()}
-                    fullWidth
-                    autoComplete="fname"
-                />
-            </Grid>
-
-            <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-                TOTAL VENTA
-            </Typography>
-            <TextField
-                label="TOTAL VENTA"
-                id="total_venta"
-                className={clsx(classes.margin, classes.textField)}
-                type="number"
-              />
-            </Grid>
-
-            
-            <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-                Habitaciones
-            </Typography>
-            <TextField
-                label="Numero de habitaciones"
-                id="numero-habitaciones"
-                className={clsx(classes.margin, classes.textField)}
-                // InputProps={{
-                //   startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
-                // }}
-                type="number"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h7" gutterBottom>
-                  Ocupacion
-              </Typography>
-              <TextField
-                  // label="Numero de habitaciones"
-                  id="sgl-habitaciones"
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">SGL</InputAdornment>,
-                  }}
-                  type="number"
-                />
-
-                <TextField
-                  // label="Numero de habitaciones"
-                  id="dbl-habitaciones"
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">DBL</InputAdornment>,
-                  }}
-                  type="number"
-                />
-
-                <TextField
-                  // label="Numero de habitaciones"
-                  id="cpl-habitaciones"
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">CPL</InputAdornment>,
-                  }}
-                  type="number"
-                />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography variant="h7" gutterBottom>
-                  Menores
-              </Typography>
-              <TextField
-                  // label="Numero de habitaciones"
-                  id="sc-habitaciones"
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">SC</InputAdornment>,
-                  }}
-                  type="number"
-                />
-
-                <TextField
-                  // label="Numero de habitaciones"
-                  id="cl-habitaciones"
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">CL</InputAdornment>,
-                  }}
-                  type="number"
-                />
-
-                <TextField
-                  // label="Numero de habitaciones"
-                  id="jr-habitaciones"
-                  className={clsx(classes.margin, classes.textField)}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">JR</InputAdornment>,
-                  }}
-                  type="number"
-                />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-                <AutocompleteAgency updateAgencia={this.handleAgencyChange}/>
-                <TextField
-                autoFocus
-                margin="dense"
-                id="observaciones"
-                label="Observaciones"
-                type="text"
-                fullWidth
-              />
-              <TextField
-                autoFocus
-                margin="dense"
-                id="Confirmadopor"
-                label="Confirmado por"
-                type="text"
-                fullWidth
-              />
-                <TextField
-                autoFocus
-                margin="dense"
-                id="Plancontratado"
-                label="Plan Contratado"
-                type="text"
-                fullWidth
-              />
-
-
-
-            </Grid>
-
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          
             <Button variant="contained" color="primary" href="#contained-buttons" onClick={this.createContrato} >
-              Crear Contrato
+              Guardar o Crear 
             </Button>
-          </Grid>
+          
   
           <TableContainer component={Paper}>
             <Table className={classes.table} size="small" aria-label="a dense table">
@@ -455,8 +359,9 @@ render(){
                   <TableCell>Contrato</TableCell>
                   <TableCell align="right">PDF</TableCell>
                   <TableCell align="right">cliente</TableCell>
-                  <TableCell align="right">Agencia</TableCell>
+                  <TableCell align="right">Unidad</TableCell>
                   <TableCell align="right">Destino</TableCell>
+                  <TableCell align="right">Fecha_salida</TableCell>
                   <TableCell align="right">anticipo</TableCell>
                   <TableCell align="right">Importe Total</TableCell>
                   <TableCell align="right">Estatus</TableCell>
@@ -464,6 +369,7 @@ render(){
               </TableHead>
               <TableBody>
                 {Contratos.map(row => (
+                  
                   <TableRow key={row.UUID}>
                     <TableCell component="th" scope="row">
                       {row.Folio}
@@ -479,9 +385,10 @@ render(){
                     </Link>
                   </TableCell>
                   {/* PDF */}
-                    <TableCell align="right">{row.uuid_cliente}</TableCell>
-                    <TableCell align="right">{row.uuid_agencia}</TableCell>
+                    <TableCell align="right">{row.cliente_nombre}</TableCell>
+                    <TableCell align="right">{row.tipo_unidad}</TableCell>
                     <TableCell align="right">{row.destino}</TableCell>
+                    <TableCell align="right">{row.fecha_salida}</TableCell>
                     <TableCell align="right">{row.anticipo}</TableCell>
                     <TableCell align="right">{row.importe_total}</TableCell>
                     <TableCell align="right">{row.status}</TableCell>

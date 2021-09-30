@@ -15,7 +15,7 @@ import Cupones from './modules/home/Cupones';
 import Cupon from './modules/home/Cupones/CuponDialog';
 
 import Contratos from './modules/home/Contratos';
-import Contrato from './modules/home/Contratos/ContratoTransporte';
+import Contrato from './modules/home/Contratos/ContratoTransporteDialog';
 
 import Recibos from './modules/home/Recibos';
 import Recibo from './modules/home/Recibos/RecibosDialog';

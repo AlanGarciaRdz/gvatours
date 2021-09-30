@@ -181,7 +181,8 @@ class CharterFrom extends React.Component{
         }
 
         adultos_juniors_plus() {
-          this.setState({ adultos: this.state.adultos + 1 })
+          
+          this.setState({ adultos: parseInt(this.state.adultos) + 1 })
         }
 
         adultos_juniors_minus() {
@@ -196,7 +197,7 @@ class CharterFrom extends React.Component{
           }
         }
         menores_cargo_plus(){
-          this.setState({ con_cargo: this.state.con_cargo + 1 })
+          this.setState({ con_cargo: parseInt(this.state.con_cargo) + 1 })
         }
 
         menores_sin_cargo_minus(){
@@ -204,8 +205,9 @@ class CharterFrom extends React.Component{
             this.setState({ sin_cargo: this.state.sin_cargo - 1 })
           }
         }
+        
         menores_sin_cargo_plus(){
-          this.setState({ sin_cargo: this.state.sin_cargo + 1 })
+          this.setState({ sin_cargo: parseInt(this.state.sin_cargo) + 1 })
         }
 
         
@@ -472,9 +474,6 @@ class CharterFrom extends React.Component{
                 }
               })
             }
-
-            
-
           }
           
           
@@ -483,8 +482,6 @@ class CharterFrom extends React.Component{
 
 
         getCharters() {
-          
-            
             //API.get('/Charters')
             console.log(this.state.folio_papeleta)
 
