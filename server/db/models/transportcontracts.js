@@ -21,6 +21,7 @@ const getTransportC = (request, response) => {
 
 const getTransportCById = (request, response) => {
   const uuid_contract = request.params.uuid_contract
+  console.log(request.params.uuid_contract)
 
   pool.query('SELECT * FROM public."transport_contracts" WHERE uuid_contract = $1', [uuid_contract], (error, results) => {
     if (error) {
@@ -59,8 +60,9 @@ const getTransportCByIdFE = (request, response) => {
 }
   
   const createTransportC = (request, response) => {
-    if(request.body.hasOwnProperty('data') && request.body.hasOwnProperty('data_vehicle')){
-      const { data, data_vehicle } = request.body
+    
+    if(request.body[0].hasOwnProperty('data') && request.body[0].hasOwnProperty('data_vehicle')){
+      const { data, data_vehicle } = request.body[0]
       const uuidValue = uuid.v4()
       const dateValue = createDateAsUTC();
       pool.query('INSERT INTO public."transport_contracts" (uuid_contract, id_contract, data, data_vehicle, created_at, updated_at, status) VALUES ($1, $2, $3, $4, $5, $6, $7)', 

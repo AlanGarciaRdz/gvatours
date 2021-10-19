@@ -124,7 +124,7 @@ app.patch('/Charters/:uuid_charter', charter_model.rollbackCharter)
 
 //DATABASE Transport 
 app.get('/TransportC', transport_model.getTransportC)
-app.get('/TransportC/:uuid_contract', transport_model.getTransportCByIdFE)
+app.get('/TransportC/:uuid_contract', transport_model.getTransportCById) //getTransportCByIdFE
 app.post('/TransportC', transport_model.createTransportC)
 app.put('/TransportC/:uuid_contract', transport_model.updateTransportC) 
 app.delete('/TransportC/:uuid_contract', transport_model.deleteTransportC)

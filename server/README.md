@@ -43,5 +43,7 @@ psql -d postgres -U postgres
 CREATE DATABASE postgres;
 \c postgres
 
+psql -U postgres -h database-gva.ctdlpwrrgw3t.us-east-2.rds.amazonaws.com -p 5432 postgres
+
 
 brew services restart postgresql
