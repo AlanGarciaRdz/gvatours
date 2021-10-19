@@ -63,7 +63,7 @@ class ContratosForm extends React.Component{
     
             /* new*/
 
-            this.handleChangeName = this.handleChangeName.bind(this);
+            this.handleChange = this.handleChange.bind(this);
             /* end */
             this.getContratos = this.getContratos.bind(this);
             this.addTableData = this.addTableData.bind(this);
@@ -75,6 +75,12 @@ class ContratosForm extends React.Component{
             this.handleClientChange = this.handleClientChange.bind(this);
             this.handleHotelChange = this.handleHotelChange.bind(this);
             this.handleAgencyChange = this.handleAgencyChange.bind(this);
+            this.handleChangeSwitch = this.handleChangeSwitch.bind(this);
+              
+            this.setContratoDate = this.setContratoDate.bind(this);
+            this.setSalidaDate = this.setSalidaDate.bind(this);
+            this.setRegresoDate = this.setRegresoDate.bind(this);
+
 
 
             
@@ -124,7 +130,7 @@ class ContratosForm extends React.Component{
           )
         }
 
-        handleChangeName = (evt) => {
+        handleChange = (evt) => {
           this.setState({
             ...this.state,
             [evt.target.name]: evt.target.value
@@ -134,54 +140,89 @@ class ContratosForm extends React.Component{
           
         }
 
+        handleChangeSwitch = (evt) => {
+          
+          this.setState({
+            ...this.state,
+            [evt.target.name]: evt.target.name
+          },() => {
+            this.getContratos()
+          });
+          
+        }
+
    
 
         createContrato(){
-          var {val_uuid_cliente, val_uuid_hotel, val_uuid_agencia } = this.state
+          //var {val_uuid_cliente, val_uuid_hotel, val_uuid_agencia } = this.state
+          const { folio_contrato, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono, 
+            destino, hora_salida, hora_presentarse, encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, 
+            itinerario, hora_regreso, data_vehicle_tipo_unidad, data_vehicle_capacidad, importe_total, anticipo, saldo,
+            fecha_contrato, fecha_regreso, fecha_salida } = this.state;
+
+          const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2 } = this.state
           // console.log(val_uuid_cliente, val_uuid_hotel, val_uuid_agencia)
-
-          if(val_uuid_cliente === null || val_uuid_hotel === null || val_uuid_agencia === null){
-            console.error("needs client and hotel and agency")
+          
+          if(cliente_nombre === undefined || destino === undefined || data_vehicle_tipo_unidad === undefined){
+            console.error("Falta Cliente - Destino - Unidad")
           }else {
-            var contratodata =
-            {
-              "data": {
-                "uuid_cliente": "66729699-c796-4cdb-879b-86cc0ad4b61b",
-                "uuid_hotel": "",
-                "destino": "Puerto Vallarta",
-                "fecha_salida": "23-04-2020",
-                "hora_salida": "20:50",
-                "hora_presentarse": "20:45",
-                "direccion_salida": "avenida siempre viva 1390",
-                "entre_calles": "circunvalacion y calle de los fresnos",
-                "colonia_ciudad": "Fresno, Guadalajara",
-                "punto_referencia": "7eleven",
-                "movimientos": true,
-                "itinerario": "Salida 20:50 de avenida siempre viva 1390 con destino a Puerto Vallarta con Movimientos",
-                "fecha_regreso": "28-04-2020",
-                "hora_regreso": "23:00",
-                "importe_total": "$15,000",
-                "anticipo": "$1,000",
-                "saldo": "$14,000",
-                "uuid_receipts": []
-              },
-              "data_vehicle": {
-                "tipo_unidad": "Sprinter",
-                "capacidad": "20",
-                "Equipada": ["AIRE ACONDICIONADO","STEREO", "TV/DVD", "SEGURO VIAJERO"]
+            
+            let contratodata = 
+            [
+              {
+                  "data": {
+                    "fecha_contrato": fecha_contrato,
+                    "folio": folio_contrato,
+                    "cliente_nombre": cliente_nombre,
+                    "cliente_direccion": cliente_direccion,
+                    "cliente_ciudad": cliente_ciudad,
+                    "cliente_telefono": cliente_telefono,
+                    "encargado": encargado,
+                    "colonia_ciudad": colonia_ciudad,//"Fresno, Guadalajara",
+                    "punto_referencia": punto_referencia,
+
+                    "direccion_salida": direccion_salida,
+                    "entre_calles": entre_calles,
+
+                    
+                    //----
+                      "destino": destino,
+                      "fecha_salida": fecha_salida,
+                      "hora_presentarse": hora_presentarse,
+                      "hora_salida": hora_salida,
+                      "itinerario": itinerario,
+                      
+                      "hora_regreso": hora_regreso,
+                      "fecha_regreso": fecha_regreso,
+
+                      "importe_total": importe_total,
+                      "anticipo": anticipo,
+                      "saldo": saldo,
+                  },
+                  "data_vehicle": {
+                      "Equipada": [
+                          `${aire_acondicionado ?  'AIRE ACONDICIONADO' : null}`,
+                          `${stereo ?  'STEREO' : null}`,
+                          `${tv_dvd ?  'TV/DVD' : null}`,
+                          `${sanitario ? 'SANITARIO' : null}`,
+                          `${microfono ? 'MICROFONO' : null}`,
+                          `${seguro_de_viajero ? 'SEGURO DE VIAJERO' : null}`
+
+                      ],
+                      "capacidad": data_vehicle_capacidad,
+                      "tipo_unidad": data_vehicle_tipo_unidad
+                  }
               }
-              
-            }
+          ]
+          alert(aire_acondicionado)
+             console.log(contratodata)
 
-            // console.log(contratodata)
-
-            API.post(`/TransportC/`, contratodata).then(res => {
+            API.post(`/TransportC`, contratodata).then(res => {
+              console.log("res")
       
               try{
-                
                 // console.log(res.data)
                 //this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto)
-                  
               }catch(error){
                 console.error("400 Contrato")
                 return "400 Contrato"
@@ -201,14 +242,11 @@ class ContratosForm extends React.Component{
            
            API.get('/TransportC')
               .then(res => {
-                if (res.status === 200) {
-                  
+                if (res.status === 200) {                  
                   var  rowsP = []
-
                   res.data.map(row => {
                     console.log(row)
                   })
-                  
 
                   //TODO
                       rowsP = 
@@ -243,13 +281,43 @@ class ContratosForm extends React.Component{
           return {UUID, Folio, cliente_nombre, tipo_unidad, destino, fecha_salida, anticipo, importe_total, status};
         }
 
-    
+        setContratoDate(evt){
+          console.log(`dateee ${evt}`)
+          let fecha = evt
+          this.setState({
+            ...this.state,
+            fecha_contrato: fecha
+            
+          }); 
+        }
+
+        setSalidaDate(evt){
+          console.log(`dateee ${evt}`)
+          let fecha = evt
+          this.setState({
+            ...this.state,
+            
+            fecha_salida: fecha
+            
+        });
+      }
+
+        setRegresoDate(evt){
+          console.log(`dateee ${evt}`)
+          let fecha = evt
+          this.setState({
+            ...this.state,
+            fecha_regreso: fecha
+        });
+      }
 
 render(){
     const { classes } = this.props;
     const {Clientes, Hoteles , Contratos} = this.state;
 
-    const { folio_contrato, cliente, hotel, hotel_uuid } = this.state;
+
+    
+    const { folio_contrato, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono, destino, hora_salida, hora_presentarse, encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, itinerario, hora_regreso, data_vehicle_tipo_unidad, data_vehicle_capacidad, importe_total, anticipo, saldo } = this.state;
 
     const { fecha_salida, fecha_contrato, fecha_regreso } = this.state
 
@@ -268,80 +336,81 @@ render(){
                   dateFormat="dd-MMMM-yyyy" 
                   selected={fecha_contrato} 
                   datetime={fecha_contrato} 
-                  onChange={date => this.setStartDate(date)} name="fecha_contrato" />
+                  onChange={date => this.setContratoDate(date)} name="fecha_contrato" />
 
-                <TextField onChange={this.handleChange}  value={cliente}  name="cliente_nombre" id="cliente_nombre" label="CLIENTE"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="cliente_direccion" id="cliente_direccion" label="DIRECCION"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="cliente_ciudad" id="cliente_ciudad" label="CIUDAD"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="cliente_telefono" id="cliente_telefono" label="TELEFONO"   type="text" margin="dense" fullWidth/>
+
+                <TextField onChange={this.handleChange}  value={cliente_nombre}  name="cliente_nombre" id="cliente_nombre" label="CLIENTE"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente_direccion}  name="cliente_direccion" id="cliente_direccion" label="DIRECCION"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente_ciudad}  name="cliente_ciudad" id="cliente_ciudad" label="CIUDAD"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={cliente_telefono}  name="cliente_telefono" id="cliente_telefono" label="TELEFONO"   type="text" margin="dense" fullWidth/>
                 
               <Typography variant="h7" gutterBottom> DATOS DE SALIDA Y REGRESO DEL VIAJE </Typography>
-                <TextField onChange={this.handleChange}  value={cliente}  name="destino" id="destino" label="DESTINO"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={destino}  name="destino" id="destino" label="DESTINO"   type="text" margin="dense" fullWidth/>
                 <InputLabel className={classes.datepadding}  id="">FECHA DE SALIDA</InputLabel>
                 <DatePicker locale="es" id="fecha_salida" 
                   dateFormat="dd-MMMM-yyyy" 
                   selected={fecha_salida} 
                   datetime={fecha_salida} 
-                  onChange={date => this.setStartDate(date)} name="fecha_salida" />
+                  onChange={date => this.setSalidaDate(date)} name="fecha_salida" />
 
                 
-                <TextField onChange={this.handleChange}  value={cliente}  name="hora_salida" id="hora_salida" label="HORA_SALIDA"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="hora_presentarse" id="hora_presentarse" label="HORA_PRESENTARSE"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="encargado" id="encargado" label="ENCARGADO"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="direccion_salida" id="direccion_salida" label="DIRECCION_SALIDA"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="entre_calles" id="entre_calles" label="ENTRE_CALLES"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="colonia_ciudad" id="colonia_ciudad" label="CIUDAD"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="punto_referencia" id="punto_referencia" label="PUNTO_REFERENCIA"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="itinerario" id="itinerario" label="ITINERARIO"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={hora_salida}  name="hora_salida" id="hora_salida" label="HORA_SALIDA"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={hora_presentarse}  name="hora_presentarse" id="hora_presentarse" label="HORA_PRESENTARSE"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={encargado}  name="encargado" id="encargado" label="ENCARGADO"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={direccion_salida}  name="direccion_salida" id="direccion_salida" label="DIRECCION_SALIDA"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={entre_calles}  name="entre_calles" id="entre_calles" label="ENTRE_CALLES"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={colonia_ciudad}  name="colonia_ciudad" id="colonia_ciudad" label="CIUDAD"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={punto_referencia}  name="punto_referencia" id="punto_referencia" label="PUNTO_REFERENCIA"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={itinerario}  name="itinerario" id="itinerario" label="ITINERARIO"   type="text" margin="dense" fullWidth/>
                 
                 <InputLabel className={classes.datepadding}  id="">FECHA DE REGRESO</InputLabel>
                 <DatePicker locale="es" id="fecha_regreso" 
                   dateFormat="dd-MMMM-yyyy" 
                   selected={fecha_regreso} 
                   datetime={fecha_regreso} 
-                  onChange={date => this.setStartDate(date)} name="fecha_regreso" />
+                  onChange={date => this.setRegresoDate(date)} name="fecha_regreso" />
 
-                <TextField onChange={this.handleChange}  value={cliente}  name="hora_regreso" id="hora_regreso" label="HORA REGRESO"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={hora_regreso}  name="hora_regreso" id="hora_regreso" label="HORA REGRESO"   type="text" margin="dense" fullWidth/>
 
               <Typography variant="h7" gutterBottom> CARACTERISTICAS DE LA UNIDAD CONTRATADA </Typography>
-                <TextField onChange={this.handleChange}  value={cliente}  name="data_vehicle_tipo_unidad" id="data_vehicle_tipo_unidad" label="TIPO UNIDAD"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="data_vehicle_capacidad" id="data_vehicle_capacidad" label="CAPACIDAD"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={data_vehicle_tipo_unidad}  name="data_vehicle_tipo_unidad" id="data_vehicle_tipo_unidad" label="TIPO UNIDAD"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={data_vehicle_capacidad}  name="data_vehicle_capacidad" id="data_vehicle_capacidad" label="CAPACIDAD"   type="text" margin="dense" fullWidth/>
                 
                 <FormControlLabel control={
-                  <Switch checked={true} color="primary" label="Primary" />
+                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="aire_acondicionado" id="aire_acondicionado" label="AIRE ACONDICIONADO" />
 
                 <FormControlLabel control={
-                  <Switch checked={true} color="primary" label="Primary" />
+                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="sanitario" id="sanitario" label="SANITARIO" />
 
                 <FormControlLabel control={
-                  <Switch checked={true} color="primary" label="Primary" />
-                } name="tv/dvd" id="tv/dvd" label="TV/DVD" />
+                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
+                } name="tv_dvd" id="tv/dvd" label="TV/DVD" />
 
                 <FormControlLabel control={
-                  <Switch checked={true} color="primary" label="Primary" />
+                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="microfono" id="microfono" label="MICROFONO" />
 
                 <FormControlLabel control={
-                  <Switch checked={true} color="primary" label="Primary" />
+                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="stereo" id="stereo" label="STEREO" />
 
                 <FormControlLabel control={
-                  <Switch checked={true} color="primary" label="Primary" />
-                } name="otros_1" id="otros_1" label="OTROS"  />
+                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
+                } name="seguro_de_viajero" id="seguro de viajero" label="SEGURO DE VIAJERO"  />
 
                 <FormControlLabel control={
-                  <Switch checked={true} color="primary" label="Primary" />
+                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="otros_2" id="otros_2" label="OTROS"  />
 
             </Grid>
 
             <Grid item  sm={9}>
               <Typography variant="h7" gutterBottom > PAGOS </Typography>              
-                <TextField onChange={this.handleChange}  value={cliente}  name="importe_total" id="importe_total" label="IMPORTE TOTAL"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="anticipo" id="anticipo" label="ANTICIPO"   type="text" margin="dense" fullWidth/>
-                <TextField onChange={this.handleChange}  value={cliente}  name="saldo" id="saldo" label="SALDO"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={importe_total}  name="importe_total" id="importe_total" label="IMPORTE TOTAL"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={anticipo}  name="anticipo" id="anticipo" label="ANTICIPO"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={saldo}  name="saldo" id="saldo" label="SALDO"   type="text" margin="dense" fullWidth/>
             </Grid>
             
           </Grid>
@@ -364,7 +433,7 @@ render(){
                   <TableCell align="right">Fecha_salida</TableCell>
                   <TableCell align="right">anticipo</TableCell>
                   <TableCell align="right">Importe Total</TableCell>
-                  <TableCell align="right">Estatus</TableCell>
+                  {/* <TableCell align="right">Estatus</TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -391,7 +460,7 @@ render(){
                     <TableCell align="right">{row.fecha_salida}</TableCell>
                     <TableCell align="right">{row.anticipo}</TableCell>
                     <TableCell align="right">{row.importe_total}</TableCell>
-                    <TableCell align="right">{row.status}</TableCell>
+                    {/* <TableCell align="right">{row.status}</TableCell> */}
                     
                     
                   </TableRow>

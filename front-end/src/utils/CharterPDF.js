@@ -56,7 +56,7 @@ function Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGR
     adultos_juniors, menores_cargo, menores_sin_cargo, 
     TRAVELAGENCY_NOMBRE, TRAVELAGENCY_TELEFONO,TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
     redondo, OBSERVACIONES, LOGOAGENCIA ) {
-        alert("fsad")
+        
 
         let starty = 120;
         let increment = 24;
