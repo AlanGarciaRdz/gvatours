@@ -59,6 +59,13 @@ class ContratosForm extends React.Component{
                 data_clientes: [],
                 data_agencias: [],
                 data_hoteles: [],
+                aire_acondicionado: true,
+                sanitario: false, 
+                tv_dvd: true,
+                microfono: false,
+                stereo: true,
+                seguro_de_viajero: true,
+                otros_2: false
             }
     
             /* new*/
@@ -141,12 +148,12 @@ class ContratosForm extends React.Component{
         }
 
         handleChangeSwitch = (evt) => {
-          
+          console.log(evt.target.checked)
           this.setState({
             ...this.state,
-            [evt.target.name]: evt.target.name
+            [evt.target.name]: evt.target.checked
           },() => {
-            this.getContratos()
+            //this.getContratos()
           });
           
         }
@@ -167,6 +174,14 @@ class ContratosForm extends React.Component{
             console.error("Falta Cliente - Destino - Unidad")
           }else {
             
+            let equipo = []
+            if(aire_acondicionado) equipo.push('AIRE ACONDICIONADO')
+            if(stereo)  equipo.push('STEREO')
+            if(tv_dvd)  equipo.push('TV/DVD')
+            if(sanitario) equipo.push('SANITARIO')
+            if(microfono) equipo.push('MICROFONO')
+            if(seguro_de_viajero) equipo.push('SEGURO DE VIAJERO')
+
             let contratodata = 
             [
               {
@@ -200,30 +215,37 @@ class ContratosForm extends React.Component{
                       "saldo": saldo,
                   },
                   "data_vehicle": {
-                      "Equipada": [
-                          `${aire_acondicionado ?  'AIRE ACONDICIONADO' : null}`,
-                          `${stereo ?  'STEREO' : null}`,
-                          `${tv_dvd ?  'TV/DVD' : null}`,
-                          `${sanitario ? 'SANITARIO' : null}`,
-                          `${microfono ? 'MICROFONO' : null}`,
-                          `${seguro_de_viajero ? 'SEGURO DE VIAJERO' : null}`
-
-                      ],
+                      "Equipada": equipo,
                       "capacidad": data_vehicle_capacidad,
                       "tipo_unidad": data_vehicle_tipo_unidad
                   }
               }
           ]
-          alert(aire_acondicionado)
+          
              console.log(contratodata)
 
             API.post(`/TransportC`, contratodata).then(res => {
               console.log("res")
-      
+              let resp = res.data
               try{
                 // console.log(res.data)
                 //this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto)
+                window.location.href =  `/Contrato?id=${resp.uuid_contract}`; 
+
+                this.addTableData(
+                  resp.data.uuid_contract, //UUID
+                  resp.data.folio,//row.uuid_contract.split('-')[2]+'-'+row.uuid_contract.split('-')[3], //FOLIO
+                  resp.data.cliente_nombre, //Cliente
+                  resp.data_vehicle.tipo_unidad,
+                  resp.data.destino,
+                  resp.data.fecha_salida,
+                  resp.data.anticipo,
+                  resp.data.importe_total,
+                  resp.status
+                )
+
               }catch(error){
+                console.log(error)
                 console.error("400 Contrato")
                 return "400 Contrato"
               }
@@ -255,7 +277,7 @@ class ContratosForm extends React.Component{
                                             
                           this.addTableData(
                             row.uuid_contract, //UUID
-                            "alan",//row.uuid_contract.split('-')[2]+'-'+row.uuid_contract.split('-')[3], //FOLIO
+                            row.data.folio,//row.uuid_contract.split('-')[2]+'-'+row.uuid_contract.split('-')[3], //FOLIO
                             row.data.cliente_nombre, //Cliente
                             row.data_vehicle.tipo_unidad,
                             row.data.destino,
@@ -321,13 +343,15 @@ render(){
 
     const { fecha_salida, fecha_contrato, fecha_regreso } = this.state
 
+    const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2 } = this.state
+
     return (
         <React.Fragment>
 
           <Grid container spacing={2}>
             <Grid item  sm={9}>
               <TextField  required   id="folio_contrato"   label="folio_contrato"
-                    type="text"  name="folio_contrato"   value={folio_contrato}     onChange={this.handleChangeName}
+                    type="text"  name="folio_contrato"   value={folio_contrato}     onChange={this.handleChange}
                     fullWidth autoComplete="fname"/>
 
               <Typography variant="h7" gutterBottom> DATOS DEL CONTRATANTE </Typography>
@@ -377,32 +401,39 @@ render(){
                 <TextField onChange={this.handleChange}  value={data_vehicle_capacidad}  name="data_vehicle_capacidad" id="data_vehicle_capacidad" label="CAPACIDAD"   type="text" margin="dense" fullWidth/>
                 
                 <FormControlLabel control={
-                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
+                  <Switch checked={aire_acondicionado} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="aire_acondicionado" id="aire_acondicionado" label="AIRE ACONDICIONADO" />
+                <br/>
 
                 <FormControlLabel control={
-                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
+                  <Switch checked={sanitario} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="sanitario" id="sanitario" label="SANITARIO" />
+                <br/>
 
                 <FormControlLabel control={
-                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
+                  <Switch checked={tv_dvd} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="tv_dvd" id="tv/dvd" label="TV/DVD" />
+                <br/>
 
                 <FormControlLabel control={
-                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
+                  <Switch checked={microfono} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="microfono" id="microfono" label="MICROFONO" />
+                <br/>
 
                 <FormControlLabel control={
-                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
+                  <Switch checked={stereo} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="stereo" id="stereo" label="STEREO" />
+                <br/>
 
                 <FormControlLabel control={
-                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
+                  <Switch checked={seguro_de_viajero} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="seguro_de_viajero" id="seguro de viajero" label="SEGURO DE VIAJERO"  />
+                <br/>
 
                 <FormControlLabel control={
-                  <Switch checked={true} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
+                  <Switch checked={otros_2} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
                 } name="otros_2" id="otros_2" label="OTROS"  />
+                <br/>
 
             </Grid>
 
