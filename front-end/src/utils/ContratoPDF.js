@@ -38,14 +38,15 @@ function Header(doc, Folio) {
           
           doc.setTextColor(255,255,255);
           doc.text(500, 43, 'FOLIO');
+          
           doc.setTextColor(0,0,0);
 
           doc.setDrawColor(0);
           doc.setFillColor(255, 255, 255);
           doc.rect(470, 52, 100, 25,'F'); 
           
-          doc.setTextColor(220, 43, 27);
-          doc.text(510, 64, Folio);
+          doc.setTextColor(29,34,78);
+          doc.text(502, 64, Folio);
         
           doc.setDrawColor(0);
           doc.setFillColor(255, 255, 255);
@@ -55,7 +56,8 @@ function Header(doc, Folio) {
 
 
 function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENTE_TELEFONO
-  ,DESTINO, FECHA_SALIDA, HORA_SALIDA, HORA_PRESENTARSE,  ENCARGADO, DIRECCION_SALIDA, ENTRE_CALLES, COLONIA_CIUDAD, PUNTO_REFERENCIA, FECHA_REGRESO, HORA_REGRESO,FECHA_CONTRATO,
+  ,DESTINO, FECHA_SALIDA, HORA_SALIDA, HORA_PRESENTARSE,  ENCARGADO, DIRECCION_SALIDA, ENTRE_CALLES, 
+  COLONIA_CIUDAD, PUNTO_REFERENCIA, FECHA_REGRESO, HORA_REGRESO,FECHA_CONTRATO,
   TIPO_UNIDAD, CAPACIDAD,EQUIPADA,checkBox, IMPORTE_TOTAL, ANTICIPO, SALDO ) {
 
         let starty = 90;
@@ -282,21 +284,35 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         starty += increment+5; 
         
         doc.setFontSize(8)
-        doc.circle(60, starty, 7, 'D'); //AIRE
-        doc.text(70, starty+3, 'AIRE ACONDICIONADO');
+        console.log(EQUIPADA)
+        doc.circle(60, starty, 7, 'D'); //AIRE   
+            doc.text(57, starty+3, EQUIPADA.includes('AIRE ACONDICIONADO') ? 'X' : '');
+        doc.text(70, starty+3, 'AIRE ACONDICIONADO'); 
+
         doc.circle(180, starty, 7, 'D'); //sanitario
+            doc.text(177, starty+3, EQUIPADA.includes('SANITARIO') ? 'X' : '');
         doc.text(190, starty+3, 'SANITARIO');
-        doc.circle(300, starty, 7, 'D'); //TV/DVD 
+
+        doc.circle(300, starty, 7, 'D'); //TV/DVD
+            doc.text(297, starty+3, EQUIPADA.includes('TV/DVD') ? 'X' : ''); 
         doc.text(310, starty+3, 'TV/DVD');
+
         doc.circle(420, starty, 7, 'D');  //Microfono
+            doc.text(417, starty+3, EQUIPADA.includes('MICROFONO') ? 'X' : '');
         doc.text(430, starty+3, 'MICROFONO');
         
         starty += increment; 
 
         doc.circle(60, starty, 7, 'D'); //STEREO
+            doc.text(57, starty+3, EQUIPADA.includes('STEREO') ? 'X' : '');
         doc.text(70, starty+3, 'STEREO');
-        doc.circle(180, starty, 7, 'D'); //OTROS
-        doc.text(190, starty+3, 'SEGURO DE PASAJERO');
+        
+        doc.circle(180, starty, 7, 'D'); //SEGURO DE PASAJEROS
+            doc.text(177, starty+3, EQUIPADA.includes('SEGURO DE PASAJERO') ? 'X' : '');
+            doc.text(177, starty+3, EQUIPADA.includes('SEGURO DE VIAJERO') ? 'X' : '');
+            
+        doc.text(190, starty+3, 'SEGURO DE PASAJEROS');
+
         doc.circle(380, starty, 7, 'D'); //OTROS
         doc.text(390, starty+3, 'OTROS:');
 

@@ -72,7 +72,7 @@ class ContratoTransporteDialog extends React.Component{
               console.log(contrato)
               
               
-              this.setState({folio: contrato.data.folio ? '' : '' })
+              this.setState({folio: contrato.data.folio })
               this.setState({cliente_nombre: contrato.data.cliente_nombre})
               this.setState({cliente_direccion: contrato.data.cliente_direccion})
               this.setState({cliente_ciudad: contrato.data.cliente_ciudad})
@@ -95,7 +95,7 @@ class ContratoTransporteDialog extends React.Component{
               this.setState({tipo_unidad: contrato.data_vehicle.tipo_unidad})
               
               this.setState({capacidad: contrato.data_vehicle.capacidad})
-              this.setState({equipada: contrato.data_vehicle.equipada})
+              this.setState({equipada: contrato.data_vehicle.Equipada})
               
 
               this.setState({importe_total: contrato.data.importe_total})

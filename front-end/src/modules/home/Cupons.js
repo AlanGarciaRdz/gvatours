@@ -12,12 +12,6 @@ import Title from './Title';
 import API from "../../utils/API";
 
 
-
-
-
-
-
-
 function preventDefault(event) {
   event.preventDefault();
 }

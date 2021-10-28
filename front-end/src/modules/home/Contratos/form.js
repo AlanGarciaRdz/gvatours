@@ -180,7 +180,7 @@ class ContratosForm extends React.Component{
             if(tv_dvd)  equipo.push('TV/DVD')
             if(sanitario) equipo.push('SANITARIO')
             if(microfono) equipo.push('MICROFONO')
-            if(seguro_de_viajero) equipo.push('SEGURO DE VIAJERO')
+            if(seguro_de_viajero) equipo.push('SEGURO DE PASAJERO')
 
             let contratodata = 
             [
@@ -427,7 +427,7 @@ render(){
 
                 <FormControlLabel control={
                   <Switch checked={seguro_de_viajero} onChange={this.handleChangeSwitch} color="primary" label="Primary" />
-                } name="seguro_de_viajero" id="seguro de viajero" label="SEGURO DE VIAJERO"  />
+                } name="seguro_de_pasajeros" id="seguro de pasajeros" label="SEGURO DE PASAJEROS"  />
                 <br/>
 
                 <FormControlLabel control={
