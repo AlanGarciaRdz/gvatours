@@ -10,6 +10,9 @@ import Button from '@material-ui/core/Button'
 import InputLabel from '@material-ui/core/InputLabel';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import es from 'date-fns/locale/es';
+import { registerLocale } from  "react-datepicker";
+import Create from '@material-ui/icons/Create';
 
 
 import Link from '@material-ui/core/Link';
@@ -65,7 +68,10 @@ class ContratosForm extends React.Component{
                 microfono: false,
                 stereo: true,
                 seguro_de_viajero: true,
-                otros_2: false
+                otros_2: false,
+                fecha_salida_interna: new Date(),
+                fecha_regreso_interna: new Date(),
+                fecha_contrato_interna: new Date()
             }
     
             /* new*/
@@ -87,11 +93,7 @@ class ContratosForm extends React.Component{
             this.setContratoDate = this.setContratoDate.bind(this);
             this.setSalidaDate = this.setSalidaDate.bind(this);
             this.setRegresoDate = this.setRegresoDate.bind(this);
-
-
-
-            
-        
+            this.fixdateError = this.fixdateError.bind(this);
         }
 
         async filterById(jsonObject, column, id) {
@@ -108,6 +110,9 @@ class ContratosForm extends React.Component{
           // })
           })
         }
+
+
+        
 
 
         
@@ -158,6 +163,19 @@ class ContratosForm extends React.Component{
           
         }
 
+
+        fixdateError(fecha = "11-mayo-2021") {
+           
+          let date = fecha.split('-');
+          var meses = [ "enero", "febrero", "marzo", "abril", "mayo", "junio", 
+           "julio", "agosto", "septiembre", "octubre", "nomviembre", "diciembre" ];
+          
+           if(meses.indexOf(date[1]) > -1){
+              return new Date(date[2],  meses.indexOf(date[1]), date[0])
+           }
+
+        }
+
    
 
         createContrato(){
@@ -182,11 +200,15 @@ class ContratosForm extends React.Component{
             if(microfono) equipo.push('MICROFONO')
             if(seguro_de_viajero) equipo.push('SEGURO DE PASAJERO')
 
+            
+
+            
             let contratodata = 
             [
               {
                   "data": {
-                    "fecha_contrato": fecha_contrato,
+                    "fecha_contrato": document.getElementById("fecha_contrato").value,
+                    "fecha_contrato_interna": fecha_contrato,
                     "folio": folio_contrato,
                     "cliente_nombre": cliente_nombre,
                     "cliente_direccion": cliente_direccion,
@@ -202,13 +224,16 @@ class ContratosForm extends React.Component{
                     
                     //----
                       "destino": destino,
-                      "fecha_salida": fecha_salida,
+                      "fecha_salida": document.getElementById("fecha_salida").value,
+                      "fecha_salida_interna": fecha_salida,
                       "hora_presentarse": hora_presentarse,
                       "hora_salida": hora_salida,
                       "itinerario": itinerario,
                       
                       "hora_regreso": hora_regreso,
-                      "fecha_regreso": fecha_regreso,
+                      
+                      "fecha_regreso": document.getElementById("fecha_regreso").value,
+                      "fecha_regreso_interna": fecha_regreso,
 
                       "importe_total": importe_total,
                       "anticipo": anticipo,
@@ -316,6 +341,7 @@ class ContratosForm extends React.Component{
 
         setSalidaDate(evt){
           console.log(`dateee ${evt}`)
+          console.log(evt)
           let fecha = evt
           this.setState({
             ...this.state,
@@ -334,7 +360,34 @@ class ContratosForm extends React.Component{
         });
       }
 
+      seleccionarElemento(row){
+        this.setState({errorAlert: null})
+        
+
+        API.get(`/TransportC/${row.UUID}`)
+            .then(res => {
+              if (res.status === 200) {
+                //EDICION
+                res = res.data[0]
+                console.log(res)
+                
+                // this.setState({fecha_salida: new Date(res.data.fecha_salida_internal)}); 
+                
+                // if(res.data.fecha_regreso && res.data.fecha_regreso_internal === undefined){
+                //   this.setState({fecha_regreso: this.fixdateError(res.data.fecha_regreso) });
+                // }else{
+                //   this.setState({fecha_regreso: res.data.fecha_regreso !== "" ? new Date(res.data.fecha_regreso_internal) : '' });
+                // }
+                
+              }
+
+            })
+
+      }
+
 render(){
+  registerLocale('es', es)
+
     const { classes } = this.props;
     const {Clientes, Hoteles , Contratos} = this.state;
 
@@ -346,6 +399,8 @@ render(){
 
     const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2, autorizador } = this.state
 
+    
+    
     return (
         <React.Fragment>
 
@@ -470,6 +525,7 @@ render(){
                   <TableCell align="right">Fecha_salida</TableCell>
                   <TableCell align="right">anticipo</TableCell>
                   <TableCell align="right">Importe Total</TableCell>
+                  <TableCell>Accion</TableCell>
                   {/* <TableCell align="right">Estatus</TableCell> */}
                 </TableRow>
               </TableHead>
@@ -497,6 +553,11 @@ render(){
                     <TableCell align="right">{row.fecha_salida}</TableCell>
                     <TableCell align="right">{row.anticipo}</TableCell>
                     <TableCell align="right">{row.importe_total}</TableCell>
+                    <TableCell>
+                        <ListItem button onClick={() => this.seleccionarElemento(row)}>
+                            <Create />
+                        </ListItem>
+                    </TableCell>
                     {/* <TableCell align="right">{row.status}</TableCell> */}
                     
                     
