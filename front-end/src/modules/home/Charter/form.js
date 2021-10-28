@@ -586,7 +586,8 @@ class CharterFrom extends React.Component{
                   this.setState({val_uuid_hotel: res.data.uuid_hotel});
                   
                   console.log(res.data.fecha_salida)
-                  console.log(res.data.fecha_salida_internal)                  
+                  console.log(res.data.fecha_salida_internal)
+                  
                   
                   this.setState({fecha_salida: new Date(res.data.fecha_salida_internal)}); 
                   
