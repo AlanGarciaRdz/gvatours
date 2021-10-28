@@ -382,7 +382,7 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
        
 }
 
-function condiciones(doc) {
+function condiciones(doc, autorizador) {
   doc.addPage();
   let starty = 55;
   let tabinsidesection = 17
@@ -465,7 +465,7 @@ var splitObservacion = doc.splitTextToSize(columna2, 250);
 doc.text(300, starty+13, splitObservacion);
 starty += tabinsidesection* parseInt(columna2.length/div) ;
 
-columna2 = "12.- En caso de requerirse alguna modificación en el itinerario u horario autorizo a ___________________________________________________________ para que realice los trámites necesarios que procedan originados por dichas modificaciones la contrato."
+columna2 = `12.- En caso de requerirse alguna modificación en el itinerario u horario autorizo a __${autorizador}__ para que realice los trámites necesarios que procedan originados por dichas modificaciones la contrato.`
 var splitObservacion = doc.splitTextToSize(columna2, 250);
 doc.text(300, starty+13, splitObservacion);
 starty += tabinsidesection* parseInt(columna2.length/div) ;

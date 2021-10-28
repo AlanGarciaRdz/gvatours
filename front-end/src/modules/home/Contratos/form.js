@@ -167,7 +167,7 @@ class ContratosForm extends React.Component{
             itinerario, hora_regreso, data_vehicle_tipo_unidad, data_vehicle_capacidad, importe_total, anticipo, saldo,
             fecha_contrato, fecha_regreso, fecha_salida } = this.state;
 
-          const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2 } = this.state
+          const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2, autorizador } = this.state
           // console.log(val_uuid_cliente, val_uuid_hotel, val_uuid_agencia)
           
           if(cliente_nombre === undefined || destino === undefined || data_vehicle_tipo_unidad === undefined){
@@ -213,6 +213,7 @@ class ContratosForm extends React.Component{
                       "importe_total": importe_total,
                       "anticipo": anticipo,
                       "saldo": saldo,
+                      "autorizador": autorizador,
                   },
                   "data_vehicle": {
                       "Equipada": equipo,
@@ -343,7 +344,7 @@ render(){
 
     const { fecha_salida, fecha_contrato, fecha_regreso } = this.state
 
-    const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2 } = this.state
+    const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2, autorizador } = this.state
 
     return (
         <React.Fragment>
@@ -442,6 +443,11 @@ render(){
                 <TextField onChange={this.handleChange}  value={importe_total}  name="importe_total" id="importe_total" label="IMPORTE TOTAL"   type="text" margin="dense" fullWidth/>
                 <TextField onChange={this.handleChange}  value={anticipo}  name="anticipo" id="anticipo" label="ANTICIPO"   type="text" margin="dense" fullWidth/>
                 <TextField onChange={this.handleChange}  value={saldo}  name="saldo" id="saldo" label="SALDO"   type="text" margin="dense" fullWidth/>
+            </Grid>
+
+            <Grid item sm={9}>
+            <Typography variant="h7" gutterBottom > En caso de requerirse alguna modificación: </Typography>              
+              <TextField onChange={this.handleChange}  value={autorizador}  name="autorizador" id="autorizador" label="AUTORIZADOR"   type="text" margin="dense" fullWidth/>
             </Grid>
             
           </Grid>

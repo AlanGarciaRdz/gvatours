@@ -102,6 +102,8 @@ class ContratoTransporteDialog extends React.Component{
               this.setState({anticipo: contrato.data.anticipo})
               this.setState({saldo: contrato.data.saldo})
 
+              this.setState({autorizador: contrato.data.autorizador})
+
 
                 
 
@@ -182,7 +184,7 @@ class ContratoTransporteDialog extends React.Component{
         destino, fecha_salida, hora_salida, hora_presentarse,  encargado, direccion_salida, entre_calles, 
         colonia_ciudad, punto_referencia, fecha_regreso, hora_regreso, fecha_contrato,
         //unidad
-        tipo_unidad, capacidad,equipada,
+        tipo_unidad, capacidad,equipada, autorizador,
         //pagos
         importe_total, anticipo, saldo
       } = this.state 
@@ -216,6 +218,8 @@ class ContratoTransporteDialog extends React.Component{
       if(importe_total === undefined) importe_total = ''
       if(anticipo === undefined) anticipo = ''
       if(saldo === undefined) saldo = ''
+
+      if(autorizador === undefined) autorizador = ''
       
 
       ContratoPDF.Detalles(doc, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono
@@ -223,7 +227,7 @@ class ContratoTransporteDialog extends React.Component{
                           ,punto_referencia, fecha_regreso, hora_regreso,fecha_contrato, tipo_unidad, capacidad,equipada,checkBox,
                           importe_total, anticipo, saldo)
                           
-      ContratoPDF.condiciones(doc)
+      ContratoPDF.condiciones(doc, autorizador)
         
         
         let data = doc.output('datauristring');
