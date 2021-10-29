@@ -1,6 +1,7 @@
 import gvalogo from '../images/gvalogo'
 import footer from '../images/footer';
 import { MoneyFormatter } from '../utils/helpers';
+const conversor = require('conversor-numero-a-letras-es-ar');
 
 //buen azul para etiquetas  129, 139, 182
 function Header(doc, Folio) {
@@ -329,13 +330,17 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         doc.roundedRect(15, starty, 550, 60, 3, 3, 'D');
         // rectangulo de toda la seccion TIPO UNIDAD
         
+        let ClaseConversor = conversor.conversorNumerosALetras;
+        let miConversor = new ClaseConversor();
+
         doc.setLineWidth(.5)
         doc.line(15, starty+20, 565, starty+20);
         starty += tabinsidesection; 
         doc.setTextColor(color_azules)
         doc.text(30, starty, 'IMPORTE TOTAL');
         doc.setTextColor(color_valores)
-        doc.text(120, starty, IMPORTE_TOTAL);
+        
+        doc.text(120, starty, IMPORTE_TOTAL +  ' '+  miConversor.convertToText(IMPORTE_TOTAL.replace('$', '').replace(',', '').trim()));
         
         doc.line(15, starty+22, 565, starty+22);
         starty += tabinsidesection; 
@@ -343,13 +348,13 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         doc.setTextColor(color_azules)
         doc.text(30, starty, 'ANTICIPO');
         doc.setTextColor(color_valores)
-        doc.text(120, starty, ANTICIPO);
+        doc.text(120, starty, ANTICIPO +  ' '+  miConversor.convertToText(ANTICIPO.replace('$', '').replace(',', '').trim()));
 
         starty += tabinsidesection; 
         doc.setTextColor(color_azules)
         doc.text(30, starty, 'SALDO');
         doc.setTextColor(color_valores)
-        doc.text(120, starty, SALDO);
+        doc.text(120, starty, SALDO +  ' '+  miConversor.convertToText(ANTICIPO.replace('$', '').replace(',', '').trim()));
 
         
         starty += increment; 
