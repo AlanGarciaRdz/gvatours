@@ -339,8 +339,11 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         doc.setTextColor(color_azules)
         doc.text(30, starty, 'IMPORTE TOTAL');
         doc.setTextColor(color_valores)
-        
-        doc.text(120, starty, IMPORTE_TOTAL +  ' '+  miConversor.convertToText(IMPORTE_TOTAL.replace('$', '').replace(',', '').trim()));
+        try{
+        doc.text(120, starty, IMPORTE_TOTAL +  ' '+  miConversor.convertToText(IMPORTE_TOTAL.replace('$', '').replace(',', '').replace('.00', '').trim()));
+        }catch(error){
+            doc.text(120, starty, IMPORTE_TOTAL.replace('$', '').replace(',', '').trim())
+        }
         
         doc.line(15, starty+22, 565, starty+22);
         starty += tabinsidesection; 
@@ -348,14 +351,22 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         doc.setTextColor(color_azules)
         doc.text(30, starty, 'ANTICIPO');
         doc.setTextColor(color_valores)
-        doc.text(120, starty, ANTICIPO +  ' '+  miConversor.convertToText(ANTICIPO.replace('$', '').replace(',', '').trim()));
+        try{
+            doc.text(120, starty, ANTICIPO +  ' '+  miConversor.convertToText(ANTICIPO.replace('$', '').replace(',', '').replace('.00', '').trim()));
+        }catch(error){
+            doc.text(120, starty, ANTICIPO)
+        }
+        
 
         starty += tabinsidesection; 
         doc.setTextColor(color_azules)
         doc.text(30, starty, 'SALDO');
         doc.setTextColor(color_valores)
-        doc.text(120, starty, SALDO +  ' '+  miConversor.convertToText(ANTICIPO.replace('$', '').replace(',', '').trim()));
-
+        try{
+        doc.text(120, starty, SALDO +  ' '+  miConversor.convertToText(SALDO.replace('$', '').replace(',', '').replace('.00', '').trim()));
+        }catch(error){
+            doc.text(120, starty, SALDO)
+        }
         
         starty += increment; 
         doc.setFontSize(8);

@@ -146,28 +146,64 @@ class ContratoTransporteDialog extends React.Component{
   GeneratePDF = () => {
     var {  receiptId, cantidad } = this.state
 
-    var {
-      folio,
-      //datos contratante
-      cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono,  
-      //info
-      destino, fecha_salida, hora_salida, hora_presentarse,  encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, fecha_regreso, hora_regreso, 
-      //pagos
-      fecha_contrato,  importe_total, anticipo, saldo
-    } = this.state 
+    const doc = new jsPDF('p', 'pt', 'letter');
+      var checkBox = new jsPDF.API.AcroFormCheckBox();
+      var {
+        folio,
+        //datos contratante
+        cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono,  
+        //info
+        destino, fecha_salida, hora_salida, hora_presentarse,  encargado, direccion_salida, entre_calles, 
+        colonia_ciudad, punto_referencia, fecha_regreso, hora_regreso, fecha_contrato,
+        //unidad
+        tipo_unidad, capacidad,equipada, autorizador,
+        //pagos
+        importe_total, anticipo, saldo
+      } = this.state 
       
     
-      const doc = new jsPDF('p', 'pt', 'letter');
-      
         
       ContratoPDF.Header(doc, folio)
 
-      // ContratoPDF.Detalles(doc, CLIENTE_NOMBRE, HOTEL , DESTINO, FECHA_SALIDA, FECHA_REGRESO, ABORDA, 
-      //   adultos_juniors, menores_cargo, menores_sin_cargo, 
-      //   TRAVELAGENCY_NOMBRE, TRAVELAGENCY_TELEFONO, TRAVELAGENCY_CIUDAD, AGENTE, CLAVE, INCLUYE, 
-      //   redondo, OBSERVACIONES, LOGOAGENCIA)
+       //datos contratante
+       if(cliente_direccion === undefined) cliente_direccion = ''
+       if(cliente_ciudad === undefined) cliente_ciudad = ''
+       if(cliente_telefono === undefined) cliente_telefono = ''
+       //info
+       if(fecha_salida === undefined) fecha_salida = ''
+       if(hora_salida === undefined) hora_salida = ''
+       
+       if(hora_presentarse === undefined) hora_presentarse = ''
+       if(encargado === undefined) encargado = ''
+       if(direccion_salida === undefined) direccion_salida = ''
+       
+ 
+       if(entre_calles === undefined) entre_calles = ''
+       if(colonia_ciudad === undefined) colonia_ciudad = ''
+       if(punto_referencia === undefined) punto_referencia = ''
+       if(fecha_regreso === undefined) fecha_regreso = ''
+       if(hora_regreso === undefined) hora_regreso = ''
+       if(fecha_contrato === undefined) fecha_contrato = ''
+       //unidad
+       if(tipo_unidad === undefined) tipo_unidad = ''
+       if(capacidad === undefined) capacidad = ''
+       if(equipada === undefined) equipada = ''
+       //pagos
+       if(importe_total === undefined) importe_total = ''
+       if(anticipo === undefined) anticipo = ''
+       if(saldo === undefined) saldo = ''
+ 
+       if(autorizador === undefined) autorizador = ''
+       
+ 
+       ContratoPDF.Detalles(doc, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono
+                           ,destino, fecha_salida, hora_salida, hora_presentarse,  encargado, direccion_salida, entre_calles, colonia_ciudad
+                           ,punto_referencia, fecha_regreso, hora_regreso,fecha_contrato, tipo_unidad, capacidad,equipada,checkBox,
+                           importe_total, anticipo, saldo)
+                           
+       ContratoPDF.condiciones(doc, autorizador)
 
-      // ContratoPDF.pieCharter(doc)
+    
 
         doc.save(`${folio}.pdf`);
     
