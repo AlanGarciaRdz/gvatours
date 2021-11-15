@@ -84,6 +84,7 @@ class ContratoTransporteDialog extends React.Component{
               this.setState({hora_presentarse: contrato.data.hora_presentarse})
 
               this.setState({encargado: contrato.data.encargado})
+              this.setState({tel_encargado: contrato.data.tel_encargado})
               this.setState({direccion_salida: contrato.data.direccion_salida})
               this.setState({entre_calles: contrato.data.entre_calles})
               this.setState({colonia_ciudad: contrato.data.colonia_ciudad})
@@ -91,11 +92,16 @@ class ContratoTransporteDialog extends React.Component{
               this.setState({fecha_regreso: contrato.data.fecha_regreso})
               this.setState({hora_regreso: contrato.data.hora_regreso})
               this.setState({fecha_contrato: contrato.data.fecha_contrato})
+              this.setState({itinerario: contrato.data.itinerario})
+              this.setState({vendedor: contrato.data.vendedor})
+              
 
               this.setState({tipo_unidad: contrato.data_vehicle.tipo_unidad})
               
               this.setState({capacidad: contrato.data_vehicle.capacidad})
               this.setState({equipada: contrato.data_vehicle.Equipada})
+              
+              
               
 
               this.setState({importe_total: contrato.data.importe_total})
@@ -153,8 +159,8 @@ class ContratoTransporteDialog extends React.Component{
         //datos contratante
         cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono,  
         //info
-        destino, fecha_salida, hora_salida, hora_presentarse,  encargado, direccion_salida, entre_calles, 
-        colonia_ciudad, punto_referencia, fecha_regreso, hora_regreso, fecha_contrato,
+        destino, fecha_salida, hora_salida, hora_presentarse,  encargado, tel_encargado, direccion_salida, entre_calles, 
+        colonia_ciudad, punto_referencia, fecha_regreso, hora_regreso, fecha_contrato, itinerario, vendedor,
         //unidad
         tipo_unidad, capacidad,equipada, autorizador,
         //pagos
@@ -175,6 +181,8 @@ class ContratoTransporteDialog extends React.Component{
        
        if(hora_presentarse === undefined) hora_presentarse = ''
        if(encargado === undefined) encargado = ''
+       if(tel_encargado === undefined) tel_encargado = ''
+       
        if(direccion_salida === undefined) direccion_salida = ''
        
  
@@ -184,10 +192,13 @@ class ContratoTransporteDialog extends React.Component{
        if(fecha_regreso === undefined) fecha_regreso = ''
        if(hora_regreso === undefined) hora_regreso = ''
        if(fecha_contrato === undefined) fecha_contrato = ''
+       if(itinerario === undefined) itinerario = ''
+       
        //unidad
        if(tipo_unidad === undefined) tipo_unidad = ''
        if(capacidad === undefined) capacidad = ''
        if(equipada === undefined) equipada = ''
+       if(vendedor === undefined) vendedor = ''
        //pagos
        if(importe_total === undefined) importe_total = ''
        if(anticipo === undefined) anticipo = ''
@@ -195,10 +206,11 @@ class ContratoTransporteDialog extends React.Component{
  
        if(autorizador === undefined) autorizador = ''
        
+       
  
        ContratoPDF.Detalles(doc, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono
-                           ,destino, fecha_salida, hora_salida, hora_presentarse,  encargado, direccion_salida, entre_calles, colonia_ciudad
-                           ,punto_referencia, fecha_regreso, hora_regreso,fecha_contrato, tipo_unidad, capacidad,equipada,checkBox,
+                           ,destino, fecha_salida, hora_salida, hora_presentarse,  encargado, tel_encargado, direccion_salida, entre_calles, colonia_ciudad
+                           ,punto_referencia, fecha_regreso, hora_regreso,fecha_contrato, itinerario, tipo_unidad, capacidad,equipada,checkBox, vendedor,
                            importe_total, anticipo, saldo)
                            
        ContratoPDF.condiciones(doc, autorizador)
@@ -217,10 +229,10 @@ class ContratoTransporteDialog extends React.Component{
         //datos contratante
         cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono,  
         //info
-        destino, fecha_salida, hora_salida, hora_presentarse,  encargado, direccion_salida, entre_calles, 
-        colonia_ciudad, punto_referencia, fecha_regreso, hora_regreso, fecha_contrato,
+        destino, fecha_salida, hora_salida, hora_presentarse,  encargado, tel_encargado, direccion_salida, entre_calles, 
+        colonia_ciudad, punto_referencia, fecha_regreso, hora_regreso, fecha_contrato, itinerario,
         //unidad
-        tipo_unidad, capacidad,equipada, autorizador,
+        tipo_unidad, capacidad,equipada, autorizador, vendedor,
         //pagos
         importe_total, anticipo, saldo
       } = this.state 
@@ -237,6 +249,8 @@ class ContratoTransporteDialog extends React.Component{
       
       if(hora_presentarse === undefined) hora_presentarse = ''
       if(encargado === undefined) encargado = ''
+      if(tel_encargado === undefined) tel_encargado = ''
+      
       if(direccion_salida === undefined) direccion_salida = ''
       
 
@@ -246,22 +260,27 @@ class ContratoTransporteDialog extends React.Component{
       if(fecha_regreso === undefined) fecha_regreso = ''
       if(hora_regreso === undefined) hora_regreso = ''
       if(fecha_contrato === undefined) fecha_contrato = ''
+      if(itinerario === undefined) itinerario = ''
+      
       //unidad
       if(tipo_unidad === undefined) tipo_unidad = ''
       if(capacidad === undefined) capacidad = ''
       if(equipada === undefined) equipada = ''
+      
       //pagos
       if(importe_total === undefined) importe_total = ''
       if(anticipo === undefined) anticipo = ''
       if(saldo === undefined) saldo = ''
 
       if(autorizador === undefined) autorizador = ''
+      if(vendedor === undefined) vendedor = ''
       
 
       ContratoPDF.Detalles(doc, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono
-                          ,destino, fecha_salida, hora_salida, hora_presentarse,  encargado, direccion_salida, entre_calles, colonia_ciudad
-                          ,punto_referencia, fecha_regreso, hora_regreso,fecha_contrato, tipo_unidad, capacidad,equipada,checkBox,
+                          ,destino, fecha_salida, hora_salida, hora_presentarse,  encargado, tel_encargado, direccion_salida, entre_calles, colonia_ciudad
+                          ,punto_referencia, fecha_regreso, hora_regreso,fecha_contrato, itinerario, tipo_unidad, capacidad,equipada,checkBox, vendedor,
                           importe_total, anticipo, saldo)
+
                           
       ContratoPDF.condiciones(doc, autorizador)
         

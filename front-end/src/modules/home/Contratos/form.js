@@ -46,6 +46,7 @@ class ContratosForm extends React.Component{
             this.state = {
                 folio_contrato: "",
                 cliente: "",
+                sigFolio: 0,
                 
                 Contratos: [],
                 open: true,
@@ -147,7 +148,7 @@ class ContratosForm extends React.Component{
             ...this.state,
             [evt.target.name]: evt.target.value
           },() => {
-            this.getContratos()
+            //this.getContratos()
           });
           
         }
@@ -181,8 +182,8 @@ class ContratosForm extends React.Component{
         createContrato(){
           //var {val_uuid_cliente, val_uuid_hotel, val_uuid_agencia } = this.state
           const { folio_contrato, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono, 
-            destino, hora_salida, hora_presentarse, encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, 
-            itinerario, hora_regreso, data_vehicle_tipo_unidad, data_vehicle_capacidad, importe_total, anticipo, saldo,
+            destino, hora_salida, hora_presentarse, encargado, tel_encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, 
+            itinerario, hora_regreso, data_vehicle_tipo_unidad, vendedor, data_vehicle_capacidad, importe_total, anticipo, saldo,
             fecha_contrato, fecha_regreso, fecha_salida } = this.state;
 
           const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2, autorizador } = this.state
@@ -215,6 +216,7 @@ class ContratosForm extends React.Component{
                     "cliente_ciudad": cliente_ciudad,
                     "cliente_telefono": cliente_telefono,
                     "encargado": encargado,
+                    "tel_encargado": tel_encargado,
                     "colonia_ciudad": colonia_ciudad,//"Fresno, Guadalajara",
                     "punto_referencia": punto_referencia,
 
@@ -239,6 +241,7 @@ class ContratosForm extends React.Component{
                       "anticipo": anticipo,
                       "saldo": saldo,
                       "autorizador": autorizador,
+                      "vendedor": vendedor,
                   },
                   "data_vehicle": {
                       "Equipada": equipo,
@@ -292,13 +295,15 @@ class ContratosForm extends React.Component{
               .then(res => {
                 if (res.status === 200) {                  
                   var  rowsP = []
-                  res.data.map(row => {
-                    console.log(row)
-                  })
+                  // res.data.map(row => {
+                  //   console.log(row)
+                  // })
 
                   //TODO
                       rowsP = 
                         res.data.map(row => (  
+                          
+                          
                           
                                             
                           this.addTableData(
@@ -326,6 +331,16 @@ class ContratosForm extends React.Component{
           }
 
         addTableData(UUID, Folio, cliente_nombre, tipo_unidad, destino, fecha_salida, anticipo, importe_total, status) {
+          let sigFolio = this.state.sigFolio;
+          
+          if(typeof(parseInt(Folio)) === "number") {
+            if( parseInt(Folio) > sigFolio ){
+              console.log(`${Folio} folio maximo`)
+              this.setState({sigFolio: parseInt(Folio) })
+              this.setState({folio_contrato: parseInt(Folio)+1})
+            }
+          }
+
           return {UUID, Folio, cliente_nombre, tipo_unidad, destino, fecha_salida, anticipo, importe_total, status};
         }
 
@@ -362,14 +377,22 @@ class ContratosForm extends React.Component{
 
       seleccionarElemento(row){
         this.setState({errorAlert: null})
+
+        const { folio_contrato, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono, 
+          destino, hora_salida, hora_presentarse, encargado, tel_encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, 
+          itinerario, hora_regreso, data_vehicle_tipo_unidad, vendedor, data_vehicle_capacidad, importe_total, anticipo, saldo,
+          fecha_contrato, fecha_regreso, fecha_salida } = this.state;
+
+        const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2, autorizador } = this.state
         
 
         API.get(`/TransportC/${row.UUID}`)
             .then(res => {
               if (res.status === 200) {
                 //EDICION
-                res = res.data[0]
-                console.log(res)
+                let contrato = res.data[0]
+                console.log("---")
+                console.log(contrato)
                 
                 // this.setState({fecha_salida: new Date(res.data.fecha_salida_internal)}); 
                 
@@ -378,6 +401,47 @@ class ContratosForm extends React.Component{
                 // }else{
                 //   this.setState({fecha_regreso: res.data.fecha_regreso !== "" ? new Date(res.data.fecha_regreso_internal) : '' });
                 // }
+                
+
+              this.setState({folio_contrato: contrato.data.folio })
+              
+              this.setState({cliente_nombre: contrato.data.cliente_nombre})
+              this.setState({cliente_direccion: contrato.data.cliente_direccion})
+              this.setState({cliente_ciudad: contrato.data.cliente_ciudad})
+              this.setState({cliente_telefono: contrato.data.cliente_telefono})
+
+              this.setState({destino: contrato.data.destino})
+              // this.setState({fecha_salida: contrato.data.fecha_salida})
+              this.setState({hora_salida: contrato.data.hora_salida})
+              this.setState({hora_presentarse: contrato.data.hora_presentarse})
+
+              this.setState({encargado: contrato.data.encargado})
+              this.setState({tel_encargado: contrato.data.tel_encargado})
+              this.setState({direccion_salida: contrato.data.direccion_salida})
+              this.setState({entre_calles: contrato.data.entre_calles})
+              this.setState({colonia_ciudad: contrato.data.colonia_ciudad})
+              this.setState({punto_referencia: contrato.data.punto_referencia})
+              this.setState({itinerario: contrato.data.itinerario})
+              // this.setState({fecha_regreso: contrato.data.fecha_regreso})
+              this.setState({hora_regreso: contrato.data.hora_regreso})
+              // this.setState({fecha_contrato: contrato.data.fecha_contrato})
+              
+              this.setState({vendedor: contrato.data.vendedor})
+              
+
+              this.setState({data_vehicle_tipo_unidad: contrato.data_vehicle.tipo_unidad})
+              
+              this.setState({data_vehicle_capacidad: contrato.data_vehicle.capacidad})
+              // this.setState({equipada: contrato.data_vehicle.Equipada})
+              
+              
+              
+
+              this.setState({importe_total: contrato.data.importe_total})
+              this.setState({anticipo: contrato.data.anticipo})
+              this.setState({saldo: contrato.data.saldo})
+
+              this.setState({autorizador: contrato.data.autorizador})
                 
               }
 
@@ -393,7 +457,7 @@ render(){
 
 
     
-    const { folio_contrato, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono, destino, hora_salida, hora_presentarse, encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, itinerario, hora_regreso, data_vehicle_tipo_unidad, data_vehicle_capacidad, importe_total, anticipo, saldo } = this.state;
+    const { folio_contrato, vendedor, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono, destino, hora_salida, hora_presentarse, encargado, tel_encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, itinerario, hora_regreso, data_vehicle_tipo_unidad, data_vehicle_capacidad, importe_total, anticipo, saldo } = this.state;
 
     const { fecha_salida, fecha_contrato, fecha_regreso } = this.state
 
@@ -409,6 +473,8 @@ render(){
               <TextField  required   id="folio_contrato"   label="folio_contrato"
                     type="text"  name="folio_contrato"   value={folio_contrato}     onChange={this.handleChange}
                     fullWidth autoComplete="fname"/>
+
+              <TextField onChange={this.handleChange}  value={vendedor}  name="vendedor" id="vendedor" label="vendedor"   type="text" margin="dense" fullWidth/>
 
               <Typography variant="h7" gutterBottom> DATOS DEL CONTRATANTE </Typography>
               <InputLabel className={classes.datepadding}  id="">FECHA DE CONTRATO</InputLabel>
@@ -437,6 +503,7 @@ render(){
                 <TextField onChange={this.handleChange}  value={hora_salida}  name="hora_salida" id="hora_salida" label="HORA_SALIDA"   type="text" margin="dense" fullWidth/>
                 <TextField onChange={this.handleChange}  value={hora_presentarse}  name="hora_presentarse" id="hora_presentarse" label="HORA_PRESENTARSE"   type="text" margin="dense" fullWidth/>
                 <TextField onChange={this.handleChange}  value={encargado}  name="encargado" id="encargado" label="ENCARGADO"   type="text" margin="dense" fullWidth/>
+                <TextField onChange={this.handleChange}  value={tel_encargado}  name="tel_encargado" id="tel_encargado" label="TELEFONO ENCARGADO"   type="text" margin="dense" fullWidth/>
                 <TextField onChange={this.handleChange}  value={direccion_salida}  name="direccion_salida" id="direccion_salida" label="DIRECCION_SALIDA"   type="text" margin="dense" fullWidth/>
                 <TextField onChange={this.handleChange}  value={entre_calles}  name="entre_calles" id="entre_calles" label="ENTRE_CALLES"   type="text" margin="dense" fullWidth/>
                 <TextField onChange={this.handleChange}  value={colonia_ciudad}  name="colonia_ciudad" id="colonia_ciudad" label="CIUDAD"   type="text" margin="dense" fullWidth/>
@@ -451,6 +518,8 @@ render(){
                   onChange={date => this.setRegresoDate(date)} name="fecha_regreso" />
 
                 <TextField onChange={this.handleChange}  value={hora_regreso}  name="hora_regreso" id="hora_regreso" label="HORA REGRESO"   type="text" margin="dense" fullWidth/>
+                
+                
 
               <Typography variant="h7" gutterBottom> CARACTERISTICAS DE LA UNIDAD CONTRATADA </Typography>
                 <TextField onChange={this.handleChange}  value={data_vehicle_tipo_unidad}  name="data_vehicle_tipo_unidad" id="data_vehicle_tipo_unidad" label="TIPO UNIDAD"   type="text" margin="dense" fullWidth/>

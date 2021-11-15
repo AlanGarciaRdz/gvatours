@@ -57,9 +57,12 @@ function Header(doc, Folio) {
 
 
 function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENTE_TELEFONO
-  ,DESTINO, FECHA_SALIDA, HORA_SALIDA, HORA_PRESENTARSE,  ENCARGADO, DIRECCION_SALIDA, ENTRE_CALLES, 
-  COLONIA_CIUDAD, PUNTO_REFERENCIA, FECHA_REGRESO, HORA_REGRESO,FECHA_CONTRATO,
-  TIPO_UNIDAD, CAPACIDAD,EQUIPADA,checkBox, IMPORTE_TOTAL, ANTICIPO, SALDO ) {
+  ,DESTINO, FECHA_SALIDA, HORA_SALIDA, HORA_PRESENTARSE,  ENCARGADO, TEL_ENCARGADO, DIRECCION_SALIDA, ENTRE_CALLES, 
+  COLONIA_CIUDAD, PUNTO_REFERENCIA, FECHA_REGRESO, HORA_REGRESO,FECHA_CONTRATO, ITINERARIO,
+  TIPO_UNIDAD, CAPACIDAD,EQUIPADA,checkBox, VENDEDOR, IMPORTE_TOTAL, ANTICIPO, SALDO ) {
+
+        console.log("--")
+        console.log(ITINERARIO)
 
         let starty = 90;
         let increment = 24;
@@ -171,7 +174,7 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         doc.setTextColor(color_azules)
         doc.text(335, starty+13, 'TEL / CEL');
         doc.setTextColor(color_valores)
-        doc.text(444, starty+13, ENCARGADO);
+        doc.text(444, starty+13, TEL_ENCARGADO);
         
         starty += tabinsidesection; 
 
@@ -212,9 +215,9 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
 
          doc.roundedRect(30, starty+15, 500, 57, 3, 3, 'D');
 
-        //var splitObservacion = doc.splitTextToSize(ITINERARIO, 550);
-        var splitObservacion = "" 
-        doc.text(160, starty+13, splitObservacion);
+        var splitObservacion = doc.splitTextToSize(ITINERARIO, 550);
+        // var splitObservacion = "" 
+        doc.text(40, starty+increment+increment, splitObservacion);
         
         starty += increment; 
         starty += increment; 
@@ -285,7 +288,7 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         starty += increment+5; 
         
         doc.setFontSize(8)
-        console.log(EQUIPADA)
+        
         doc.circle(60, starty, 7, 'D'); //AIRE   
             doc.text(57, starty+3, EQUIPADA.includes('AIRE ACONDICIONADO') ? 'X' : '');
         doc.text(70, starty+3, 'AIRE ACONDICIONADO'); 
@@ -387,12 +390,16 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         doc.text(90, starty, 'Nombre y Firma de aceptación del Cliente');
         doc.line(300, starty-10, 450, starty-10);
 
-        doc.text(300, starty, 'Nombre y Firma del prestador de servicios');
+        doc.text(345, starty-20, VENDEDOR);
+        
+        
+
+        doc.text(330, starty, 'Nombre y Firma del vendedor');
         starty += tabinsidesection;
-        doc.text(300, starty, 'TELEFONO DE EMERGENCIA:');
+        doc.text(150, starty, 'TELEFONO DE EMERGENCIA: GUSTAVO JAUREGUI 333-808-6093');
 
         starty += tabinsidesection;
-        doc.text(20, starty, 'NOTA IMPORTANTE: A la firma del contrato deberá cubrirse el 30% del importe total, y el saldo una semana antes de la realización del viaje.');
+        doc.text(20, starty, 'NOTA IMPORTANTE: A la firma del contrato deberá cubrirse el 20% del importe total, y el saldo una semana antes de la realización del viaje.');
 
         doc.setFontSize(10);
        
