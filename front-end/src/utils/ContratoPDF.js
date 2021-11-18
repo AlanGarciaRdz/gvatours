@@ -5,6 +5,7 @@ const conversor = require('conversor-numero-a-letras-es-ar');
 
 //buen azul para etiquetas  129, 139, 182
 function Header(doc, Folio) {
+    
           let color_encabezado = (170, 182, 198);//(255,255,255);
           let azul_fuerte_letras = (29,34,78)
           doc.setFillColor(170, 182, 198) //red
@@ -47,7 +48,7 @@ function Header(doc, Folio) {
           doc.rect(470, 52, 100, 25,'F'); 
           
           doc.setTextColor(29,34,78);
-          doc.text(502, 64, Folio);
+          doc.text(502, 64, Folio+"");
           doc.text(540, 64, 'E');
         
           doc.setDrawColor(0);

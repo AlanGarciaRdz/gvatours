@@ -429,7 +429,7 @@ class ContratosForm extends React.Component{
                 
                 this.setState({UUID: contrato.uuid_contract});
                 
-
+                
               this.setState({folio_contrato: contrato.data.folio })
               
               this.setState({cliente_nombre: contrato.data.cliente_nombre})

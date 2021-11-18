@@ -237,6 +237,7 @@ class ContratoTransporteDialog extends React.Component{
         importe_total, anticipo, saldo
       } = this.state 
         
+      
       ContratoPDF.Header(doc, folio)
 
       //datos contratante
@@ -296,6 +297,8 @@ class ContratoTransporteDialog extends React.Component{
         this.setState({
           embed: iframe
         });
+
+        doc.save(`${folio}.pdf`);
   }
 
   EmbededHTML = () => {
