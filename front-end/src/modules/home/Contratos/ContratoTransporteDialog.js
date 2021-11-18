@@ -114,7 +114,7 @@ class ContratoTransporteDialog extends React.Component{
                 
 
                 if(isMobileDevice()){
-                  this.EmbededHTML()
+                  this.EmbededPDF()
                 }else{
                   this.EmbededPDF()
                 }
@@ -239,6 +239,7 @@ class ContratoTransporteDialog extends React.Component{
         
       
       ContratoPDF.Header(doc, folio)
+      
 
       //datos contratante
       if(cliente_direccion === undefined) cliente_direccion = ''
@@ -287,10 +288,10 @@ class ContratoTransporteDialog extends React.Component{
         
         
         let data = doc.output('datauristring');
-        // doc.output('save', 'filename.pdf'); //Try to save PDF as a file (not works on ie before 10, and some mobile devices)
-        // doc.output('datauristring');        //returns the data uri string
-        // doc.output('datauri');              //opens the data uri in current window
-        // doc.output('dataurlnewwindow');     //opens the data uri in new window
+        // // doc.output('save', 'filename.pdf'); //Try to save PDF as a file (not works on ie before 10, and some mobile devices)
+         doc.output('datauristring');        //returns the data uri string
+        // // doc.output('datauri');              //opens the data uri in current window
+        // // doc.output('dataurlnewwindow');     //opens the data uri in new window
 
         let iframe = `<iframe type="application/pdf" src="${data}#toolbar=0&navpanes=0" width="100%" height="1100px" frameborder="0"></iframe>`;
 
@@ -317,6 +318,7 @@ class ContratoTransporteDialog extends React.Component{
   CreatePDF = () => {
 
     this.GeneratePDF()
+    
     //this.DownloadImage()
   }
 

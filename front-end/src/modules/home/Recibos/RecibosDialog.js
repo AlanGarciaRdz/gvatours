@@ -85,7 +85,11 @@ class CuponDialog extends React.Component{
                 this.setState({SALDO_PENDIENTE: ''})
                 this.setState({DESCRIPCION_DEL_SERVICO: ''})
 
-                console.log(data)
+                
+                
+                  this.EmbededPDF()
+                
+                
             }
           })
 
@@ -113,6 +117,87 @@ class CuponDialog extends React.Component{
 
   }
 
+  EmbededPDF = () => {
+    const doc = new jsPDF('p', 'pt', 'letter');
+    var checkBox = new jsPDF.API.AcroFormCheckBox();
+    var {
+      folio,
+      //datos contratante
+      cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono,  
+      //info
+      destino, fecha_salida, hora_salida, hora_presentarse,  encargado, tel_encargado, direccion_salida, entre_calles, 
+      colonia_ciudad, punto_referencia, fecha_regreso, hora_regreso, fecha_contrato, itinerario,
+      //unidad
+      tipo_unidad, capacidad,equipada, autorizador, vendedor,
+      //pagos
+      importe_total, anticipo, saldo
+    } = this.state 
+      
+    
+    ReciboPDF.Header(doc, folio)
+    
+
+    //datos contratante
+    if(cliente_direccion === undefined) cliente_direccion = ''
+    if(cliente_ciudad === undefined) cliente_ciudad = ''
+    if(cliente_telefono === undefined) cliente_telefono = ''
+    //info
+    if(fecha_salida === undefined) fecha_salida = ''
+    if(hora_salida === undefined) hora_salida = ''
+    
+    if(hora_presentarse === undefined) hora_presentarse = ''
+    if(encargado === undefined) encargado = ''
+    if(tel_encargado === undefined) tel_encargado = ''
+    
+    if(direccion_salida === undefined) direccion_salida = ''
+    
+
+    if(entre_calles === undefined) entre_calles = ''
+    if(colonia_ciudad === undefined) colonia_ciudad = ''
+    if(punto_referencia === undefined) punto_referencia = ''
+    if(fecha_regreso === undefined) fecha_regreso = ''
+    if(hora_regreso === undefined) hora_regreso = ''
+    if(fecha_contrato === undefined) fecha_contrato = ''
+    if(itinerario === undefined) itinerario = ''
+    
+    //unidad
+    if(tipo_unidad === undefined) tipo_unidad = ''
+    if(capacidad === undefined) capacidad = ''
+    if(equipada === undefined) equipada = ''
+    
+    //pagos
+    if(importe_total === undefined) importe_total = ''
+    if(anticipo === undefined) anticipo = ''
+    if(saldo === undefined) saldo = ''
+
+    if(autorizador === undefined) autorizador = ''
+    if(vendedor === undefined) vendedor = ''
+    
+
+    ReciboPDF.Detalles(doc, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono
+                        ,destino, fecha_salida, hora_salida, hora_presentarse,  encargado, tel_encargado, direccion_salida, entre_calles, colonia_ciudad
+                        ,punto_referencia, fecha_regreso, hora_regreso,fecha_contrato, itinerario, tipo_unidad, capacidad,equipada,checkBox, vendedor,
+                        importe_total, anticipo, saldo)
+
+                        
+    
+      
+      
+      let data = doc.output('datauristring');
+      // // doc.output('save', 'filename.pdf'); //Try to save PDF as a file (not works on ie before 10, and some mobile devices)
+       doc.output('datauristring');        //returns the data uri string
+      // // doc.output('datauri');              //opens the data uri in current window
+      // // doc.output('dataurlnewwindow');     //opens the data uri in new window
+
+      let iframe = `<iframe type="application/pdf" src="${data}#toolbar=0&navpanes=0" width="100%" height="1100px" frameborder="0"></iframe>`;
+
+      this.setState({
+        embed: iframe
+      });
+
+      // doc.save(`${folio}.pdf`);
+    }
+
   
 
   GeneratePDF = () => {
@@ -125,9 +210,9 @@ class CuponDialog extends React.Component{
 
         ReciboPDF.Detalles(doc, nombre, cantidad, concepto, reservacion)
 
-        ReciboPDF.FormaPago(doc, forma_pago)
+        
 
-        ReciboPDF.PagosRegistrados(doc, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE)
+        // ReciboPDF.PagosRegistrados(doc, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE)
 
         // ReciboPDF.Fecha(doc, FECHA_ENTRADA, FECHA_SALIDA, TOTAL_NOCHES)
         // ReciboPDF.Cliente(doc, NOMBRE_PASAJERO, TOTAL_PAGADO)
@@ -173,151 +258,15 @@ class CuponDialog extends React.Component{
 
     render(){
       const { classes } = this.props;
-      var {open, receipt} = this.state;
+      var {open, receipt, embed} = this.state;
 
       const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
       });
 
       if(open){
-
-    var {  nombre, receiptId, cantidad, concepto, CANTIDAD_EN_LETRA, DEPOSITO_EN_GARANTIA, reservacion, forma_pago, importe_total, PAGOS_REGISTRADOS, SALDO_PENDIENTE, DESCRIPCION_DEL_SERVICO } = this.state
-
+         
     
-  
-    var receipt = `
-        <table class="header" id="recibo_pdf">
-           <tbody>
-           <tr>
-           <td><img  src="https://transportamex-production-bucket-1ll3nrbfgiob8.s3.amazonaws.com/2016/08/GVA-Tours1.jpg"
-              style="display: block;
-              margin-left: auto;
-              margin-right: auto;
-              width: 50%; width:100%; max-width:200px;"></td>
-              <td style="text-align: center;">RECIBO DE DINERO</td>
-           <td>
-              <div class="div_folio">
-                    <table class="folio">
-                          <tbody>
-                          <tr>
-                          <td>Folio</td>
-                          </tr>
-                          <tr>
-                          <td>&#8470; ${receiptId}</td>
-                          </tr>
-
-                          <tr>
-                                <td>BUENO POR</td>
-                                </tr>
-                                <tr>
-                                <td>$ ${cantidad}</td>
-                                </tr>
-                          </tbody>
-                       </table>
-
-                      
-              </div>
-           </td>
-           </tr>
-           </tbody>
-           </table>
-     
-           <p class="titulo">&nbsp;</p> 
-           
-        <div class="datos_contratante_div">
-              <table class="datos_del_contratante">
-                    <tbody>
-                    <tr>
-                    <td id="etiqueta">RECIBIMOS DE:</td>
-                    <td>${nombre}</td>
-                    </tr>
-                    <tr>
-                    <td id="etiqueta">LA CANTIDAD DE:</td>
-                    <td>${cantidad} </td>
-                    </tr>
-
-                    <tr>
-                       <td id="etiqueta">POR CONCEPTO DE:</td>
-                       <td>${concepto} </td>
-                    </tr>
-
-                    <tr>
-                       <td id="etiqueta" style="border-bottom: none;">PARA LA RESERVACION DE:</td>
-                       <td style="border-bottom: none;">${reservacion} </td>
-                    </tr>
-
-
-                    <!-- style="border-bottom: none;" -->
-                    </tbody>
-                    </table>
-        </div>
-
-        <p class="titulo">&nbsp;</p>
-        <div class="datos_contratante_div">
-              <table class="datos_del_contratante">
-                    <tbody>
-                    <tr style="border-bottom: none;">
-                    <td style="border-bottom: none;">FORMA DE PAGO:</td>
-                    <td style="border-bottom: none;">${forma_pago}</td>
-                    </tr>
-                    
-                    </tbody>
-                    </table>
-        </div>
-
-
-        <p class="titulo">&nbsp;</p>
-        <div class="datos_viaje_pagos">
-              
-           <table class="pagos">
-              <tbody>
-            <!-- <td colspan="2" style="text-align: center; padding-top: 10px;"><p class="titulo">PAGOS</p></td> -->
-              <tr>
-              <td id="etiqueta_general">IMPORTE TOTAL:</td>
-              <td id="etiqueta_general">${importe_total}</td>
-              </tr>
-              <tr>
-              <td id="etiqueta_general">PAGOS REGISTRADOS:</td>
-              <td id="etiqueta_general">${PAGOS_REGISTRADOS}</td>
-              </tr>
-              <tr id="sin_borde_inferior">
-              <td id="etiqueta_general">SALDO PENDIENTE:</td>
-              <td id="etiqueta_general">${SALDO_PENDIENTE}</td>
-              </tr>
-              </tbody>
-           </table>
-
-        </div>
-       
-       <p class="titulo">&nbsp;</p>
-        <div class="datos_viaje">
-
-              <table class="firmas">
-                    <tbody>
-                    <td colspan="2" style="text-align: center; padding-top: 10px;"><p class="titulo">DESCRIPCION DEL SERVICIO:</p></td>
-                    
-                    <tr><td></td></tr>
-                    
-                    <tr><td colspan="2" id="etiqueta_general">${DESCRIPCION_DEL_SERVICO}</td></tr>
-                    <!-- <tr><td colspan="2" id="etiqueta_general">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</td></tr> -->
-                    <tr><td></td></tr>
-                    <tr><td></td></tr>
-                    <tr><td></td></tr>
-                    <tr><td></td></tr>
-                    <tr>
-                       <td>
-                          <p id="etiqueta_general_firma" class="firma"> LUGAR Y FECHA</p>
-                       </td>
-                       <td>
-                             <p id="etiqueta_general_firma" class="firma"> RECIBIÓ NOMBRE Y FIRMA  </p>
-                       </td>
-                    </tr>
-                    
-                    </tbody>
-                    </tr>
-                </table>
-        </div>
-        `;
         return(
           <div> 
 
@@ -331,7 +280,7 @@ class CuponDialog extends React.Component{
                   <CloseIcon />
                 </IconButton> 
                 <Typography variant="h6" className={classes.title}>
-                  Cupon
+                  Recibo
                 </Typography>
                 <Button autoFocus color="inherit" onClick={this.CreatePDF} >
                   Descargar
@@ -339,7 +288,10 @@ class CuponDialog extends React.Component{
               </Toolbar>
             </AppBar>
             
-            <div dangerouslySetInnerHTML={{ __html: receipt}} />,
+            
+              <div className="previewHTML" dangerouslySetInnerHTML={{ __html: this.state.embed}}/>
+                        
+            
             
           </Dialog>
         </div>
@@ -347,7 +299,7 @@ class CuponDialog extends React.Component{
      }else{
        return(
         <div>
-          <Cupon />
+          {/* <Contrato /> */}
         </div>
        )
        

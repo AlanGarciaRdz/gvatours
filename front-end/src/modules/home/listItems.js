@@ -55,6 +55,15 @@ export const mainListItems = (
         <ListItemText primary="Contratos Transporte" />
         </ListItem>
     </Link>
+    {/* className='disabled-link' */}
+    <Link href="/Recibos"  color="inherit" >
+        <ListItem button>
+        <ListItemIcon>
+            <MonetizationOn />
+        </ListItemIcon>
+        <ListItemText primary="Recibos" />
+        </ListItem>
+    </Link>
 
     <Link href="/Cupones" color="inherit" className='disabled-link'>
     <ListItem button>
@@ -65,14 +74,7 @@ export const mainListItems = (
     </ListItem>
      </Link>
 
-    <Link href="/Recibos"  color="inherit" className='disabled-link'>
-        <ListItem button>
-        <ListItemIcon>
-            <MonetizationOn />
-        </ListItemIcon>
-        <ListItemText primary="Recibos" />
-        </ListItem>
-    </Link>
+    
     
   </div>
 );
