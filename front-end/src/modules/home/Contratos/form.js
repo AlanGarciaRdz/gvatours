@@ -44,8 +44,34 @@ class ContratosForm extends React.Component{
         constructor(props){
             super(props)
             this.state = {
-                folio_contrato: "",
-                cliente: "",
+                UUID: '',
+                folio_contrato: '',
+                cliente: '',
+                cliente_nombre: '',
+                cliente_direccion: '',
+                cliente_ciudad: '',
+                cliente_telefono: '',
+                destino: '',
+                hora_salida: '',
+                hora_presentarse: '',
+                encargado: '',
+                tel_encargado: '',
+                direccion_salida: '',
+                entre_calles: '',
+                colonia_ciudad: '',
+                punto_referencia: '',
+                itinerario: '',
+                hora_regreso: '',
+                vendedor: '',
+                data_vehicle_tipo_unidad: '',
+                data_vehicle_capacidad: '',
+                importe_total: '',
+                anticipo: '',
+                saldo: '',
+                autorizador: '',
+
+
+
                 sigFolio: 0,
                 
                 Contratos: [],
@@ -70,8 +96,11 @@ class ContratosForm extends React.Component{
                 stereo: true,
                 seguro_de_viajero: true,
                 otros_2: false,
+                fecha_salida: new Date(),
                 fecha_salida_interna: new Date(),
+                fecha_regreso: new Date(),
                 fecha_regreso_interna: new Date(),
+                fecha_contrato: new Date(),
                 fecha_contrato_interna: new Date()
             }
     
@@ -253,34 +282,48 @@ class ContratosForm extends React.Component{
           
              console.log(contratodata)
 
-            API.post(`/TransportC`, contratodata).then(res => {
-              console.log("res")
-              let resp = res.data
+
+             if(this.state.UUID === ''){ //IF ITS A new contract
+              API.post(`/TransportC`, contratodata).then(res => {
+                console.log("res")
+                let resp = res.data
+                try{
+                  // console.log(res.data)
+                  //this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto)
+                  window.location.href =  `/Contrato?id=${resp.uuid_contract}`; 
+
+                  this.addTableData(
+                    resp.data.uuid_contract, //UUID
+                    resp.data.folio,//row.uuid_contract.split('-')[2]+'-'+row.uuid_contract.split('-')[3], //FOLIO
+                    resp.data.cliente_nombre, //Cliente
+                    resp.data_vehicle.tipo_unidad,
+                    resp.data.destino,
+                    resp.data.fecha_salida,
+                    resp.data.anticipo,
+                    resp.data.importe_total,
+                    resp.status
+                  )
+
+                }catch(error){
+                  console.log(error)
+                  console.error("400 Contrato")
+                  return "400 Contrato"
+                }
+              })
+
+          }else{// edit contract
+            API.put(`/TransportC/${this.state.UUID}`, contratodata[0]).then(res => {
               try{
-                // console.log(res.data)
-                //this.onAddAgency(res.data.uuid_travelA, res.data.data.nombre, res.data.contacto)
-                window.location.href =  `/Contrato?id=${resp.uuid_contract}`; 
-
-                this.addTableData(
-                  resp.data.uuid_contract, //UUID
-                  resp.data.folio,//row.uuid_contract.split('-')[2]+'-'+row.uuid_contract.split('-')[3], //FOLIO
-                  resp.data.cliente_nombre, //Cliente
-                  resp.data_vehicle.tipo_unidad,
-                  resp.data.destino,
-                  resp.data.fecha_salida,
-                  resp.data.anticipo,
-                  resp.data.importe_total,
-                  resp.status
-                )
-
+                window.location.href =  `/Contrato?id=${res.data.uuid_contract}`; 
+                // this.limpiarSTATE()
               }catch(error){
                 console.log(error)
-                console.error("400 Contrato")
-                return "400 Contrato"
+                console.error("400 NO SE PUDO EDITAR contrato")
+                return "400 NO SE PUDO EDITAR contrato"
               }
-          })
-
+            })
           }
+        }
           
           
 
@@ -322,8 +365,6 @@ class ContratosForm extends React.Component{
                         this.setState({Contratos: rowsP});
                     
                     //console.log(this.state.Contratos)
-                  
-                  
                 }else{
                   //TODO: add ERROR ALERT
                 }
@@ -378,14 +419,6 @@ class ContratosForm extends React.Component{
       seleccionarElemento(row){
         this.setState({errorAlert: null})
 
-        const { folio_contrato, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono, 
-          destino, hora_salida, hora_presentarse, encargado, tel_encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, 
-          itinerario, hora_regreso, data_vehicle_tipo_unidad, vendedor, data_vehicle_capacidad, importe_total, anticipo, saldo,
-          fecha_contrato, fecha_regreso, fecha_salida } = this.state;
-
-        const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2, autorizador } = this.state
-        
-
         API.get(`/TransportC/${row.UUID}`)
             .then(res => {
               if (res.status === 200) {
@@ -394,13 +427,7 @@ class ContratosForm extends React.Component{
                 console.log("---")
                 console.log(contrato)
                 
-                // this.setState({fecha_salida: new Date(res.data.fecha_salida_internal)}); 
-                
-                // if(res.data.fecha_regreso && res.data.fecha_regreso_internal === undefined){
-                //   this.setState({fecha_regreso: this.fixdateError(res.data.fecha_regreso) });
-                // }else{
-                //   this.setState({fecha_regreso: res.data.fecha_regreso !== "" ? new Date(res.data.fecha_regreso_internal) : '' });
-                // }
+                this.setState({UUID: contrato.uuid_contract});
                 
 
               this.setState({folio_contrato: contrato.data.folio })
@@ -411,7 +438,34 @@ class ContratosForm extends React.Component{
               this.setState({cliente_telefono: contrato.data.cliente_telefono})
 
               this.setState({destino: contrato.data.destino})
-              // this.setState({fecha_salida: contrato.data.fecha_salida})
+              
+              if(contrato.data.fecha_salida_interna !== undefined ){
+                try{
+                  this.setState({fecha_salida: new Date(contrato.data.fecha_salida_interna)}); 
+                }catch(error){
+                  console.log(error)
+                }
+              }
+              
+
+              if(contrato.data.fecha_regreso_interna !== undefined ){
+                try{
+                  this.setState({fecha_regreso: new Date(contrato.data.fecha_regreso_interna)}); 
+                }catch(error){
+                  console.log(error)
+                }
+              }
+              
+              
+              if(contrato.data.fecha_contrato_interna !== undefined ){
+                try{
+                  this.setState({fecha_contrato: new Date(contrato.data.fecha_contrato_interna)}); 
+                }catch(error){
+                  console.log(error)
+                }
+              }
+              
+
               this.setState({hora_salida: contrato.data.hora_salida})
               this.setState({hora_presentarse: contrato.data.hora_presentarse})
 

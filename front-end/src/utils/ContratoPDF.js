@@ -48,6 +48,7 @@ function Header(doc, Folio) {
           
           doc.setTextColor(29,34,78);
           doc.text(502, 64, Folio);
+          doc.text(540, 64, 'E');
         
           doc.setDrawColor(0);
           doc.setFillColor(255, 255, 255);
