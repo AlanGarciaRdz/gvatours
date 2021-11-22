@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button'
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import DatePicker from "react-datepicker";
 
 import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
@@ -61,7 +62,10 @@ class ReceiptForm extends React.Component{
                 cliente: '',
                 uuid_cliente: '',
                 ClientCuponArray: [],
-                totalCupon: 0
+                totalCupon: 0,
+
+                fecha_salida: new Date(),
+                fecha_salida_interna: new Date(),
             }
     
             this.getReceipts = this.getReceipts.bind(this);
@@ -117,12 +121,12 @@ class ReceiptForm extends React.Component{
             this.getReceipts(uuid_cliente)
 
 
-            API.get(`/ClientCupon/${uuid_cliente}`)
+            API.get(`/Receipts/${uuid_cliente}`)
             .then(res => {
               if (res.status === 200) {
                 
                 //console.log(res.data)
-                this.setState({ClientCuponArray: res.data})
+                //this.setState({ClientCuponArray: res.data})
                 //console.log(this.state.ClientCuponArray)
                 
 
@@ -225,11 +229,26 @@ class ReceiptForm extends React.Component{
           return {UUID, Folio, Cantidad, Tipo, FolioCupon};
         }
 
+        setSalidaDate(evt){
+          console.log(`dateee ${evt}`)
+          console.log(evt)
+          let fecha = evt
+          this.setState({
+            ...this.state,
+            
+            fecha_salida: fecha
+            
+        });
+      }
+
     
 
 render(){
     const { classes } = this.props;
     const { Receipts, cliente , cliente_uuid} = this.state;
+
+    //---
+    const { fecha_salida, cliente_nombre, importe_total, concepto, reservacion, forma_pago, lugar, nombre, descripcion_servicio } = this.state;
     
 
     return (
@@ -249,83 +268,60 @@ render(){
             </Grid>
           
             <Grid item xs={4}>
-             <TextField
-                  required
-                  id="fecha_recibo"
-                  //label="fecha_recibo"
-                  type="date"
-                  defaultValue={getCurrentDate()}
-                  fullWidth
-                  autoComplete="fname"
-                  textAlign='center'
-              />
+            <InputLabel className={classes.datepadding}  id="">FECHA DE SALIDA</InputLabel>
+                <DatePicker locale="es" id="fecha_salida" 
+                  dateFormat="dd-MMMM-yyyy" 
+                  selected={fecha_salida} 
+                  datetime={fecha_salida} 
+                  onChange={date => this.setSalidaDate(date)} name="fecha_salida" />
 
             </Grid>
 
           
             
             <Grid item xs={12}>
-              <AutoCompleteClient value={cliente} uuid={cliente_uuid} updateClient={this.handleClientChange}/>
-            </Grid>
-
-            <Grid item xs={12}>
+              <TextField onChange={this.handleChange}  value={cliente_nombre}  name="cliente_nombre" id="cliente_nombre" label="CLIENTE"   type="text" margin="dense" fullWidth/>    
+              <TextField onChange={this.handleChange}  value={importe_total}  name="importe_total" id="importe_total" label="IMPORTE TOTAL"   type="text" margin="dense" fullWidth/>
               
-              <FindRelation updateCupon={this.handleRelationChange} uuid={this.state.val_uuid_cliente} total={this.state.totalCupon} />
-              {/* <FindRelation updateCupon={this.handleRelationChange}/> */}
-            </Grid>
+              <InputLabel id="trans_turistico" className={classes.iconButton}>POR CONCEPTO DE:</InputLabel>
+                <Select autoFocus labelId="demo-simple-select-helper-label"   name="concepto"
+                id="concepto" value={concepto ? concepto : ""} onChange={this.handleChange}  
+                label="SENCILLO/ concepto"   fullWidth    >
+                  <MenuItem value="DEPOSITO EN GARANTIA">DEPOSITO EN GARANTIA</MenuItem>
+                  <MenuItem value="ANTICIPO">ANTICIPO</MenuItem>
+                  <MenuItem value="PAGO TOTAL">PAGO TOTAL</MenuItem>                
+                </Select>
 
-              {/* <TextField
-                  label="CUPON-CONTRATO"
-                  id="Reservacion"
-                  className={clsx(classes.margin, classes.textField)}
-                  type="text"
-                /> */}
+              <InputLabel id="trans_turistico" className={classes.iconButton}>PARA LA RESERVACIÓN DE:</InputLabel>
+                <Select autoFocus labelId="demo-simple-select-helper-label"   name="reservacion"
+                id="reservacion" value={reservacion ? reservacion : ""} onChange={this.handleChange}  
+                label="SENCILLO/ reservacion"   fullWidth    >
+                  <MenuItem value="GRUPOS">GRUPOS</MenuItem>
+                  <MenuItem value="RENTA DE AUTOBUS/SPRINTER">RENTA DE AUTOBUS/SPRINTER</MenuItem>
+                  <MenuItem value="HOTELES">HOTELES</MenuItem>  
+                  <MenuItem value="EXCRUSIONES / CHARTER/ OTROS">EXCRUSIONES / CHARTER/ OTROS</MenuItem>  
+                </Select>
+
+                <InputLabel id="trans_turistico" className={classes.iconButton}>FORMA DE PAGO:</InputLabel>
+                <Select autoFocus labelId="demo-simple-select-helper-label"   name="forma_pago"
+                id="forma_pago" value={forma_pago ? forma_pago : ""} onChange={this.handleChange}  
+                label="SENCILLO/ forma_pago"   fullWidth    >
+                  <MenuItem value="EFECTIVO">EFECTIVO</MenuItem>
+                  <MenuItem value="TARJETA DE CREDITO">TARJETA DE CREDITO</MenuItem>
+                  <MenuItem value="CHEQUE">CHEQUE</MenuItem>  
+                  <MenuItem value="TRANSFERENCIA ELECTRONICA/ DEPOSITO BANCARIO">TRANSFERENCIA ELECTRONICA/ DEPOSITO BANCARIO</MenuItem>  
+                </Select>
+
+                <TextField onChange={this.handleChange}  value={descripcion_servicio}  name="descripcion_servicio" id="descripcion_servicio" label="DESCRIPCION DEL SERVICIO"   type="text" margin="dense" fullWidth/>    
+
+                <TextField onChange={this.handleChange}  value={lugar}  name="lugar" id="lugar" label="LUGAR"   type="text" margin="dense" fullWidth/>    
+                <TextField onChange={this.handleChange}  value={nombre}  name="nombre" id="nombre" label="NOMBRE"   type="text" margin="dense" fullWidth/>    
+                
             
-            
-
-            <Grid item xs={12}>
-
-              <TextField
-                  label="Concepto"
-                  id="Concepto"
-                  className={clsx(classes.margin, classes.textField)}
-                  type="text"
-              />
-
-              <TextField
-                    label="CANTIDAD"
-                    id="cantidad"
-                    className={clsx(classes.margin, classes.textField)}
-                    type="number"
-                  />
-
              
             </Grid>
 
-              <Grid item xs={12}>
-
-             
-
-              </Grid>
-
-              <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label">Forma pago</InputLabel>
-                <Select
-                      id="Forma_pago"
-                      label="Forma de pago"
-                      className={clsx(classes.margin, classes.textField)}
-                      // onChange={handleChange}
-                    >
-                      <MenuItem value={""}>&nbsp;</MenuItem>
-                      <MenuItem value={"Efectivo"}>Efectivo</MenuItem>
-                      <MenuItem value={"Tarjeta Debito"}>Tarjeta Debito</MenuItem>
-                      <MenuItem value={"Transferencia"}>Transferencia</MenuItem>
-                    </Select>
-              </Grid>
-
-              <Grid item xs={12}></Grid>
-
-            </Grid>
+          </Grid>
 
             
 

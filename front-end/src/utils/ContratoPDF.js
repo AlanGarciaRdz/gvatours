@@ -134,7 +134,7 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         starty += tabinsidesection;
         // rectangulo de toda la seccion  DATOS DE SALIDA Y REGRESO DE VIAJE
         doc.setTextColor(color_valores)
-        doc.roundedRect(15, starty, 550, 250, 3, 3, 'D');
+        doc.roundedRect(15, starty, 550, 260, 3, 3, 'D');
         // rectangulo de toda la seccion  DATOS DE SALIDA Y REGRESO DE VIAJE
 
         doc.setLineWidth(.5)
@@ -207,10 +207,14 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         doc.setTextColor(color_azules)
         doc.text(30, starty+13, 'PUNTO DE REFERENCIA');
         doc.setTextColor(color_valores)
-        doc.text(165, starty+13, PUNTO_REFERENCIA);
-        doc.line(15, starty+17, 565, starty+17);
         
-        starty += tabinsidesection; 
+        let splitpuntoreferencia = doc.splitTextToSize(PUNTO_REFERENCIA, 390);
+        //doc.text(165, starty+13, PUNTO_REFERENCIA);
+        doc.text(165, starty+13, splitpuntoreferencia);
+
+        doc.line(15, starty+40, 565, starty+40);
+        
+        starty += tabinsidesection+20; 
 
         doc.setTextColor(color_azules)
         doc.text(30, starty+13, 'ITINERARIO');
@@ -218,9 +222,9 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
 
          doc.roundedRect(30, starty+15, 500, 57, 3, 3, 'D');
 
-        var splitObservacion = doc.splitTextToSize(ITINERARIO, 550);
+        var splitObservacion = doc.splitTextToSize(ITINERARIO, 490);
         // var splitObservacion = "" 
-        doc.text(40, starty+increment+increment, splitObservacion);
+        doc.text(40, starty+increment+6, splitObservacion);
         
         starty += increment; 
         starty += increment; 
@@ -430,7 +434,7 @@ var splitObservacion = doc.splitTextToSize(texto, 250);
 doc.text(40, starty, splitObservacion);
 starty += tabinsidesection* parseInt(texto.length/div);
 
-texto = "2.- Cuando el contratante cancela este contrato tendrá derecho al importe total del mismo, siempre y cuando lo haga con un mínimo de 15 días antes de la fecha y horario establecido de salida. "
+texto = "2.-Cuando el contratante cancele este contrato tendra un cargo por cancelacion del 20% del Total del mismo, siempre y cuando lo haga con un minimo de 15 dias antes dela fecha y horario establecido de salida."
 var splitObservacion = doc.splitTextToSize(texto, 250);
 doc.text(40, starty, splitObservacion);
 starty += tabinsidesection* parseInt(texto.length/div)+17;
@@ -471,32 +475,32 @@ var splitObservacion = doc.splitTextToSize(columna2, 250);
 doc.text(300, starty+13, splitObservacion);
 starty += tabinsidesection* parseInt(columna2.length/div) ;
 
-columna2 = "8.- Los daños ocasionados al autobús por negligencia o culpa directa del contratante o pasajeros, serán cobrados en su totalidad al contratante."
+columna2 = "8.- Los daños ocasionados en la unidad por negligencia o culpa directa del contratante o pasajeros, serán cobrados en su totalidad al contratante."
 var splitObservacion = doc.splitTextToSize(columna2, 250);
 doc.text(300, starty+13, splitObservacion);
 starty += tabinsidesection* parseInt(columna2.length/div) ;
 
-columna2 = "9.- GVA Tours S.A. de C.V. no se hace responsable por objetos olvidados en el autobús por alguno de los pasajeros."
+columna2 = "9.- GVA Tours S.A. de C.V. no se hace responsable por objetos olvidados en la unidad por alguno de los pasajeros."
 var splitObservacion = doc.splitTextToSize(columna2, 250);
 doc.text(300, starty+13, splitObservacion);
 starty += tabinsidesection* parseInt(columna2.length/div) ;
 
-columna2 = "10.-  Los autobuses no pueden entrar en caminos estrechos o de terracería que pongan en peligro a la unidad. Cualquier daño o perjuicio por insistencia del cliente será cobrada en su totalidad."
+columna2 = "10.-  Las unidades no pueden entrar en caminos estrechos o de terracería que pongan en peligro a la unidad. Cualquier daño o perjuicio por insistencia del cliente será cobrada en su totalidad."
 var splitObservacion = doc.splitTextToSize(columna2, 250);
 doc.text(300, starty+13, splitObservacion);
 starty += tabinsidesection* parseInt(columna2.length/div) ;
 
-columna2 = "11.-  Por disposiciones de la Secretaria de Hacienda y Crédito Público, las empresas de autotransporte estarán sujetas al régimen simplificado según el artículo 67de título IIA de la Ley del impuesto sobre la renta. La empresa transportara no reflejará el IVA en su facturación, de acuerdo al artículo 15 del impuesto del valor agregado."
+// columna2 = "11.-  Por disposiciones de la Secretaria de Hacienda y Crédito Público, las empresas de autotransporte estarán sujetas al régimen simplificado según el artículo 67de título IIA de la Ley del impuesto sobre la renta. La empresa transportara no reflejará el IVA en su facturación, de acuerdo al artículo 15 del impuesto del valor agregado."
+// var splitObservacion = doc.splitTextToSize(columna2, 250);
+// doc.text(300, starty+13, splitObservacion);
+// starty += tabinsidesection* parseInt(columna2.length/div) ;
+
+columna2 = `11.- En caso de requerirse alguna modificación en el itinerario u horario autorizo a __${autorizador}__ para que realice los trámites necesarios que procedan originados por dichas modificaciones la contrato.`
 var splitObservacion = doc.splitTextToSize(columna2, 250);
 doc.text(300, starty+13, splitObservacion);
 starty += tabinsidesection* parseInt(columna2.length/div) ;
 
-columna2 = `12.- En caso de requerirse alguna modificación en el itinerario u horario autorizo a __${autorizador}__ para que realice los trámites necesarios que procedan originados por dichas modificaciones la contrato.`
-var splitObservacion = doc.splitTextToSize(columna2, 250);
-doc.text(300, starty+13, splitObservacion);
-starty += tabinsidesection* parseInt(columna2.length/div) ;
-
-columna2 = "13.- GVA Tours S.A. de C.V. se obliga en caso de descompostura reemplazar la unidad con características semejantes a la contratada, en un plazo de tiempo igual al tiempo de recorrido del punto de descompostura a la base de la empresa en la ciudad de Guadalajara."
+columna2 = "12.- GVA Tours S.A. de C.V. se obliga en caso de descompostura reemplazar la unidad con características semejantes a la contratada, en un plazo de tiempo igual al tiempo de recorrido del punto de descompostura a la base de la empresa en la ciudad de Guadalajara."
 
 
 var splitObservacion = doc.splitTextToSize(columna2, 250);
@@ -508,7 +512,7 @@ doc.ellipse(-20, 800, 950, 131, 'F');
 doc.ellipse(-20, 795, 950, 131, 'D');
 doc.ellipse(-20, 790, 950, 131, 'D');
 let color_valores = (0,0,0);
-doc.setTextColor(color_valores)
+doc.setTextColor(29,34,78) //azul fuerte)
 doc.setFont(undefined, 'bold');
 let pie = "GVA Tours S.A. de C.V."
 doc.text(xcenter(doc,pie), 700, pie);
@@ -520,6 +524,12 @@ doc.textWithLink('www.gvatours.com',60, 730,{ url: 'www.gvatours.com' });
 doc.textWithLink('T. (33) 3631 3036 con 10 lineas',252, 730,{ url: '3631 3036' });
 
 doc.textWithLink('info@gvatours.com',450, 730,{ url: 'mailto:info@gvatours.com' });
+
+color_valores = (0, 0, 255);
+
+pie = 'TELEFONO DE EMERGENCIA: GUSTAVO JAUREGUI 333-808-6093'
+doc.text(xcenter(doc,pie), 750, pie);
+
   
 
 } 
