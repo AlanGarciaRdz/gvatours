@@ -2,7 +2,8 @@
 // https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/
 const uuid = require('uuid');
 const { createDateAsUTC } = require('./index');
-const {pool} = require('../connection')
+const {pool} = require('../connection');
+const { response } = require('express');
 
 // GET — /TransportC | getTransportC()
 // GET — /TransportC/:uuid_contract | getTransportCById()
@@ -17,6 +18,18 @@ const getTransportC = (request, response) => {
       response.status(200).json(results.rows)
     })
   }
+
+const getTransportCFiltrados = (request, response) => {
+  const fecha_inicio = request.params.inicio;
+  const fecha_fin = request.params.fin;
+
+  pool.query(`SELECT * FROM public."transport_contracts" as TC where status = 1 and TC.data->>'fecha_contrato_interna' >= '${fecha_inicio}' and TC.data->>'fecha_contrato_interna' <='${fecha_fin}'`, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
   
 
 const getTransportCById = (request, response) => {
@@ -141,4 +154,5 @@ const getTransportCByIdFE = (request, response) => {
     createTransportC,
     updateTransportC,
     deleteTransportC,
+    getTransportCFiltrados
   }
