@@ -317,13 +317,8 @@ render(){
                 <TextField onChange={this.handleChange}  value={lugar}  name="lugar" id="lugar" label="LUGAR"   type="text" margin="dense" fullWidth/>    
                 <TextField onChange={this.handleChange}  value={nombre}  name="nombre" id="nombre" label="NOMBRE"   type="text" margin="dense" fullWidth/>    
                 
-            
-             
             </Grid>
-
           </Grid>
-
-            
 
           <Grid item xs={12} sm={6}>
             <Button variant="contained" color="primary" href="#contained-buttons" onClick={this.createReceipt} >

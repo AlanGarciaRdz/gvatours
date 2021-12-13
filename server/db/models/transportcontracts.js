@@ -11,7 +11,7 @@ const { response } = require('express');
 // PUT — /TransportC/:uuid_contract | updateTransportC()
 // DELETE — /TransportC/:uuid_contract | deleteTransportC()
 const getTransportC = (request, response) => {
-    pool.query('SELECT * FROM public."transport_contracts" where status = 1', (error, results) => {
+    pool.query(`SELECT * FROM public."transport_contracts" as TC where TC.status = 1 order by TC.data->'folio' asc`, (error, results) => {
       if (error) {
         throw error
       }
@@ -23,7 +23,10 @@ const getTransportCFiltrados = (request, response) => {
   const fecha_inicio = request.params.inicio;
   const fecha_fin = request.params.fin;
 
-  pool.query(`SELECT * FROM public."transport_contracts" as TC where status = 1 and TC.data->>'fecha_contrato_interna' >= '${fecha_inicio}' and TC.data->>'fecha_contrato_interna' <='${fecha_fin}'`, (error, results) => {
+  
+  //console.log(`SELECT * FROM public."transport_contracts" as TC where status = 1 and TC.data->>'fecha_salida_interna' >= '${fecha_inicio}' and TC.data->>'fecha_salida_interna' <='${fecha_fin}' order by TC.data->'folio' asc`)
+
+  pool.query(`SELECT * FROM public."transport_contracts" as TC where status = 1 and TC.data->>'fecha_salida_interna' >= '${fecha_inicio}' and TC.data->>'fecha_salida_interna' <='${fecha_fin}' order by TC.data->'folio' asc`, (error, results) => {
     if (error) {
       throw error
     }
@@ -33,6 +36,18 @@ const getTransportCFiltrados = (request, response) => {
   
 
 const getTransportCById = (request, response) => {
+  const uuid_contract = request.params.uuid_contract
+  console.log(request.params.uuid_contract)
+
+  pool.query('SELECT * FROM public."transport_contracts" WHERE uuid_contract = $1', [uuid_contract], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const getTransportCFolioMax = (request, response) => {
   const uuid_contract = request.params.uuid_contract
   console.log(request.params.uuid_contract)
 

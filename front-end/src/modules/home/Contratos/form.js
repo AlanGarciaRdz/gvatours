@@ -101,7 +101,13 @@ class ContratosForm extends React.Component{
                 fecha_regreso: new Date(),
                 fecha_regreso_interna: new Date(),
                 fecha_contrato: new Date(),
-                fecha_contrato_interna: new Date()
+                fecha_contrato_interna: new Date(),
+                fecha_filtro_inicio: new Date(new Date().getTime() - 2*24*60*60*1000),
+                fecha_filtro_inicio_interna: new Date(),
+                fecha_filtro_fin: new Date(new Date().getTime() + 3*24*60*60*1000),
+                fecha_filtro_fin_interna: new Date(),
+
+
             }
     
             /* new*/
@@ -331,26 +337,35 @@ class ContratosForm extends React.Component{
 
 
         getContratos() {
+
+          
             
-          const url = this.state.folio_contrato == '' ? '/TransportC' : `/TransportC/filter/${ this.state.folio_contrato }`
+          //const url = this.state.folio_contrato == '' ? '/TransportC' : `/TransportC/filter/${ this.state.folio_contrato }`
+          let url;
+          if(this.state.folio_contrato == '') {
+            url = '/TransportC'
+          }
+
+          if(this.state.fecha_filtro_inicio !== '' && this.state.fecha_filtro_fin !== ''){
+            
+            url = `/TransportC/filter/${this.state.fecha_filtro_inicio.toISOString()}/${this.state.fecha_filtro_fin.toISOString()}`
+            
+          }
            
-           API.get('/TransportC')
+           API.get(url)
               .then(res => {
                 if (res.status === 200) {                  
                   var  rowsP = []
                   // res.data.map(row => {
                   //   console.log(row)
                   // })
-
+                  
                   //TODO
                       rowsP = 
                         res.data.map(row => (  
-                          
-                          
-                          
-                                            
                           this.addTableData(
                             row.uuid_contract, //UUID
+                            row.data.fecha_contrato,
                             row.data.folio,//row.uuid_contract.split('-')[2]+'-'+row.uuid_contract.split('-')[3], //FOLIO
                             row.data.cliente_nombre, //Cliente
                             row.data_vehicle.tipo_unidad,
@@ -368,21 +383,44 @@ class ContratosForm extends React.Component{
                 }else{
                   //TODO: add ERROR ALERT
                 }
-              })
+              }).then(
+                //GET NEXT FOLIO
+                
+                API.get('/TransportC')
+                  .then(res => {
+                    
+
+                    if (res.status === 200) {  
+                      let sigFolio = this.state.sigFolio;
+                      let Folio = res.data[res.data.length -1].data.folio
+
+                      //alert(Folio)
+
+                      if(typeof(parseInt(Folio)) === "number") {
+                        if( parseInt(Folio) > sigFolio ){
+                          console.log(`${Folio} folio maximo`)
+                          this.setState({sigFolio: parseInt(Folio) })
+                          this.setState({folio_contrato: parseInt(Folio)+1})
+                        }
+                      }
+                      
+                      
+                    }                
+              }))
           }
 
-        addTableData(UUID, Folio, cliente_nombre, tipo_unidad, destino, fecha_salida, anticipo, importe_total, status) {
-          let sigFolio = this.state.sigFolio;
+        addTableData(UUID, fecha_contrato, Folio, cliente_nombre, tipo_unidad, destino, fecha_salida, anticipo, importe_total, status) {
+          // let sigFolio = this.state.sigFolio;
           
-          if(typeof(parseInt(Folio)) === "number") {
-            if( parseInt(Folio) > sigFolio ){
-              console.log(`${Folio} folio maximo`)
-              this.setState({sigFolio: parseInt(Folio) })
-              this.setState({folio_contrato: parseInt(Folio)+1})
-            }
-          }
+          // if(typeof(parseInt(Folio)) === "number") {
+          //   if( parseInt(Folio) > sigFolio ){
+          //     console.log(`${Folio} folio maximo`)
+          //     this.setState({sigFolio: parseInt(Folio) })
+          //     this.setState({folio_contrato: parseInt(Folio)+1})
+          //   }
+          // }
 
-          return {UUID, Folio, cliente_nombre, tipo_unidad, destino, fecha_salida, anticipo, importe_total, status};
+          return {UUID, fecha_contrato, Folio, cliente_nombre, tipo_unidad, destino, fecha_salida, anticipo, importe_total, status};
         }
 
         setContratoDate(evt){
@@ -413,8 +451,31 @@ class ContratosForm extends React.Component{
           this.setState({
             ...this.state,
             fecha_regreso: fecha
-        });
+        }); 
       }
+
+      setFechafiltroInicio(evt){
+        console.log(`dateee ${evt}`)
+        let fecha = evt
+        this.setState({
+          ...this.state,
+          fecha_filtro_inicio: fecha
+        },() => {
+          this.getContratos()
+        });
+
+    }
+
+    setFechafiltroFin(evt){
+      console.log(`dateee ${evt}`)
+      let fecha = evt
+      this.setState({
+        ...this.state,
+        fecha_filtro_fin: fecha
+      },() => {
+        this.getContratos()
+      });
+  }
 
       seleccionarElemento(row){
         this.setState({errorAlert: null})
@@ -513,7 +574,7 @@ render(){
     
     const { folio_contrato, vendedor, cliente_nombre, cliente_direccion, cliente_ciudad, cliente_telefono, destino, hora_salida, hora_presentarse, encargado, tel_encargado, direccion_salida, entre_calles, colonia_ciudad, punto_referencia, itinerario, hora_regreso, data_vehicle_tipo_unidad, data_vehicle_capacidad, importe_total, anticipo, saldo } = this.state;
 
-    const { fecha_salida, fecha_contrato, fecha_regreso } = this.state
+    const { fecha_salida, fecha_contrato, fecha_regreso, fecha_filtro_inicio, fecha_filtro_fin } = this.state
 
     const { aire_acondicionado, sanitario, tv_dvd, microfono, stereo, seguro_de_viajero, otros_2, autorizador } = this.state
 
@@ -635,12 +696,39 @@ render(){
               Guardar o Crear 
             </Button>
           
+          {/* <Grid container spacing={1} direction="row-reverse" justifyContent="flex-end" alignItems="flex-end"> */}
+          <Grid item sm={9}>
+
+            {/* <Grid item xs={3}> */}
+          <InputLabel className={classes.datepadding}  id="">FECHA FILTRO INICIO</InputLabel>
+          <DatePicker locale="es" id="fecha_filtro_inicio" 
+                  dateFormat="dd-MMMM-yyyy" 
+                  selected={fecha_filtro_inicio} 
+                  datetime={fecha_filtro_inicio} 
+                  onChange={date => this.setFechafiltroInicio(date)} name="fecha_filtro_inicio" />
+              {/* </Grid> */}
+
+          {/* <Grid item xs={3}> */}
+            <InputLabel className={classes.datepadding}  id="">FECHA FILTRO FIN</InputLabel>
+            <DatePicker locale="es" id="fecha_filtro_fin" 
+                  dateFormat="dd-MMMM-yyyy" 
+                  selected={fecha_filtro_fin} 
+                  datetime={fecha_filtro_fin}
+                  onChange={date => this.setFechafiltroFin(date)} name="fecha_filtro_fin" />
+            {/* </Grid> */}
+
+            
+          
+            </Grid>
+
+
   
           <TableContainer component={Paper}>
             <Table className={classes.table} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
                   <TableCell>Contrato</TableCell>
+                  <TableCell align="right">Fecha Contrato</TableCell>
                   <TableCell align="right">PDF</TableCell>
                   <TableCell align="right">cliente</TableCell>
                   <TableCell align="right">Unidad</TableCell>
@@ -660,7 +748,8 @@ render(){
                       {row.Folio}
                     </TableCell>
 
-                    
+                    <TableCell align="right">{row.fecha_contrato}</TableCell>
+
                     {/* PDF */}
                     <TableCell align="right">
                     <Link href={`/Contrato?id=${row.UUID}`} color="inherit">
