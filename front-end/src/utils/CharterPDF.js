@@ -289,21 +289,34 @@ function pieCharter(doc){
     doc.setFontSize(10);
     const salidas1 = "Los puntos de Salida son:";
     doc.text(30, starty, salidas1);
-    const salidas2 = "5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)";
+    const salidas2 = "4:30 am En Farmacias guadalajara de los Arcos del Salto"
     starty += incremento; 
     doc.text(30, starty, salidas2);
-    const salidas3 = "6:00 am Plaza Forum sobre Blvd Tlaquepaque";
+
+    const salidas3 = "4:40 am OXXO sobre la carretera del castillo"
     starty += incremento; 
     doc.text(30, starty, salidas3);
-    const salidas4 = "7:00 am Minerva Frente al Hotel Fiesta Americana Minerva";
+
+    const salidas4 = "4:50 am Multicenter en el Verde"
     starty += incremento; 
     doc.text(30, starty, salidas4);
-    const salidas5 = "7:15 am Central Zapopan en Oxxo y Pollo Pepe";
+
+
+    const salidas5 = "5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)";
     starty += incremento; 
     doc.text(30, starty, salidas5);
-    const salidas6 = "Se les pide estar 30 min antes para su registro";
+    const salidas6 = "6:00 am Plaza Forum sobre Blvd Tlaquepaque";
     starty += incremento; 
     doc.text(30, starty, salidas6);
+    const salidas7 = "7:00 am Minerva Frente al Hotel Fiesta Americana Minerva";
+    starty += incremento; 
+    doc.text(30, starty, salidas7);
+    const salidas8 = "7:15 am Central Zapopan en Oxxo y Pollo Pepe";
+    starty += incremento; 
+    doc.text(30, starty, salidas8);
+    const salidas9 = "Se les pide estar 30 min antes para su registro";
+    starty += incremento; 
+    doc.text(30, starty, salidas9);
     ///
     const regreso1 = "Los Horario de Regreso son los siguientes:";
     doc.text(350, righty, regreso1);
