@@ -1,4 +1,5 @@
 import gvalogo from '../images/gvalogo'
+import conatram from '../images/conatram';
 import footer from '../images/footer';
 import { MoneyFormatter } from '../utils/helpers';
 const conversor = require('conversor-numero-a-letras-es-ar');
@@ -22,14 +23,23 @@ function Header(doc, Folio) {
           } catch (error) {
             console.log(gvalogo)
           }
-          doc.setFontSize(17);
+          doc.setFontSize(15);
 
           
           doc.setTextColor(29,34,78) //azul fuerte
           
         
-          doc.textWithLink( 'Contrato de Prestación',217, 45,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
-          doc.text(210, 65, 'de Servicios "Transporte"');
+          doc.textWithLink( 'Contrato de Prestación',210, 45,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
+          doc.text(203, 65, 'de Servicios "Transporte"');
+
+          try {
+            doc.setFontSize(8);
+            doc.addImage(conatram, 'PNG', 370, 25, 90, 50);
+            doc.textWithLink( 'Miembro Activo',385, 85,{ url: 'https://goo.gl/maps/KgRQhTxJQoMNe8nv9' });
+            doc.text(382, 95, 'Registro No. 2100');
+          } catch (error) {
+            console.log(conatram)
+          }
           
 
           doc.setFontSize(11);
@@ -141,7 +151,7 @@ function Detalles(doc, CLIENTE_NOMBRE, CLIENTE_DIRECCION, CLIENTE_CIUDAD, CLIENT
         doc.setTextColor(color_azules)
         doc.text(30, starty+13, 'DESTINO');
         doc.setTextColor(color_valores)
-        doc.text(110, starty+13, DESTINO);
+        doc.text(85, starty+13, DESTINO);
         doc.line(15, starty+17, 565, starty+17);
         
         
