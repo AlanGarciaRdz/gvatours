@@ -1,36 +1,28 @@
-import React from 'react';
-import Link from '@material-ui/core/Link';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Title from './Title';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Title from "./Title";
 // import {isMobileDevice} from '../../utils/helpers';
 
 import API from "../../utils/API";
 
-
-function preventDefault(event) {
-  event.preventDefault();
-}
-
-const styles = (theme => ({
+const styles = (theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),
   },
-}));
+});
 
-
-class Cupons extends React.Component{
-
-  constructor(props){
-    super(props)
+class Cupons extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
-        open: true,
-        rows: []
-    }
+      open: true,
+      rows: [],
+    };
 
     this.getCupons = this.getCupons.bind(this);
     this.createData = this.createData.bind(this);
@@ -38,46 +30,43 @@ class Cupons extends React.Component{
 
   // Generate Order Data
   createData(UUID, Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta) {
-    return {UUID, Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta };
+    return { UUID, Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta };
   }
 
   getCupons() {
-    API.get('/Cupon')
-      .then(res => {
-        if (res.status === 200) {
-          console.log(res.data)
-          //Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
-          var  rowsP = []
-          rowsP = //Promise.all(
-            res.data.map(row => ( 
+    API.get("/Cupon").then((res) => {
+      if (res.status === 200) {
+        console.log(res.data);
+        //Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
+        var rowsP = [];
+        rowsP = //Promise.all(
+          res.data.map((row) =>
             this.createData(
               row.uuid_cupon, //FOLIO
-              row.uuid_cupon.split('-')[2]+'-'+row.uuid_cupon.split('-')[3], //FOLIO
+              row.uuid_cupon.split("-")[2] + "-" + row.uuid_cupon.split("-")[3], //FOLIO
               row.data.fecha_entrada, //Fecha_entrada
-              row.travelagency.nombre, //Nombre 
+              row.travelagency.nombre, //Nombre
               row.hotel.nombre, //HOTEL
-              row.data.Total_Pagado ?  row.data.Total_Pagado : '0', 
-              row.data.Total_Venta  ? row.data.Total_Venta : '0'
-            )))
-            //)
+              row.data.Total_Pagado ? row.data.Total_Pagado : "0",
+              row.data.Total_Venta ? row.data.Total_Venta : "0"
+            )
+          );
+        //)
 
-            this.setState({rows: rowsP});
-          
-        }else{
-          //TODO: add ERROR ALERT
-        }
-      })
+        this.setState({ rows: rowsP });
+      } else {
+        //TODO: add ERROR ALERT
+      }
+    });
   }
 
-  componentDidMount(){
-    
+  componentDidMount() {
     this.getCupons();
-    
   }
 
-  render(){
+  render() {
     const { classes } = this.props;
-    const {rows} = this.state;
+    const { rows } = this.state;
 
     return (
       <React.Fragment>
@@ -94,7 +83,7 @@ class Cupons extends React.Component{
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
+            {rows.map((row) => (
               //Folio, Fecha_Entrada, Agencia, Hotel, Pagado, Total_Venta
               <TableRow key={row.Folio}>
                 <TableCell>{row.Folio}</TableCell>
