@@ -52,7 +52,6 @@ class AutocompleteHotel extends React.Component {
 
   handleSubmit = (event) => {
     const { dialogValue } = this.state;
-
     event.preventDefault();
     this.setState({
       setValue: {
@@ -60,43 +59,39 @@ class AutocompleteHotel extends React.Component {
         destino: dialogValue.destino,
       },
     });
-
     this.addHotel();
-
     this.handleClose();
   };
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { Currentuuid } = this.state;
+    const { value } = this.props;
 
-    if (this.props.value !== "") {
-      console.log(`props value ${this.props.value}`);
-      console.log(`state value ${this.state.value}`);
+    if (value !== prevProps.value && value !== this.state.value) {
+      this.setState({ value });
+      let currentHotel = this.state.Hoteles.find(
+        (e) => e.uuid_hotel === this.props.uuid
+      );
 
-      if (this.props.value !== this.state.value) {
-        this.setState({ value: this.props.value });
-        console.log(this.props);
-        let currentHotel = this.state.Hoteles.find(
-          (e) => e.uuid_hotel === Currentuuid
-        );
-        console.log(currentHotel);
-        try {
+      try {
+        if (currentHotel) {
           this.props.updateHotel(
             currentHotel.uuid_hotel,
             currentHotel.name_hotel,
             currentHotel.destino
           );
-        } catch (error) {
+        } else {
           this.props.updateHotel(this.props.uuid);
-          console.log(`uuid hotel` + this.props.uuid);
         }
+      } catch (error) {
+        this.props.updateHotel(this.props.uuid);
+        console.log(`uuid hotel` + this.props.uuid);
       }
     }
   }
 
   componentDidMount() {
     this.getHotels();
-    console.log(this.props);
   }
 
   onAddHOTEL(uuid_hotel, nombre, destino) {
@@ -118,10 +113,12 @@ class AutocompleteHotel extends React.Component {
     API.get(`/Hotels/`).then((res) => {
       try {
         if (res.data[0].hasOwnProperty("data")) {
-          res.data.map((row) =>
-            this.onAddHOTEL(row.uuid_hotel, row.data.nombre, row.data.destino)
-          );
-          // console.log(this.state.Hoteles)
+          const hoteles = res.data.map((row) => ({
+            name_hotel: row.data.nombre,
+            uuid_hotel: row.uuid_hotel,
+            destino: row.data.destino,
+          }));
+          this.setState({ Hoteles: hoteles });
         }
       } catch (error) {
         console.error("400 HOTEL");
@@ -173,7 +170,7 @@ class AutocompleteHotel extends React.Component {
     return (
       <div>
         <Autocomplete
-          value={value}
+          value={this.state.value}
           fullWidth
           autoComplete="fname"
           onChange={(event, newValue) => {

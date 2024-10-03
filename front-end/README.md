@@ -83,3 +83,6 @@ localStorage.getItem('09b267c0');
 localStorage.removeItem('myData');
 // remove all
 localStorage.clear();
+
+code: 'ERR_OSSL_EVP_UNSUPPORTED'
+export NODE_OPTIONS=--openssl-legacy-provider

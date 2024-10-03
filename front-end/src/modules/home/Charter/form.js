@@ -186,12 +186,19 @@ class CharterFrom extends React.Component {
 
   handleChange = (evt) => {
     const value = evt.target.value;
-    console.log(value);
+    /*console.log(value);
     console.log(evt.target.name);
     this.setState({
       ...this.state,
       [evt.target.name]: value,
-    });
+    });*/
+    // Solo actualiza el estado si el valor realmente ha cambiado
+    if (this.state[evt.target.name] !== value) {
+      console.log(`Nuevo valor para ${evt.target.name}: ${value}`);
+      this.setState({
+        [evt.target.name]: value,
+      });
+    }
   };
 
   handleChangeFolio = (evt) => {
