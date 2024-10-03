@@ -200,7 +200,7 @@ class AutocompleteHotel extends React.Component {
               return;
             }
 
-            this.setState({ setValue: newValue });
+            this.setState({ value: newValue });
           }}
           filterOptions={(options, params) => {
             const filtered = this.filter(options, params);
@@ -224,13 +224,13 @@ class AutocompleteHotel extends React.Component {
               return option.inputValue;
             }
 
-            this.setState({ value: option.name_hotel });
+            /*this.setState({ value: option.name_hotel });
 
             this.props.updateHotel(
               option.uuid_hotel,
               option.name_hotel,
               option.destino
-            );
+            );*/
 
             return option.name_hotel;
           }}

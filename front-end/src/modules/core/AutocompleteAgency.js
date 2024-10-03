@@ -207,7 +207,7 @@ class AutocompleteAgency extends React.Component {
               return;
             }
 
-            this.setState({ setValue: newValue });
+            this.setState({ value: newValue });
           }}
           filterOptions={(options, params) => {
             const filtered = this.filter(options, params);
