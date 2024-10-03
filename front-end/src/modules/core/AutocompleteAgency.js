@@ -207,6 +207,12 @@ class AutocompleteAgency extends React.Component {
               return;
             }
 
+            this.props.updateAgencia(
+              newValue.uuid_travelA,
+              newValue.ciudad,
+              newValue.nombre_agencia
+            );
+
             this.setState({ value: newValue });
           }}
           filterOptions={(options, params) => {

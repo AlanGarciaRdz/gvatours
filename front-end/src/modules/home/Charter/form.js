@@ -279,12 +279,6 @@ class CharterFrom extends React.Component {
       styleredondo: newstatus,
     });
     console.log(newstatus);
-    // let newstatus = value ? 'display:block' : 'display:none';
-    // console.log(value)
-    // this.setState({
-    //   ...this.state,
-    //   styleredondo: newstatus
-    // });
   };
 
   async filterById(jsonObject, column, id) {
@@ -391,10 +385,11 @@ class CharterFrom extends React.Component {
         });
       }
     }
-
+    console.log(val_uuid_hotel, val_uuid_agencia);
     if (val_uuid_hotel === null || val_uuid_agencia === null) {
       console.error("needs client and hotel and agency");
     } else {
+      console.error("cupondata");
       var cupondata = {
         data: {
           folio_papeleta: document.getElementById("folio_papeleta").value,

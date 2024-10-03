@@ -64,7 +64,7 @@ class AutocompleteHotel extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { Currentuuid } = this.state;
+    /*const { Currentuuid } = this.state;
     const { value } = this.props;
 
     if (value !== prevProps.value && value !== this.state.value) {
@@ -87,6 +87,34 @@ class AutocompleteHotel extends React.Component {
         this.props.updateHotel(this.props.uuid);
         console.log(`uuid hotel` + this.props.uuid);
       }
+    }*/
+    const { Currentuuid } = this.state;
+    const { value } = this.props;
+
+    console.log(value);
+
+    if (this.props.value !== "") {
+      if (this.props.value !== this.state.value) {
+        this.setState({ value: this.props.value });
+        this.setState({ destino: this.props });
+        //this.props.value = this.state.value;
+        let current = this.state.Hoteles.find(
+          (e) => e.uuid_hotel === Currentuuid
+        );
+        console.log(current);
+        try {
+          this.props.updateAgencia(
+            current.uuid_hotel,
+            current.name_hotel,
+            current.destino
+          );
+          console.log(
+            `Hotel seleccionado ${current.uuid_hotel}, ${current.name_hotel}, ${current.destino}`
+          );
+        } catch (error) {}
+      }
+    } else {
+      console.log("hotel empty");
     }
   }
 
@@ -174,6 +202,7 @@ class AutocompleteHotel extends React.Component {
           fullWidth
           autoComplete="fname"
           onChange={(event, newValue) => {
+            console.log(newValue);
             if (typeof newValue === "string") {
               // timeout to avoid instant validation of the dialog's form.
               setTimeout(() => {
@@ -196,9 +225,14 @@ class AutocompleteHotel extends React.Component {
                   destino: "",
                 },
               });
-
               return;
             }
+
+            this.props.updateHotel(
+              newValue.uuid_hotel,
+              newValue.name_hotel,
+              newValue.destino
+            );
 
             this.setState({ value: newValue });
           }}
