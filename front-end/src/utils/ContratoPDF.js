@@ -243,7 +243,7 @@ function Detalles(
   doc.roundedRect(30, starty + 15, 500, 57, 3, 3, "D");
 
   let splitObservacion = doc.splitTextToSize(ITINERARIO, 490);
-  splitObservacion = "";
+  //splitObservacion = "";
   doc.text(40, starty + increment + 6, splitObservacion);
 
   starty += increment;
