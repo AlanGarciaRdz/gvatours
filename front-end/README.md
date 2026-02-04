@@ -1,83 +1,170 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# GVA Tours - Frontend
 
-## Available Scripts
+Sistema de gestión de charters turísticos y reservaciones de hotel.
 
-In the project directory, you can run:
+## Requisitos Previos
 
-### `yarn start`
+- **Node.js**: v16.x o v20.x (recomendado v20.13.1)
+- **npm**: v7+ o superior
+- **Backend**: El servidor debe estar corriendo en el puerto 19001
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Instalación
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```bash
+# Limpiar instalaciones anteriores (si es necesario)
+rm -rf node_modules package-lock.json
 
-### `yarn test`
+# Instalar dependencias
+npm install
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Configuración
 
-### `yarn build`
+### Variables de Entorno
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+El proyecto usa diferentes URLs del backend según el entorno:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- **Development**: `http://localhost:19001`
+- **Test DB**: `//52.7.16.247:19001`
+- **Production**: `//52.7.16.247:19001`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Las configuraciones se encuentran en `src/utils/API.js`
 
-### `yarn eject`
+## Scripts Disponibles
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Desarrollo Local
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+# Iniciar servidor de desarrollo
+npm run start
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Iniciar con base de datos de prueba
+npm run test_db
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+El frontend correrá en [http://localhost:3000](http://localhost:3000)
 
-## Learn More
+### Build y Deploy
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+# Build de producción
+npm run build
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Deploy completo a servidor (con rsync)
+npm run deploy
 
-### Code Splitting
+# Deploy con scp (alternativo)
+npm run deploys
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+**Nota**: Los comandos de deploy requieren:
+- Archivo de llave PEM en `~/Documents/alan/gvatours/gvatours.pem`
+- Acceso SSH al servidor `ec2-user@52.7.16.247`
+- Permisos de escritura en `/var/www/html/` del servidor
 
-### Analyzing the Bundle Size
+### Testing
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+```bash
+npm run test
+```
 
-### Making a Progressive Web App
+## Dependencias Principales
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+- **React**: 17.0.2
+- **React Router**: 5.3.4
+- **Material-UI**: 4.12.4
+- **Axios**: 1.6.0
+- **jsPDF**: Para generación de PDFs
+- **react-datepicker**: Selector de fechas
+- **recharts**: Gráficas
 
-### Advanced Configuration
+## Troubleshooting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+### Error de Puerto 19001
 
-### Deployment
+Si el frontend no puede conectarse al backend:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+```bash
+# Verificar que el servidor backend esté corriendo
+lsof -ti:19001
 
-### `yarn build` fails to minify
+# Si no está corriendo, iniciar el backend
+cd ../server
+npm start
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Error de Node/Sass
 
+Si hay errores con `node-sass` o compatibilidad de Node:
 
+```bash
+# Usar Node v20
+nvm use 20
 
-git config credential.username '
+# Limpiar y reinstalar
+rm -rf node_modules package-lock.json
+npm install
+```
 
-localStorage.setItem('09b267c0', res.data.role);
-        localStorage.setItem('6443a053', res.data.name);
-        localStorage.setItem('c7383f2e', res.data.email);
+### Problemas de Deploy
 
-        // getter
+Si el deploy falla con permisos:
+
+```bash
+# Conectarse al servidor
+ssh -i "~/Documents/alan/gvatours/gvatours.pem" ec2-user@52.7.16.247
+
+# Ajustar permisos
+sudo chown -R ec2-user:ec2-user /var/www/html/
+sudo chmod -R 755 /var/www/html/
+
+# Verificar que mod_rewrite esté habilitado
+sudo apachectl -M | grep rewrite
+```
+
+### Rutas 404 en Producción
+
+Si las rutas no funcionan al recargar la página:
+
+1. Verificar que `.htaccess` esté en `/var/www/html/.htaccess`
+2. Verificar que Apache tenga `AllowOverride All` para el directorio
+3. Verificar que `mod_rewrite` esté habilitado
+
+## Estructura del Proyecto
+
+```
+src/
+├── modules/
+│   ├── admin/          # Administración (Usuarios, Clientes, Agencias, Hoteles)
+│   ├── home/           # Módulos principales (Charters, Cupones, Contratos, Recibos)
+│   ├── login/          # Autenticación
+│   └── core/           # Componentes compartidos
+├── utils/              # Utilidades (API, PDFs, helpers)
+└── routes.js           # Configuración de rutas
+```
+
+## Información de Producción
+
+- **URL**: http://sistemagvatours.com
+- **Servidor**: AWS EC2 (52.7.16.247)
+- **Web Server**: Apache 2.2.34
+
+## LocalStorage Keys
+
+El sistema usa localStorage para mantener sesión:
+
+```javascript
+// Setters (al hacer login)
+localStorage.setItem('09b267c0', res.data.role);      // Role del usuario
+localStorage.setItem('6443a053', res.data.name);      // Nombre
+localStorage.setItem('c7383f2e', res.data.email);     // Email
+localStorage.setItem('4055bf1e', res.data.uuid_user); // UUID
+localStorage.setItem('4718acf4', res.data.id_user);   // ID
+localStorage.setItem('63dd46ba', res.data.iniciales); // Iniciales
+
+// Getters
 localStorage.getItem('09b267c0');
-// remove
-localStorage.removeItem('myData');
-// remove all
+
+// Limpiar sesión
 localStorage.clear();
+```
