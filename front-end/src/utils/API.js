@@ -4,7 +4,7 @@ var baseURLENV = "";
 console.log(process.env)
 
 if (process.env.NODE_ENV === "development"){
-  baseURLENV = "http://localhost:19001";
+  baseURLENV = "http://localhost:3001";
 }
 
 if (process.env.REACT_APP_TEST_DB === "development_db"){

@@ -295,10 +295,15 @@ function pieCharter(doc){
     const salidas3 = "6:00 am Plaza Forum sobre Blvd Tlaquepaque";
     starty += incremento; 
     doc.text(30, starty, salidas3);
-    const salidas4 = "7:00 am Minerva Frente al Hotel Fiesta Americana Minerva";
+    const salidas4a = "7:00 am Zona Minerva, Banamex López Mateos ";
     starty += incremento; 
-    doc.text(30, starty, salidas4);
-    const salidas5 = "7:15 am Central Zapopan en Oxxo y Pollo Pepe";
+    doc.text(30, starty, salidas4a);
+    const salidas4b = "esquina Justo Sierra a 1 cuadra de Av México  ";
+    starty += incremento; 
+    doc.text(30+40, starty, salidas4b);
+    
+
+    const salidas5 = "7:15 am Zapopan en Oxxo y Pollo Pepe";
     starty += incremento; 
     doc.text(30, starty, salidas5);
     const salidas6 = "Se les pide estar 30 min antes para su registro";

@@ -180,8 +180,8 @@ function setvariables(PAPELETA, CLIENTE_NOMBRE, HOTEL_DESTINO, FECHA_SALIDA, FEC
 		   <P class="footer_texto">Los puntos de Salida son:</P>
 		   <P class="footer_texto">5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)</P>
 		   <P class="footer_texto">6:00 am Plaza Forum sobre Blvd Tlaquepaque</P>
-		   <P class="footer_texto">7:00 am Minerva Frente al Hotel Fiesta Americana Minerva</P>
-		   <P class="footer_texto">7:15 am Central Zapopan en Oxxo y Pollo Pepe</P>
+		   <P class="footer_texto">7:00 am Zona Minerva, Banamex López Mateos esquina Justo Sierra a 1 cuadra de Av México</P>
+		   <P class="footer_texto">7:15 am Zapopan en Oxxo y Pollo Pepe</P>
 		   <P class="footer_texto">Se les pide estar 30 min antes para su registro</P>
 		   <P class="footer_texto_centrado">
 			  TELEFONO DE EMERGENCIA EN LA SALIDA 

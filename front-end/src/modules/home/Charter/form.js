@@ -745,14 +745,10 @@ render(){
                 value={aborda ? aborda : ""}  onChange={this.handleChange}  label="ABORDA Y  HORA" fullWidth
                 >
                   
-                <MenuItem value="5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)">5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)</MenuItem>
-                <MenuItem value="6:00 am Plaza Forum sobre Blvd Tlaquepaque">6:00 am Plaza Forum sobre Blvd Tlaquepaque</MenuItem>
-                <MenuItem value="7:00 am Minerva Frente al Hotel Fiesta Americana Minerva">7:00 am Minerva Frente al Hotel Fiesta Americana Minerva</MenuItem>
-                <MenuItem value="7:15 am Central Zapopan en Oxxo y Pollo Pepe">7:15 am Central Zapopan en Oxxo y Pollo Pepe</MenuItem>
-                <MenuItem value="4:30 am En Farmacias Guadalajara de los Arcos de El Salto">4:30 am En Farmacias Guadalajara de los Arcos de El Salto</MenuItem>
-                <MenuItem value="4:40 am OXXO sobre la carretera El Castillo">4:40 am OXXO sobre la carretera de El Castillo</MenuItem>
-                <MenuItem value="4:50 am Multicenter en el Verde">4:50 am Multicenter en el Verde</MenuItem>
-                <MenuItem value="4:30 am Farmacia de la entrada de Los Agaves">4:30 am Farmacia de la entrada de Los Agaves</MenuItem>
+                  <MenuItem value="5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)">5:30 am Soriana Rio Nilo a un costado de Banamex (Rio Nilo y Patria)</MenuItem>
+                  <MenuItem value="6:00 am Plaza Forum sobre Blvd Tlaquepaque">6:00 am Plaza Forum sobre Blvd Tlaquepaque</MenuItem>
+                  <MenuItem value="7:00 am Zona Minerva, Banamex López Mateos esquina Justo Sierra a 1 cuadra de Av México">7:00 am Zona Minerva, Banamex López Mateos esquina Justo Sierra a 1 cuadra de Av México</MenuItem>
+                  <MenuItem value="7:15 am Zapopan en Oxxo y Pollo Pepe">7:15 am Zapopan en Oxxo y Pollo Pepe</MenuItem>
               </Select>
           
       <InputLabel id="demo-simple-select-helper-label" className={classes.iconButton}>No. adultos y juniors</InputLabel>
