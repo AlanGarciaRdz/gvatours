@@ -11,23 +11,23 @@ import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete
 
 import API from "../../utils/API";
 
-class AutocompleteHotel extends React.Component{
+class AutocompleteHotel extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
 
-    
-  
+
+
     this.state = {
       value: null,
       setValue: null,
       open: false,
       toggleOpen: false,
       dialogValue: {
-                    name_hotel: '',
-                    destino: '',
-                    uuid_hotel: ''
-                   },
+        name_hotel: '',
+        destino: '',
+        uuid_hotel: ''
+      },
       Hoteles: [],
       Currentuuid: ''
     }
@@ -42,130 +42,132 @@ class AutocompleteHotel extends React.Component{
     this.getHotels = this.getHotels.bind(this);
     this.onAddHOTEL = this.onAddHOTEL.bind(this);
     this.addHotel = this.addHotel.bind(this);
-    
-}
+
+  }
 
 
 
-  
+
   handleClose = () => {
-    this.setState({dialogValue:{
-              name_hotel: '',
-              destino: ''
-              }
-            });
-    this.setState({toggleOpen: false});
+    this.setState({
+      dialogValue: {
+        name_hotel: '',
+        destino: ''
+      }
+    });
+    this.setState({ toggleOpen: false });
   };
 
   handleSubmit = event => {
-    const {dialogValue} = this.state;
-    
+    const { dialogValue } = this.state;
+
     event.preventDefault();
-    this.setState({setValue:{
-      name_hotel: dialogValue.name_hotel,
-      destino: dialogValue.destino,
-    }
+    this.setState({
+      setValue: {
+        name_hotel: dialogValue.name_hotel,
+        destino: dialogValue.destino,
+      }
     });
 
-    
+
     this.addHotel();
-    
+
     this.handleClose();
   };
 
-  componentDidUpdate(){
-    const {Currentuuid} = this.state;
-    
-    if(this.props.value !== ""){
+  componentDidUpdate() {
+    const { Currentuuid } = this.state;
 
-      if(this.props.value !== this.state.value){
-        this.setState({value: this.props.value});
+    if (this.props.value !== "") {
+
+      if (this.props.value !== this.state.value) {
+        this.setState({ value: this.props.value });
         console.log(this.props)
         let currentHotel = this.state.Hoteles.find(e => (e.uuid_hotel === Currentuuid))
         console.log(currentHotel)
         try {
-          this.props.updateHotel(currentHotel.uuid_hotel, currentHotel.name_hotel, currentHotel.destino)  
+          this.props.updateHotel(currentHotel.uuid_hotel, currentHotel.name_hotel, currentHotel.destino)
         } catch (error) {
           this.props.updateHotel(this.props.uuid)
-          console.log(`uuid hotel`+this.props.uuid)
+          console.log(`uuid hotel` + this.props.uuid)
         }
-        
+
       }
     }
 
 
 
-    
+
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getHotels();
     console.log(this.props)
   }
 
-  onAddHOTEL(uuid_hotel, nombre, destino){
+  onAddHOTEL(uuid_hotel, nombre, destino) {
     // console.log(uuid_hotel, nombre, destino)
     this.setState(state => {
-        const list = state.Hoteles.push({name_hotel: nombre,  uuid_hotel, destino: destino});
-        return {
-          list,
-          value: '',
-        };
-      });
+      const list = state.Hoteles.push({ name_hotel: nombre, uuid_hotel, destino: destino });
+      return {
+        list,
+        value: '',
+      };
+    });
   }
 
-  getHotels(){
+  getHotels() {
     API.get(`/Hotels/`).then(res => {
-      try{
-        if(res.data[0].hasOwnProperty('data')){
-          res.data.map(row => ( 
+      try {
+        if (res.data[0].hasOwnProperty('data')) {
+          res.data.map(row => (
             this.onAddHOTEL(row.uuid_hotel, row.data.nombre, row.data.destino)
-            
+
           ))
           // console.log(this.state.Hoteles)
         }
-      }catch(error){
+      } catch (error) {
         console.error("400 HOTEL")
         return "400 HOTEL"
       }
-   })
- }
-
- addHotel(){
-  const data = {
-    "data": {
-      "nombre": `${this.state.dialogValue.name_hotel}`,
-      "direccion": "",
-      "telefono": "",
-      "correo": "",
-      "destino": `${this.state.dialogValue.destino}`
-    }
+    })
   }
 
-  API.post(`/Hotels/`, data).then(res => {
-    
-    try{
-      // console.log(res.data)
-      this.setState({value: res.data.data.nombre, Currentuuid: res.data.uuid_hotel});
-    
-      
-
-      this.onAddHOTEL(res.data.uuid_hotel, res.data.data.nombre, res.data.data.destino)
-      
-      this.props.updateHotel(res.data.uuid_hotel, res.data.data.nombre, res.data.data.destino)
-      
-      
-
-    }catch(error){
-      console.log(error)
-      console.error("400 HOTEL")
-      return "400 HOTEL"
+  addHotel() {
+    const data = {
+      "data": {
+        "nombre": `${this.state.dialogValue.name_hotel}`,
+        "direccion": "",
+        "telefono": "",
+        "correo": "",
+        "destino": `${this.state.dialogValue.destino}`
+      }
     }
- })
-}
 
-  render(){
-    const {value, dialogValue, toggleOpen  } = this.state;
+    API.post(`/Hotels/`, data).then(res => {
+
+      try {
+        // console.log(res.data)
+        this.setState({ value: res.data.data.nombre, Currentuuid: res.data.uuid_hotel });
+
+
+
+        this.onAddHOTEL(res.data.uuid_hotel, res.data.data.nombre, res.data.data.destino)
+
+        this.props.updateHotel(res.data.uuid_hotel, res.data.data.nombre, res.data.data.destino)
+
+
+
+      } catch (error) {
+        console.log(error)
+        console.error("400 HOTEL")
+        return "400 HOTEL"
+      }
+    })
+  }
+
+  render() {
+    const { value, dialogValue, toggleOpen } = this.state;
     return (
       <div>
 
@@ -178,31 +180,39 @@ class AutocompleteHotel extends React.Component{
               // timeout to avoid instant validation of the dialog's form.
               setTimeout(() => {
                 this.setState({ toggleOpen: true })
-                this.setState({dialogValue: {
-                  name_hotel: newValue,
-                  destino: '',
-                }});
+                this.setState({
+                  dialogValue: {
+                    name_hotel: newValue,
+                    destino: '',
+                  }
+                });
               });
               return;
             }
-  
+
             if (newValue && newValue.inputValue) {
               this.setState({ toggleOpen: true })
-              this.setState({dialogValue: {
-                name_hotel: newValue.inputValue,
-                destino: '',
-              }});
-  
+              this.setState({
+                dialogValue: {
+                  name_hotel: newValue.inputValue,
+                  destino: '',
+                }
+              });
               return;
             }
-  
-            this.setState({setValue: newValue});
+
+            if (newValue && newValue.uuid_hotel) {
+              this.setState({value: newValue.name_hotel});
+              this.props.updateHotel(newValue.uuid_hotel, newValue.name_hotel, newValue.destino);
+            }
+
+            this.setState({ setValue: newValue });
           }}
 
 
           filterOptions={(options, params) => {
             const filtered = this.filter(options, params);
-  
+
             if (params.inputValue !== '') {
               filtered.push({
                 inputValue: params.inputValue,
@@ -211,7 +221,7 @@ class AutocompleteHotel extends React.Component{
             }
             return filtered;
           }
-         }
+          }
 
           id="hotel"
           options={this.state.Hoteles}
@@ -223,25 +233,17 @@ class AutocompleteHotel extends React.Component{
             if (option.inputValue) {
               return option.inputValue;
             }
-
-
-            
-            this.setState({value: option.name_hotel});
-            
-          
-            this.props.updateHotel(option.uuid_hotel, option.name_hotel, option.destino)
-
             return option.name_hotel;
           }
           }
-          renderOption={option => option.name_hotel }
-          fullWidth
+          renderOption={option => option.name_hotel}
+          //fullWidth
           renderInput={params => (
             <TextField {...params} label="HOTEL" variant="outlined" />
           )}
-          
+
         />
-        
+
         <Dialog open={toggleOpen} onClose={this.handleClose} aria-labelledby="form-dialog-title">
           <form onSubmit={this.handleSubmit}>
             <DialogTitle id="form-dialog-title">Agregar hotel</DialogTitle>
@@ -254,7 +256,7 @@ class AutocompleteHotel extends React.Component{
                 margin="dense"
                 id="name"
                 value={dialogValue.name_hotel}
-                onChange={event => this.setState({dialogValue: {...dialogValue, name_hotel: event.target.value }})}
+                onChange={event => this.setState({ dialogValue: { ...dialogValue, name_hotel: event.target.value } })}
                 label="nombre"
                 type="text"
               />
@@ -262,7 +264,7 @@ class AutocompleteHotel extends React.Component{
                 margin="dense"
                 id="name"
                 value={dialogValue.destino}
-                onChange={event => this.setState({dialogValue: {...dialogValue, destino: event.target.value }})}
+                onChange={event => this.setState({ dialogValue: { ...dialogValue, destino: event.target.value } })}
                 label="Destino"
                 type="text"
               />
@@ -276,16 +278,16 @@ class AutocompleteHotel extends React.Component{
               </Button>
             </DialogActions>
           </form>
-          
+
         </Dialog>
-        </div>
+      </div>
     );
 
   }
 
-  }
+}
 
-  export default AutocompleteHotel;
+export default AutocompleteHotel;
 
-  
+
 

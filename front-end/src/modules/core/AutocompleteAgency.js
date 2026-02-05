@@ -189,6 +189,13 @@ class AutocompleteAgency extends React.Component{
   
               return;
             }
+
+            // Handle selection of existing agency
+            if (newValue && newValue.uuid_travelA) {
+              this.setState({value: newValue.nombre_agencia});
+              this.setState({ciudad: newValue.ciudad});
+              this.props.updateAgencia(newValue.uuid_travelA, newValue.ciudad, newValue.nombre_agencia);
+            }
   
             this.setState({setValue: newValue});
           }}
@@ -218,20 +225,11 @@ class AutocompleteAgency extends React.Component{
               return option.inputValue;
             }
 
-
-            
-        
-            this.setState({value: option.nombre_agencia});
-            this.setState({ciudad: option.ciudad});
-
-            this.props.updateAgencia(option.uuid_travelA, option.ciudad, option.nombre_agencia)
-            
-
             return option.nombre_agencia;
           }
           }
           renderOption={option => option.nombre_agencia }
-          fullWidth
+          //fullWidth
           renderInput={params => (
             <TextField {...params} label="Agencia" variant="outlined" />
           )}

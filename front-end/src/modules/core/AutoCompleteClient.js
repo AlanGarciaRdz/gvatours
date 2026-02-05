@@ -181,6 +181,12 @@ class AutocompleteClient extends React.Component{
   
               return;
             }
+
+            // Handle selection of existing client
+            if (newValue && newValue.uuid_client) {
+              this.setState({value: newValue.nombre_cliente});
+              this.props.updateClient(newValue.uuid_client);
+            }
   
             this.setState({setValue: newValue});
           }}
@@ -209,17 +215,12 @@ class AutocompleteClient extends React.Component{
             if (option.inputValue) {
               return option.inputValue;
             }
-            
 
-            this.setState({value: option.nombre_cliente});
-
-            this.props.updateClient(option.uuid_client)
-            
             return option.nombre_cliente;
           }
           }
           renderOption={option => option.nombre_cliente }
-          fullWidth
+          
           renderInput={params => (
             <TextField {...params} label="Cliente" variant="outlined" />
           )}
