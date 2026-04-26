@@ -312,22 +312,22 @@ function pieCharter(doc){
     ///
     const regreso1 = "Los Horario de Regreso son los siguientes:";
     doc.text(350, righty, regreso1);
-    const regreso2 = "Pto. Vallarta de 1:20 pm a 2:00 pm";
+    const regreso2 = "de Pto. Vallarta de 12:20 hrs a 1:00 pm";
     righty += incremento; 
     doc.text(350, righty, regreso2);
-    const regreso3 = "Nvo. Vallarta de 2:00 pm a 2:30 pm";
+    const regreso3 = "de Nvo. Vallarta de 1:00 pm a 1:30 pm";
     righty += incremento; 
     doc.text(350, righty, regreso3);
-    const regreso4 = "Bucerias 2:30 pm";
+    const regreso4 = "de Bucerias 1:30 pm";
     righty += incremento; 
     doc.text(350, righty, regreso4);
-    const regreso5 = "Punta de Mita 3:00 pm a 3:20 pm";
+    const regreso5 = "de Punta de Mita 2:00 pm a 2:20 pm";
     righty += incremento; 
     doc.text(350, righty, regreso5);
-    const regreso6 = "Sayulita 3:30 pm";
+    const regreso6 = "de Sayulita 2:30 pm";
     righty += incremento; 
     doc.text(350, righty, regreso6);
-    const regreso7 = "Guayabitos de 3:30 pm a 4:00 pm";
+    const regreso7 = "de Guayabitos de 2:30 pm a 3:10 pm";
     righty += incremento; 
     doc.text(350, righty, regreso7);
     const regreso8 = "Los horarios son reconfirmados el dia";
