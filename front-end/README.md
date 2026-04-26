@@ -168,3 +168,18 @@ localStorage.getItem('09b267c0');
 // Limpiar sesión
 localStorage.clear();
 ```
+
+### 2026-02-05 
+- Se corrigieron los componentes de Autocomplete (Hotel/Agencia/Cliente) que dejaban la página en blanco al seleccionar un elemento.
+- Cambio: se eliminó `setState()` dentro de `getOptionLabel` (provocaba re-render infinito) y la actualización del estado/props se movió al handler `onChange`.
+- Archivos afectados:
+  - `src/modules/core/AutocompleteHotel.js`
+  - `src/modules/core/AutocompleteAgency.js`
+  - `src/modules/core/AutoCompleteClient.js`
+
+
+### 2026-04-25
+- Actualización de horarios de regreso en PDFs para mayor precisión.
+- Archivos:
+  - `src/utils/CharterPDF.js`
+  - `src/utils/ContratoPDF.js`
